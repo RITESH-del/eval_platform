@@ -1,5 +1,7 @@
-import AuthPage from "./Pages/AuthPage";
-import ForgotPasswdPage from "./Pages/ForgotPasswdPage.jsx"
+import { lazy } from 'react';
+
+const AuthPage = lazy(() => import("./Pages/AuthPage"));
+const ForgotPasswdPage = lazy(() => import("./Pages/ForgotPasswdPage.jsx"))
 
 export const authRoutes = [
     {errorElement: ''},

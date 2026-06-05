@@ -1,12 +1,17 @@
 import {useState} from 'react'
 import { useDisclosure } from '@mantine/hooks';
-import { TextInput, PasswordInput, Stack, Button } from '@mantine/core';
+import { TextInput, PasswordInput, Stack, Button, Divider, Text } from '@mantine/core';
+import { loginUser } from "../models/authThunks";
+import GoogleAuthBtn from "./GoogleAuthBtn";
 
 export default function SignUpForm() {
+     
+     
      const [visible, { toggle }] = useDisclosure(false);
     return (
          <Stack gap="xl">
             <TextInput
+                    withAsterisk
                     size="md"
                     leftSectionPointerEvents="none"
                     // leftSection={icon}
@@ -15,6 +20,7 @@ export default function SignUpForm() {
                   />
 
             <PasswordInput
+                withAsterisk
                 size="md"
                 label="Password"
                 defaultValue="secret"
@@ -23,6 +29,7 @@ export default function SignUpForm() {
             />
 
             <PasswordInput
+                withAsterisk
                 size="md"
                 label="Confirm password"
                 defaultValue="secret"
@@ -36,6 +43,26 @@ export default function SignUpForm() {
             className='mt-10'
             >Sign Up
             </Button>
+
+             <Divider
+                    label={
+                      <Text size="md">
+                         Or
+                      </Text>
+                         }
+                    labelPosition="center"
+                    />
+
+            {/* <Button
+            fullWidth
+            size='md'
+            color='black'
+            leftSection={<img src='/google-svg.svg' alt='google-icons' className='h-8 w-8'/>}
+            >
+                Login with Google
+            </Button> */}
+
+            <GoogleAuthBtn />
     </Stack>
     )
 }

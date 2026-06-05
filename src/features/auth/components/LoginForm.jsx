@@ -1,29 +1,73 @@
 import {useState} from 'react'
-import { TextInput, PasswordInput, Stack, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Stack, Button, Divider, Text } from '@mantine/core'
+import { useDispatch } from "react-redux";
+import { loginUser} from "../models/authThunks";
+import { GoogleLogin } from "@react-oauth/google";
+import GoogleAuthBtn from "./GoogleAuthBtn";
 
-// add google auth
+
+// Use useForm from mantine
 export default function LoginForm() {
+    const [email, setEmail] = useState('');
+    const [passwd, setPasswd] = useState('');
+
+    const dispatch = useDispatch();
+
+    function handleSubmit() {
+        dispatch(loginUser({
+            email,
+            passwd
+        }));
+    }
+
     return (
     <Stack gap='xl'>
     <TextInput
+        withAsterisk
         size="md"
         leftSectionPointerEvents="none"
         // leftSection={icon}
         label="Email address"
         placeholder="Your email"
+        value={email}
+        onChange={e => {setEmail(e.target.value)}}
       />
 
       <PasswordInput 
+      withAsterisk
       size="md"
       label="Password"
       placeholder="Your password" 
-      loading 
+    //   loading 
+      value={passwd}
+      onChange={e => {setPasswd(e.target.value)}}
       />
 
       <Button 
       size="md"
       fullWidth
+      onClick={handleSubmit}
       >Sign In </Button>
+
+       <Divider
+        label={
+          <Text size="md">
+             Or
+          </Text>
+             }
+        labelPosition="center"
+        />
+
+            {/* <Button
+            fullWidth
+            size='md'
+            color='black'
+            leftSection={<img src='/google-svg.svg' alt='google-icons' className='h-8 w-8'/>}
+            >
+                Login with Google
+            </Button> */}
+
+                <GoogleAuthBtn />
     </Stack>
     )
 }

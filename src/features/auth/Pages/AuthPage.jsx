@@ -27,7 +27,7 @@ function RightPane() {
 
 function LeftPane() {
   return (
-    <div className="w-[60%] border-r-[1px] border-gray-100 overflow-hidden">
+    <div className="w-[60%] border-r border-gray-100 overflow-hidden">
       <img src="/auth-banner.jpg" alt="" className="h-[120%] object-cover" />
     </div>
   );
