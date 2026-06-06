@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     ]},
 
     ...teacherRoutes
-  
+    
 ]);
 
 createRoot(document.getElementById("root")).render(

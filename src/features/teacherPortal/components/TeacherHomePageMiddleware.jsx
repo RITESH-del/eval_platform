@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherHomePageMiddleware = ({ practicals }) => {
+  const navigate = useNavigate();
 
-  function getReadableDate(isoString) {
+  const getReadableDate = (isoString) => {
     let dateObj = new Date(isoString);
     let day = dateObj.getUTCDate();
     let month = dateObj.getUTCMonth() + 1;
@@ -12,9 +14,9 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
     if (month < 10) month = "0" + month;
 
     return day + "-" + month + "-" + year;
-  }
+  };
 
-  function getReadableTime(isoString) {
+  const getReadableTime = (isoString) => {
     let dateObj = new Date(isoString);
     let hours = dateObj.getUTCHours();
     let minutes = dateObj.getUTCMinutes();
@@ -28,17 +30,17 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
     if (hours < 10) hours = "0" + hours;
 
     return hours + ":" + minutes + " " + ampm;
-  }
+  };
 
-  function getDurationText(totalMinutes) {
+  const getDurationText = (totalMinutes) => {
     let hours = Math.floor(totalMinutes / 60);
     return hours + " Hrs";
-  }
+  };
 
-  function getBatchRange(graduationYear) {
+  const getBatchRange = (graduationYear) => {
     let startYear = graduationYear - 4;
     return startYear + "-" + graduationYear;
-  }
+  };
 
   if (!practicals || practicals.length === 0) {
     return (
@@ -58,43 +60,40 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
       </h2>
       
       <div className="flex flex-col gap-5">
-        {practicals.map((practical) => {
-          return (
-            <div 
-              key={practical.id} 
-              className="w-full border border-gray-200 rounded-xl p-6 flex justify-between items-center hover:shadow-md transition-shadow bg-white box-border"
-            >
-              {/* Left side info */}
-              <div>
-                <h3 className="text-blue-600 font-extrabold text-xl mb-1.5 uppercase tracking-wide">
-                  {practical.title}
-                </h3>
-                <p className="text-sm text-gray-500 flex items-center gap-3">
-                  <span>
-                    <strong className="text-gray-600 font-semibold">Section:</strong> {practical.target_section}
-                  </span>
-                  <span className="text-gray-300">|</span>
-                  <span>
-                    <strong className="text-gray-600 font-semibold">Batch:</strong> {getBatchRange(practical.target_graduation_year)}
-                  </span>
-                </p>
-              </div>
+        {practicals.map((practical) => (
+          <div 
+            key={practical.id} 
+            onClick={() => navigate("/TeacherHomePage/LabDetailsPage")}
+            className="w-full border border-gray-200 rounded-xl p-6 flex justify-between items-center hover:shadow-md transition-shadow bg-white box-border cursor-pointer"
+          >
+            <div>
+              <h3 className="text-blue-600 font-extrabold text-xl mb-1.5 uppercase tracking-wide">
+                {practical.title}
+              </h3>
+              <p className="text-sm text-gray-500 flex items-center gap-3">
+                <span>
+                  <strong className="text-gray-600 font-semibold">Section:</strong> {practical.target_section}
+                </span>
+                <span className="text-gray-300">|</span>
+                <span>
+                  <strong className="text-gray-600 font-semibold">Batch:</strong> {getBatchRange(practical.target_graduation_year)}
+                </span>
+              </p>
+            </div>
 
-              {/* Right side info */}
-              <div className="flex items-center gap-8 text-sm text-gray-700 font-medium">
-                <div>
-                  <strong className="text-gray-900 font-bold">Date:</strong> {getReadableDate(practical.start_time)}
-                </div>
-                <div>
-                  <strong className="text-gray-900 font-bold">Time:</strong> {getReadableTime(practical.start_time)}
-                </div>
-                <div className="bg-slate-50 text-slate-700 text-xs font-black px-4 py-2 rounded-lg border border-slate-200 tracking-wide">
-                  {getDurationText(practical.duration_minutes)}
-                </div>
+            <div className="flex items-center gap-8 text-sm text-gray-700 font-medium">
+              <div>
+                <strong className="text-gray-900 font-bold">Date:</strong> {getReadableDate(practical.start_time)}
+              </div>
+              <div>
+                <strong className="text-gray-900 font-bold">Time:</strong> {getReadableTime(practical.start_time)}
+              </div>
+              <div className="bg-gray-100 text-gray-600 text-xs font-black px-4 py-2 rounded-lg border border-gray-200 tracking-wide">
+                {getDurationText(practical.duration_minutes)}
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </main>
   );
