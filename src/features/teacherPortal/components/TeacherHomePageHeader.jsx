@@ -1,6 +1,7 @@
 import React from 'react';
 
-const TeacherHomePageHeader = ({ profile }) => {
+// 1. Destructured onOpenModal right here alongside profile
+const TeacherHomePageHeader = ({ profile, onOpenModal }) => {
   let teacherName = "Loading...";
   let teacherEmail = "";
   let teacherRole = "Faculty Access";
@@ -8,6 +9,7 @@ const TeacherHomePageHeader = ({ profile }) => {
   if (profile) {
     teacherName = profile.name;
     teacherEmail = profile.email;
+    
     if (profile.role === "faculty") {
       teacherRole = "Faculty Access";
     } else {
@@ -25,11 +27,16 @@ const TeacherHomePageHeader = ({ profile }) => {
           {teacherEmail} <span className="text-gray-300 mx-1.5">•</span> {teacherRole}
         </p>
       </div>
-      
+
       <div className="flex gap-4">
-        <button className="bg-[#20b2aa] hover:bg-teal-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm cursor-pointer">
-          + Create New Quiz
+        {/* 2. Fixed onClick to call onOpenModal directly and added clean blue styles */}
+        <button 
+          onClick={onOpenModal}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm cursor-pointer"
+        >
+          Create New Quiz +
         </button>
+        
         <button className="bg-[#ef4444] hover:bg-red-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm cursor-pointer">
           Logout
         </button>

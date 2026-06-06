@@ -1,6 +1,7 @@
 import React from 'react';
 import TeacherHomePage from './Pages/TeacherHomePage.jsx';
 import LabDetails from './Pages/LabDetails.jsx';
+import StudentDetails from './Pages/StudentDetails.jsx';
 
 export const teacherRoutes = [
   {
@@ -8,8 +9,11 @@ export const teacherRoutes = [
     element: <TeacherHomePage />
   },
   {
-    // Ensure this string is exactly "/LabDetailsPage" with matching uppercase letters
-    path: "/TeacherHomePage/LabDetailsPage",
+    path: "/TeacherHomePage/LabDetails",
     element: <LabDetails />
+  },
+  {
+    path: "/TeacherHomePage/LabDetails/StudentDetails",
+    element: <StudentDetails />
   }
 ];

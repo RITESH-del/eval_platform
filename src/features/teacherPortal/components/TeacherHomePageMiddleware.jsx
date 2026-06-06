@@ -63,7 +63,8 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
         {practicals.map((practical) => (
           <div 
             key={practical.id} 
-            onClick={() => navigate("/TeacherHomePage/LabDetailsPage")}
+            // FIXED: Removed "Page" from the path string to align with your setup
+            onClick={() => navigate("/TeacherHomePage/LabDetails")}
             className="w-full border border-gray-200 rounded-xl p-6 flex justify-between items-center hover:shadow-md transition-shadow bg-white box-border cursor-pointer"
           >
             <div>

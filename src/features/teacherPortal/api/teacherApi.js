@@ -5,6 +5,20 @@ import pastPracticalsData from "../data/pastPracticals.json";
 import labDetailsData from "../data/labDetails.json";       // Added
 import labSubmissionsData from "../data/labSubmissions.json"; // Added
 
+// 1. Change the import path to match your exact filename: reviewSubmission.json
+import reviewSubmissionData from "../data/reviewSubmission.json";
+
+// 2. Keep the export function name identical so your pages don't crash
+export const fetchStudentSubmissionDetail = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // 3. Resolve the correctly imported data object variable
+      resolve(reviewSubmissionData);
+    }, 400);
+  });
+};
+
+
 // 2. Fixed to resolve labSubmissionsData correctly with a snappier delay
 export const fetchLabSubmissions = async () => {
   return new Promise((resolve) => {
