@@ -1,22 +1,26 @@
-import { createRoot } from "react-dom/client";
-import { MantineProvider } from "@mantine/core";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "@mantine/core/styles.css";
-import { lazy, Suspense } from 'react';
-import { authRoutes } from './features/auth/routes';
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Provider } from "react-redux";
+import { createRoot } from "react-dom/client"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { MantineProvider } from "@mantine/core"
+import "@mantine/core/styles.css"
+import { lazy, Suspense } from 'react'
+import { authRoutes } from './features/auth/routes'
+import { GoogleOAuthProvider } from "@react-oauth/google"
+import { Provider } from "react-redux"
 import { store } from './app/store.js'
 import Spinner from './shared/components/Spinner.jsx'
+import ErrorPage from "./shared/components/ErrorPage.jsx"
 
 // lazy loading
 const App = lazy(() => import("./App.jsx"));
-
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: '/error',
+    element: <ErrorPage />
   },
   // {errorElement: '',
       ...authRoutes
