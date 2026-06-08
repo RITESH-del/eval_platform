@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { fetchLabDetails, fetchLabSubmissions } from '../api/teacherApi.js';
 import Spinner from '../../../shared/components/Spinner.jsx';
 
-// Going out of Pages via ../ then directly into components folder
 import LabDetailsHeader from '../components/LabDetailsHeader.jsx';
 import LabDetailsMiddleware from '../components/LabDetailsMiddleware.jsx';
 import LabDetailsFooter from '../components/LabDetailsFooter.jsx';
