@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { fetchLabDetails, fetchLabSubmissions } from '../api/teacherApi.js';
+import React, { useEffect } from 'react';
+import { fetchLabSubmissions } from '../models/facultyThunks.js';
 import Spinner from '../../../shared/components/Spinner.jsx';
-
+import { Box, Stack } from '@mantine/core';
 import LabDetailsHeader from '../components/LabDetailsHeader.jsx';
 import LabDetailsMiddleware from '../components/LabDetailsMiddleware.jsx';
 import LabDetailsFooter from '../components/LabDetailsFooter.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
 
 const LabDetails = () => {
-  const [details, setDetails] = useState(null);
-  const [submissions, setSubmissions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { examId } = useParams();
+
+  const dispatch = useDispatch();
+  
+  const loading = useSelector((state) => state.faculty.loading);
+  const details = useSelector((state) => state.faculty.selectedExam);
+  const submissions = useSelector((state) => state.faculty.labSubmissions);
 
   useEffect(() => {
-    async function loadPageData() {
-      try {
-        const [detailsRes, submissionsRes] = await Promise.all([
-          fetchLabDetails(),
-          fetchLabSubmissions()
-        ]);
-        
-        setDetails(detailsRes);
-        setSubmissions(submissionsRes);
-      } catch (error) {
-        console.error("Failed to load lab details data", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    loadPageData();
-  }, []);
+    dispatch(fetchLabSubmissions(examId));
+  }, [examId]);
+
 
   if (loading) {
     return (
@@ -40,15 +32,13 @@ const LabDetails = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#f8fafc] py-8 px-6 box-border">
-      <div className="w-full flex flex-col gap-6">
-        
+    <Box sx={{ minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc', padding: '2rem 1.5rem' }}>
+      <Stack spacing="md">
         <LabDetailsHeader details={details} />
         <LabDetailsMiddleware submissions={submissions} />
         <LabDetailsFooter />
-        
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 };
 

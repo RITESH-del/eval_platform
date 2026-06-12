@@ -1,12 +1,18 @@
-import React from 'react';
+import { Text, Box, Paper } from '@mantine/core';
 
-const StudentDetailsFooter = () => {
+export default function StudentDetailsFooter() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="mt-8 pt-4 text-center text-sm text-gray-400 border-t border-gray-100">
-      <p>&copy; {currentYear} Faculty Portal. Evaluation Workspace Environment.</p>
-    </footer>
+    <Paper
+       py="xs"
+      radius={0}
+      style={{
+        backgroundColor: '#f8fafc',
+        borderTop: '1px solid #e2e8f0',
+      }}>
+      <Box style={{ textAlign: 'center' }}>
+        <Text size="xs" color="dimmed">© {currentYear} Faculty Portal. Evaluation Workspace Environment.</Text>
+      </Box>
+    </Paper>
   );
-};
-
-export default StudentDetailsFooter;
+}

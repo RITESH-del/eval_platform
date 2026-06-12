@@ -10,9 +10,9 @@ function App() {
       {/* <Button className="absolute top-1/2 left-1/2">
       Click Me
     </Button> */}
-      <AuthPage />
+      {/* <AuthPage /> */}    
       <TeacherHomePage/>
-      <LabDetailsPage/>
+      {/* <LabDetailsPage/>  */}
     </div>
   );
 }

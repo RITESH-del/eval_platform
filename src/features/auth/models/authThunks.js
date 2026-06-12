@@ -15,7 +15,7 @@ export const loginUser = createAsyncThunk(
 export const signupUser = createAsyncThunk(
   "auth/signup",
   async (credentials) => {
-    const reqponse = await signup(credentials);
+    const response = await signup(credentials);
     return response.data;
   }
 )
@@ -29,4 +29,19 @@ export const googleLoginUser = createAsyncThunk(
 
     return response.data;
   }
+);
+
+export const fetchCurrentUser = createAsyncThunk(
+    "auth/fetchCurrentUser",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await authAPI.fetchCurrentUser();
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message ||
+                error.message
+            );
+        }
+    }
 );
