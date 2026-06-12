@@ -1,43 +1,31 @@
 import React, { useState, useEffect } from 'react';
-// 1. Added fetchQuizConfig to your API imports list
-import { fetchTeacherProfile, fetchPastPracticals, fetchQuizConfig } from '../api/teacherApi';
+// import { fetchTeacherProfile, fetchPastPracticals, fetchQuizConfig } from '../api/teacherApi';
 import Spinner from '../../../shared/components/Spinner';
-
 import TeacherHomePageHeader from '../components/TeacherHomePageHeader';
 import TeacherHomePageMiddleware from '../components/TeacherHomePageMiddleware';
 import TeacherHomePageFooter from '../components/TeacherHomePageFooter';
-// 2. Import your new modal layout component
 import CreateQuizModal from '../components/CreateQuizModal';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchFacultyProfile, fetchPastPracticals, fetchQuizConfig } from '../models/facultyThunks';
+
 
 const TeacherHomePage = () => {
-  const [profile, setProfile] = useState(null);
-  const [practicals, setPracticals] = useState([]);
-  // 3. Added local states to handle the popup visibility and track option lists
-  const [quizConfig, setQuizConfig] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadDashboardData() {
-      try {
-        // 4. Added fetchQuizConfig() into Promise.all to fetch all assets concurrently
-        const [profileRes, practicalsRes, configRes] = await Promise.all([
-          fetchTeacherProfile(),
-          fetchPastPracticals(),
-          fetchQuizConfig()
-        ]);
-        
-        setProfile(profileRes);
-        setPracticals(practicalsRes);
-        setQuizConfig(configRes); // Store JSON configuration array properties
-      } catch (error) {
-        console.error("Failed to load dashboard data", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadDashboardData();
-  }, []);
+  const dispatch = useDispatch();
+
+  const practicals = useSelector((state) => state.faculty.pastPracticals);
+  const loading = useSelector((state) => state.faculty.loading);
+  const profile = useSelector((state) => state.faculty.profile);
+  const quizConfig = useSelector((state) => state.faculty.quizConfig);
+
+
+  useEffect(()=>{
+    dispatch(fetchFacultyProfile())
+    dispatch(fetchPastPracticals())
+    dispatch(fetchQuizConfig())
+  }, [dispatch]);
 
   if (loading) {
     return (

@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SegmentedControl, Card } from "@mantine/core";
 import LoginForm from "../components/LoginForm";
 import SignUpForm from "../components/SignUpForm";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function RightPane() {
   const [tab, setTab] = useState("login");
+
+  const user = useSelector(
+    state => state.auth.user
+  );
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.role === "faculty") {
+        navigate("/TeacherHomePage");
+    }
+
+    if (user.role === "student") {
+        navigate("/student");
+    }
+  }, [user]);
+
 
   return (
     <div className="flex flex-col flex-1 justify-center items-center bg-white">

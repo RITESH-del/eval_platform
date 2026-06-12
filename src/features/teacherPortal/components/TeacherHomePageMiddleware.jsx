@@ -1,8 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSelectedExam } from '../models/facultySlice';
 
 const TeacherHomePageMiddleware = ({ practicals }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const getReadableDate = (isoString) => {
     let dateObj = new Date(isoString);
@@ -42,6 +45,11 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
     return startYear + "-" + graduationYear;
   };
 
+  const handleClick = (practical) => {
+    dispatch(setSelectedExam(practical));
+    navigate(`/TeacherHomePage/LabDetails/${practical.id}`);
+  }
+
   if (!practicals || practicals.length === 0) {
     return (
       <main className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8 min-h-[50vh] box-border">
@@ -63,8 +71,7 @@ const TeacherHomePageMiddleware = ({ practicals }) => {
         {practicals.map((practical) => (
           <div 
             key={practical.id} 
-            // FIXED: Removed "Page" from the path string to align with your setup
-            onClick={() => navigate("/TeacherHomePage/LabDetails")}
+            onClick={() => handleClick(practical)}
             className="w-full border border-gray-200 rounded-xl p-6 flex justify-between items-center hover:shadow-md transition-shadow bg-white box-border cursor-pointer"
           >
             <div>

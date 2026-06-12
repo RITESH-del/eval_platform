@@ -1,109 +1,160 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {
+  Paper,
+  Title,
+  Text,
+  Stack,
+  Group,
+  Badge,
+  Box,
+} from '@mantine/core';
+import { setSelectedSubmission } from '../models/facultySlice';
 
 const LabDetailsMiddleware = ({ submissions }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { examId } = useParams(); 
 
   if (!submissions || submissions.length === 0) {
     return (
-      <main className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8 min-h-[50vh] box-border">
-        <p className="text-gray-500">No student sessions found for this lab.</p>
-      </main>
+      <Paper
+        p="xl"
+        radius="md"
+        withBorder
+        mih="50vh"
+      >
+        <Text c="dimmed">
+          No student sessions found for this lab.
+        </Text>
+      </Paper>
     );
   }
 
   return (
-    <main className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8 min-h-[55vh] box-border">
-      <h2 className="text-xl font-bold text-slate-800 tracking-wide mb-6">
+    <Paper
+      p="xl"
+      radius="md"
+      withBorder
+      mih="55vh"
+    >
+      <Title order={2} mb="lg">
         Student Submissions Tracking
-      </h2>
-      
-      <div className="flex flex-col gap-4">
+      </Title>
+
+      <Stack gap="md">
         {submissions.map((student) => {
-          // 1. Classic if/else handling for student programming language text
-          let langText = "";
+          let langText = '';
           if (student.language === null) {
-            langText = "N/A";
+            langText = 'N/A';
           } else {
             langText = student.language;
           }
 
-          // 2. Classic if/else handling for autograding software test scores
-          let autoScore = "";
+          let autoScore = '';
           if (student.autograding_score === null) {
-            autoScore = "-";
+            autoScore = '-';
           } else {
             autoScore = student.autograding_score;
           }
 
-          // 3. Classic if/else handling for instructor grading inputs
-          let manScore = "";
+          let manScore = '';
           if (student.manual_score === null) {
-            manScore = "-";
+            manScore = '-';
           } else {
             manScore = student.manual_score;
           }
 
-          // 4. Classic if/else handling for custom attendance layout border styles
-          let statusBadgeClass = "";
-          let cardCursorClass = "";
-          if (student.status === "absent") {
-            statusBadgeClass = "bg-red-50 text-red-500 border-red-200";
-            cardCursorClass = "opacity-60 cursor-not-allowed";
-          } else {
-            statusBadgeClass = "bg-green-50 text-green-600 border-green-200";
-            cardCursorClass = "cursor-pointer";
-          }
+          const isAbsent = student.status === 'absent';
 
           return (
-            <div 
-              key={student.session_id} 
+            <Paper
+              key={student.session_id}
+              withBorder
+              p="md"
+              radius="md"
               onClick={() => {
-                // Only push into submission panel if the student was present
-                if (student.status !== "absent") {
-                  navigate("/TeacherHomePage/LabDetails/StudentDetails");
+                if (!isAbsent) {
+                  dispatch(setSelectedSubmission(student))
+                  navigate(`/TeacherHomePage/LabDetails/${examId}/StudentDetails/${student.session_id}`);
                 }
               }}
-              className={`w-full border border-gray-200 rounded-xl p-5 flex justify-between items-center bg-white hover:border-gray-300 transition-colors box-border ${cardCursorClass}`}
+              style={{
+                cursor: isAbsent ? 'not-allowed' : 'pointer',
+                opacity: isAbsent ? 0.6 : 1,
+                transition: 'all 0.2s ease',
+              }}
             >
-              {/* Left Side Content layout block */}
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-400 font-semibold">
-                  Roll: <span className="text-gray-600">{student.university_id}</span>
-                </span>
-                
-                <span className="bg-gray-100 text-gray-600 font-bold text-xs px-2.5 py-1 rounded-md border border-gray-200">
-                  Sec - {student.section}
-                </span>
+              <Group justify="space-between" align="center">
+                {/* Left Side */}
+                <Group gap="md">
+                  <Text size="sm" c="dimmed" fw={600}>
+                    Roll:{' '}
+                    <Text span c="dark">
+                      {student.university_id}
+                    </Text>
+                  </Text>
 
-                <span className="text-blue-600 font-bold text-lg hover:underline">
-                  {student.name}
-                </span>
-              </div>
+                  <Badge
+                    variant="light"
+                    color="gray"
+                  >
+                    Sec - {student.section}
+                  </Badge>
 
-              {/* Right Side Content layout block */}
-              <div className="flex items-center gap-8 text-sm">
-                <div className="text-gray-500 font-medium">
-                  Language: <span className="text-gray-700 font-bold">{langText}</span>
-                </div>
-                
-                <div className="text-gray-500 font-medium">
-                  App Marks: <span className="text-teal-600 font-black text-base">{autoScore}</span>
-                </div>
+                  <Text
+                    fw={700}
+                    c="blue"
+                    size="lg"
+                  >
+                    {student.name}
+                  </Text>
+                </Group>
 
-                <div className="text-gray-500 font-medium">
-                  Teacher Marks: <span className="text-blue-600 font-black text-base">{manScore}</span>
-                </div>
+                {/* Right Side */}
+                <Group gap="xl">
+                  <Box>
+                    <Text size="sm" c="dimmed">
+                      Language:{' '}
+                      <Text span fw={700} c="dark">
+                        {langText}
+                      </Text>
+                    </Text>
+                  </Box>
 
-                <span className={`px-3 py-1 text-xs font-black uppercase rounded-md border tracking-wider ${statusBadgeClass}`}>
-                  {student.status}
-                </span>
-              </div>
-            </div>
+                  <Box>
+                    <Text size="sm" c="dimmed">
+                      App Marks:{' '}
+                      <Text span fw={900} c="teal">
+                        {autoScore}
+                      </Text>
+                    </Text>
+                  </Box>
+
+                  <Box>
+                    <Text size="sm" c="dimmed">
+                      Teacher Marks:{' '}
+                      <Text span fw={900} c="blue">
+                        {manScore}
+                      </Text>
+                    </Text>
+                  </Box>
+
+                  <Badge
+                    color={isAbsent ? 'red' : 'green'}
+                    variant="light"
+                    size="lg"
+                  >
+                    {student.status}
+                  </Badge>
+                </Group>
+              </Group>
+            </Paper>
           );
         })}
-      </div>
-    </main>
+      </Stack>
+    </Paper>
   );
 };
 

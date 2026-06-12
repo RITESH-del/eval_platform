@@ -1,47 +1,76 @@
 import React from 'react';
+import { Group, Title, Text, Button, Box, Paper } from '@mantine/core';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../auth/models/authSlice';
 
-// 1. Destructured onOpenModal right here alongside profile
 const TeacherHomePageHeader = ({ profile, onOpenModal }) => {
-  let teacherName = "Loading...";
-  let teacherEmail = "";
-  let teacherRole = "Faculty Access";
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  if (profile) {
-    teacherName = profile.name;
-    teacherEmail = profile.email;
-    
-    if (profile.role === "faculty") {
-      teacherRole = "Faculty Access";
-    } else {
-      teacherRole = profile.role + " Access";
-    }
-  }
+  const teacherName = profile?.name || 'Loading...';
+  const teacherEmail = profile?.email || '';
+  const teacherRole =
+    profile?.role === 'faculty'
+      ? 'Faculty Access'
+      : `${profile?.role || ''} Access`;
 
   return (
-    <header className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex justify-between items-center box-border">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800 tracking-tight">
-          {teacherName}
-        </h1>
-        <p className="text-sm text-gray-500 mt-1.5 font-medium">
-          {teacherEmail} <span className="text-gray-300 mx-1.5">•</span> {teacherRole}
-        </p>
-      </div>
+    <Paper
+      p="md"
+      radius="md"
+      shadow="sm"
+      bg="white"
+    >
+      <Group justify="space-between" align="center">
+        <Box>
+          <Title
+            order={2}
+            style={{
+              fontWeight: 800,
+              color: '#1a202c',
+            }}
+          >
+            {teacherName}
+          </Title>
 
-      <div className="flex gap-4">
-        {/* 2. Fixed onClick to call onOpenModal directly and added clean blue styles */}
-        <button 
-          onClick={onOpenModal}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm cursor-pointer"
-        >
-          Create New Quiz +
-        </button>
-        
-        <button className="bg-[#ef4444] hover:bg-red-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-sm cursor-pointer">
-          Logout
-        </button>
-      </div>
-    </header>
+          <Text size="sm" c="dimmed" mt={4}>
+            {teacherEmail}
+            <span
+              style={{
+                margin: '0 6px',
+                color: '#cbd5e0',
+              }}
+            >
+              •
+            </span>
+            {teacherRole}
+          </Text>
+        </Box>
+
+        <Group gap="sm">
+          <Button
+            variant="filled"
+            color="blue"
+            onClick={onOpenModal}
+          >
+            Create New Quiz +
+          </Button>
+
+          <Button
+            variant="filled"
+            color="red"
+            onClick={()=>{
+                localStorage.removeItem("token");
+                dispatch(logout());
+                navigate("/login");
+            }}
+          >
+            Logout
+          </Button>
+        </Group>
+      </Group>
+    </Paper>
   );
 };
 

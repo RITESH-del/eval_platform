@@ -6,7 +6,7 @@ Stack: React, React Router, Redux Toolkit, Mantine, tailwindcss
 
 Rules:
 
-* Use Mantine UI.
+* Use Mantine v7+ UI and hooks.
 * Follow existing patterns; reuse before creating.
 * Search codebase before generating.
 * Don't modify root files.
@@ -18,6 +18,7 @@ Rules:
 * Use React.lazy() for pages/routes; Global Suspense already exists.
 
 Feature Structure:
+```
 features/
 └── <feature>/
 ├── api/
@@ -25,6 +26,5 @@ features/
 ├── hooks/
 ├── models/      # types, slices, thunks
 ├── Pages/
-└── routes.jsx    
-
-
+└── routes.jsx
+```

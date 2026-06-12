@@ -1,6 +1,6 @@
 // features/auth/model/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, signupUser } from "./authThunks";
+import { loginUser, signupUser, fetchCurrentUser } from "./authThunks";
 
 const authSlice = createSlice({
   name: "auth",
@@ -8,6 +8,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     loading: false,
+    initialized: false,
     error: null,
   },
 
@@ -21,7 +22,13 @@ const authSlice = createSlice({
     builder
       // login
       .addCase(loginUser.pending, (state) => {state.loading = true;})
-      .addCase(loginUser.fulfilled, (state, action) => {state.loading = false; state.user = action.payload;})
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false; 
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+
+        localStorage.setItem( "token", action.payload.token );
+      })
       .addCase(loginUser.rejected, (state, action) => {state.loading = false; state.error = action.error.message;})
 
       //signup
@@ -29,7 +36,19 @@ const authSlice = createSlice({
       .addCase(signupUser.fulfilled, (state) => {state.loading = false; state.user = action.payload;})
       .addCase(signupUser.rejected, (state, action) => {state.loading = false; state.error = action.error.message;})
 
+       .addCase(fetchCurrentUser.pending, (state) => {
+        state.loading = true;
+    })
 
+        .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+        })
+
+        .addCase(fetchCurrentUser.rejected, (state) => {
+            state.loading = false;
+            state.user = null;
+        });
   },
 });
 

@@ -1,9 +1,20 @@
-import React from 'react';
+import { Text, Box, Paper } from '@mantine/core';
 
 export default function TeacherHomePageFooter() {
   return (
-    <footer className="mt-8 pt-4 text-center text-sm text-gray-400">
-      <p>&copy; {new Date().getFullYear()} Faculty Portal. All rights reserved.</p>
-    </footer>
+    <Paper
+      py="xs"
+      radius={0}
+      style={{
+        backgroundColor: '#f8fafc',
+        borderTop: '1px solid #e2e8f0',
+      }}
+    >
+      <Box ta="center">
+        <Text size="xs" c="dimmed">
+          © {new Date().getFullYear()} Faculty Portal. All rights reserved.
+        </Text>
+      </Box>
+    </Paper>
   );
-};
+}
