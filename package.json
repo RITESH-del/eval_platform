@@ -36,12 +36,5 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "vite": "^8.0.12"
-  },
-   "_moduleAliases": {
-    "@root": ".",
-    "@api": "./shared/api",
-    "@components": "./shared/components",
-    "@hooks": "./shared/hooks",
-    "@utils": "./shared/utils"
   }
 }

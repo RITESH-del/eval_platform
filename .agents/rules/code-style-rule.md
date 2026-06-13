@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-Stack: React, React Router, Redux Toolkit, Mantine, tailwindcss
+Stack: React, React Router, Redux Toolkit, Mantine, tailwindcss, axios
 
 Rules:
 
