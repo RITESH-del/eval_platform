@@ -12,6 +12,8 @@ import ErrorPage from "./shared/components/ErrorPage.jsx"
 
 // 1. Import your teacher portal routes array here
 import { teacherRoutes } from './features/teacherPortal/routes';
+import StudentDetails from "./features/teacherPortal/Pages/StudentDetails.jsx"
+import { studentRoutes } from './features/studentPortal/routes';
 
 // lazy loading
 const App = lazy(() => import("./App.jsx"));
@@ -27,7 +29,8 @@ const router = createBrowserRouter([
   },
   // {errorElement: '',
       ...authRoutes,
-      ...teacherRoutes
+      ...teacherRoutes,
+      ...studentRoutes
    //  }
 ]);
 
