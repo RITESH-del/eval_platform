@@ -75,3 +75,15 @@ export const fetchStudentSubmissionDetail = createAsyncThunk(
     }
 )       
 
+export const fetchLabSessions = createAsyncThunk(
+    "faculty/labSessions",
+    async (_, {rejectWithValue})=>{
+        try {
+            const response = await facultyAPI.fetchLabSessions();
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Failed to fetch lab sessions');
+        }
+    }
+)   
+

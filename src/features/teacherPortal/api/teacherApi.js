@@ -37,7 +37,8 @@ export const fetchStudentSubmissionDetail = async(examId, studentId) => {
 // };
 
 export const fetchLabSubmissions = async(examId) => {
-    return await apiClient.get(`/faculty/exams/${examId}`);
+    const res = await apiClient.get(`/faculty/exams/${examId}`);
+    return res;
 }
 
 // 3. ADDED THIS MISSING FUNCTION that the LabDetails page was crashing on:
@@ -92,4 +93,8 @@ export const fetchPastPracticals = async() => {
     return await apiClient.get('/faculty/exams');
 }
 
+export const fetchLabSessions = async() => {
+    const res = await apiClient.get('/faculty/exam-sessions');
+    return res;
+}
 

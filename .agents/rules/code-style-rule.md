@@ -27,4 +27,3 @@ features/
 ├── models/      # types, slices, thunks
 ├── Pages/
 └── routes.jsx
-```

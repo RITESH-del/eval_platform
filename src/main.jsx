@@ -3,14 +3,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 import { lazy, Suspense } from 'react'
-import { authRoutes } from './features/auth/routes'
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import { Provider } from "react-redux"
 import { store } from './app/store.js'
 import Spinner from './shared/components/Spinner.jsx'
 import ErrorPage from "./shared/components/ErrorPage.jsx"
+import "mantine-datatable/styles.css"; // mantine-datatable stylesheet
 
-// 1. Import your teacher portal routes array here
+
+import { authRoutes } from './features/auth/routes'
 import { teacherRoutes } from './features/teacherPortal/routes';
 import StudentDetails from "./features/teacherPortal/Pages/StudentDetails.jsx"
 import { studentRoutes } from './features/studentPortal/routes';
@@ -20,8 +21,8 @@ const App = lazy(() => import("./App.jsx"));
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: '/',
+    element: <App />
   },
   {
     path: '/error',

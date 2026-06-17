@@ -18,7 +18,7 @@ function RightPane() {
     if (!user) return;
 
     if (user.role === "faculty") {
-        navigate("/TeacherHomePage");
+        navigate("/Faculty");
     }
 
     if (user.role === "student") {

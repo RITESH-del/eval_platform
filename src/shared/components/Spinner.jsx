@@ -1,9 +1,13 @@
-import { Loader } from '@mantine/core';
+import { Flex, Loader } from "@mantine/core";
 
 export default function Spinner() {
-    return (
-        <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Loader color="gray" />
-        </div>
-    );
+  return (
+    <Flex
+      justify="center"
+      align="center"
+      h="100vh"
+    >
+      <Loader color="gray" />
+    </Flex>
+  );
 }

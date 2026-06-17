@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Title, Text, Button, Group, Paper } from '@mantine/core';
-
+import { Title, Text, Button, Group, Paper, ActionIcon } from '@mantine/core';
+import { ChevronLeft } from 'lucide-react';
 const LabDetailsHeader = ({ details }) => {
   const navigate = useNavigate();
 
@@ -16,7 +16,18 @@ const LabDetailsHeader = ({ details }) => {
         borderBottom: '1px solid #e2e8f0',
       }}
     >
-      <Group justify="space-between" align="center">
+
+     
+      <Group align="center">
+         <ActionIcon
+            size={30}
+            radius="xl"
+            variant="filled"
+            color="#D8DEF8"
+            onClick={() => navigate(-1)}
+          >
+            <ChevronLeft size={20} color="#0A2F7F" />
+          </ActionIcon>
         <div>
           <Title
             order={1}
@@ -27,24 +38,18 @@ const LabDetailsHeader = ({ details }) => {
           >
             {labTitle}
           </Title>
-
-          <Text
-            size="sm"
-            c="dimmed"
-            mt={4}
-            fw={500}
-          >
-            Exam Workspace Context
-          </Text>
         </div>
 
-        <Button
+        {/* <Button
           variant="filled"
           color="gray"
           onClick={() => navigate(-1)}
-        >
-          ← Back to List
-        </Button>
+          leftSection={<ChevronLeft size={18} />}
+        > */}
+
+
+        
+        {/* </Button> */}
       </Group>
     </Paper>
   );
