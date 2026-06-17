@@ -36,7 +36,7 @@ const StudentDetails = () => {
         
         <StudentDetailsHeader data={studentSubmissionDetail} />
         <StudentDetailsMiddleware data={studentSubmissionDetail} />
-        <StudentDetailsFooter />
+        {/* <StudentDetailsFooter /> */}
         
       </div>
     </div>

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { getStudentDashboardResults } from "../api/studentApi";
-
+import {useNavigate} from 'react-router-dom';
+    
 import Spinner from '../../../shared/components/Spinner';
 
 export default function StudentHomePageMiddleware() {
 
+    const navigate = useNavigate();
     const [data , setData] = useState(null);
     const [loading , setLoading] = useState(true);
 
@@ -65,7 +67,9 @@ export default function StudentHomePageMiddleware() {
                         <td className="py-4 px-2 text-center">
                             <button 
                                 className="px-3 py-1 rounded bg-[#333] hover:bg-[#4edf7a] hover:text-[#121212] transition-all font-bold"
-                                onClick={() => console.log(`Navigating to exam ID: ${exam.id}`)}
+                                onClick={() => navigate(`/student/submission`)}
+
+                                //yaha pe button click hone pe student ko uske submission page pe le jaane ka code likhna hai, jisme exam.id ko pass karna hoga taki uske submission details fetch ho sake
                             >
                                 &rarr;
                             </button>

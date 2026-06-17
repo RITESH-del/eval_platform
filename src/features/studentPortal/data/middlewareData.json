@@ -3,14 +3,14 @@
     {
       "id": "exam-105",
       "name": "DSA Test 5",
-      "score": 92,
+      "score": "92/100",
       "rank": 5,
       "date": "2026-05-24"
     },
     {
       "id": "exam-104",
       "name": "Graph Contest",
-      "score": 80,
+      "score": "80/100",
       "rank": 14,
       "date": "2026-04-18"
     }
