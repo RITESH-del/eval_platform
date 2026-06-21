@@ -106,6 +106,7 @@ export default function Sidebar({
           variant="light"
           leftSection={<Plus size={18} />}
           fullWidth={!collapsed}
+          onClick={() => navigate("/Faculty/create-quiz")}
         >
           {!collapsed && "Create New Quiz"}
         </Button>

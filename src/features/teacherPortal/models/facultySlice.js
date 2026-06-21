@@ -22,7 +22,7 @@ export const facultySlice = createSlice({
         },
         setSelectedSubmission: (state, action) => {
             state.selectedSubmission = action.payload;
-        }
+        },
     },
 
     extraReducers: (builder) => {
@@ -120,9 +120,9 @@ export const facultySlice = createSlice({
             .addCase(fetchLabSessions.rejected, (state, action)=>{
                 state.loading = false;
                 state.error = action.payload;
-            })  
+            })
     }   
 })
 
-export const {setSelectedExam, setSelectedSubmission} = facultySlice.actions;
+export const {setSelectedExam, setSelectedSubmission, setTitle, setSubject, addQuestion,  removeQuestion, updateQuestion} = facultySlice.actions;
 export default facultySlice.reducer;

@@ -87,3 +87,44 @@ export const fetchLabSessions = createAsyncThunk(
     }
 )   
 
+/* For create Quiz slice */
+
+export const createQuizThunk = createAsyncThunk(
+    "quiz/createQuiz",
+    async (quizData, { rejectWithValue }) => {
+      try {
+        return await facultyAPI.createQuiz(quizData);
+      } catch (error) {
+        return rejectWithValue(error.response?.data || error.message);
+      }
+    }
+  );
+
+
+  export const updateQuizThunk = createAsyncThunk(
+    "quiz/updateQuiz",
+    async ({ quizId, quizData }, { rejectWithValue }) => {
+      try {
+        return await facultyAPI.updateQuiz(quizId, quizData);
+      } catch (error) {
+        return rejectWithValue(error.response?.data || error.message);
+      }
+    }
+  );
+  
+  export const fetchQuizThunk = createAsyncThunk(
+    "quiz/getQuiz",
+    async (quizId, { rejectWithValue }) => {
+      try {
+        return await facultyAPI.getQuiz(quizId);
+      } catch (error) {
+        return rejectWithValue(
+          error.response?.data || error.message
+        );
+      }
+    }
+  );
+  
+  
+
+

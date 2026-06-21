@@ -4,14 +4,22 @@ import AuthPage from "./features/auth/Pages/AuthPage.jsx";
 
 import TeacherHomePage from "./features/teacherPortal/Pages/TeacherHomePage.jsx";
 import LabDetailsPage from "./features/teacherPortal/Pages/LabDetails.jsx";
+import { notifications } from "@mantine/notifications";
+
 function App() {
   return (
     <div className="h-screen w-screen">
-      {/* <Button className="absolute top-1/2 left-1/2">
-      Click Me
-    </Button> */}
-      <AuthPage />    
-      {/* <LabDetailsPage/>  */}
+      <Button
+  onClick={() =>
+    notifications.show({
+      title: "Test",
+      message: "Notification works",
+      color: "green",
+    })
+  }
+>
+  Test Notification
+</Button>
     </div>
   );
 }

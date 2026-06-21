@@ -98,3 +98,39 @@ export const fetchLabSessions = async() => {
     return res;
 }
 
+
+export const createQuiz = async (data) => {
+  try {
+    const response = await apiClient.post(
+      "/faculty/labs",
+      data
+    );
+  
+    return response.data;
+  } catch(err){
+    // console.log(err.response?.data);
+    throw new err;
+    
+  }
+};
+
+export const updateQuiz = async (
+  Id,
+  data
+) => {
+  const response = await apiClient.put(
+    `/faculty/labs/${Id}`,
+    data
+  );
+
+  return response.data;
+};
+
+export const getQuiz = async (Id) => {
+  const response = await apiClient.get(
+    `/faculty/labs/${Id}`
+  );
+
+  return response.data;
+};
+

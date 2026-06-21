@@ -19,8 +19,8 @@ export default function CommonLayout() {
   const quizConfig = useSelector((state) => state.faculty.quizConfig);
 
   useEffect(() => {
-    dispatch(fetchFacultyProfile())
-    dispatch(fetchQuizConfig())
+    dispatch(fetchFacultyProfile());
+    dispatch(fetchQuizConfig());
   }, []);
 
   return (
