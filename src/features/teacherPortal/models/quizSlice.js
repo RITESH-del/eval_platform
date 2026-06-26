@@ -11,13 +11,13 @@ const initialState = {
     id: null,
     title: "",
     subject: "",
-    duration: 60,
-    totalMarks: 100,
+    duration_minutes: 60,
+    total_marks: 100,
     start_time: "",
     end_time: "",
 
-    targetYears: [],
-    targetSections: [],
+    target_graduation_year: '',
+    target_sections: [],
 
     questions: []
   },
@@ -190,9 +190,9 @@ const quizSlice = createSlice({
         createQuizThunk.fulfilled,
         (state, action) => {
           state.saving = false;
-
+          //  console.log("PAYLOAD:", action.payload);
           state.currentQuiz.id =
-            action.payload.quiz.id;
+            action.payload.id;
         }
       )
 

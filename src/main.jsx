@@ -7,35 +7,31 @@ import { GoogleOAuthProvider } from "@react-oauth/google"
 import { Provider } from "react-redux"
 import { store } from './app/store.js'
 import Spinner from './shared/components/Spinner.jsx'
-import ErrorPage from "./shared/components/ErrorPage.jsx"
 import "mantine-datatable/styles.css"; // mantine-datatable stylesheet
 import { Notifications } from "@mantine/notifications";
-
-
 import { authRoutes } from './features/auth/routes'
 import { teacherRoutes } from './features/teacherPortal/routes';
-import StudentDetails from "./features/teacherPortal/Pages/StudentDetails.jsx"
 import { studentRoutes } from './features/studentPortal/routes';
 import "@mantine/notifications/styles.css";
+import ErrorPage from "./shared/components/ErrorPage.jsx"
 
 
 // lazy loading
 const App = lazy(() => import("./App.jsx"));
 
 const router = createBrowserRouter([
-  {
+  { 
     path: '/',
     element: <App />
   },
-  {
-    path: '/error',
-    element: <ErrorPage />
-  },
-  // {errorElement: '',
+   {
+      path: "*",
+      element: <ErrorPage />,
+    },
       ...authRoutes,
       ...teacherRoutes,
       ...studentRoutes
-   //  }
+  
 ]);
 
 createRoot(document.getElementById("root")).render(

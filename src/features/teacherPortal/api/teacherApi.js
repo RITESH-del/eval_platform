@@ -105,12 +105,13 @@ export const createQuiz = async (data) => {
       "/faculty/labs",
       data
     );
-  
+
     return response.data;
-  } catch(err){
-    // console.log(err.response?.data);
-    throw new err;
-    
+  } catch (err) {
+    throw new Error(
+      err.response?.data?.message ||
+      "Failed to create quiz"
+    );
   }
 };
 

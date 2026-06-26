@@ -1,98 +1,66 @@
 import {
   Button,
-  Container,
+  Center,
   Group,
-  Paper,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
-import {
-  ArrowLeft,
-  Compass,
-  Home,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Anchor } from "@mantine/core";
+import { ChevronLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ErrorPage() {
   const navigate = useNavigate();
 
   return (
-    <Container size="sm" h="100vh">
-      <Stack
-        h="100%"
-        justify="center"
-        align="center"
-      >
-        <Paper
-          p={48}
-          radius="xl"
-          shadow="sm"
-          withBorder
+    <Center h="100vh">
+      <Stack align="center" gap="xs" pos="relative">
+        <Title
           style={{
-            width: "100%",
-            position: "relative",
-            overflow: "hidden",
-            textAlign: "center",
+            fontFamily: 'cursive',
+            fontSize: "10rem",
+            fontWeight: 900,
+            lineHeight: 1,
+          }}
+          c="blue"
+        >
+          404
+        </Title>
+
+        <Text
+          size="xl"
+          fw={500}
+          c="dimmed"
+          style={{
+            fontFamily: 'cursive',
           }}
         >
-          {/* Background Number */}
-          <Title
-            style={{
-              position: "absolute",
-              top: "-30px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              fontSize: "12rem",
-              fontWeight: 900,
-              opacity: 0.04,
-              lineHeight: 1,
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
-          >
-            404
-          </Title>
+          Oops, The page u are looking for cannot be found.
+        </Text>
 
-          <Stack align="center" gap="md">
-            <Compass
-              size={72}
-              strokeWidth={1.5}
-            />
+        
 
-            <Title order={1}>
-              Looks like you've wandered off course
-            </Title>
+        <Group mt="lg">
+          <Anchor
+  onClick={() => navigate(-1)}        
+  c="cyan"
+  fw={500}
+  size="sm"
+  underline="never"
+  style={{
+    fontSize: `100%`,
+    display: "flex",
+    alignItems: "center",
 
-            <Text
-              c="dimmed"
-              size="lg"
-              maw={450}
-            >
-              The page you're trying to reach isn't
-              available right now. It may have been
-              moved, removed, or never existed.
-            </Text>
-
-            <Group mt="md">
-              <Button
-                leftSection={<Home size={18} />}
-                onClick={() => navigate("/")}
-              >
-                Go Home
-              </Button>
-
-              <Button
-                variant="default"
-                leftSection={<ArrowLeft size={18} />}
-                onClick={() => navigate(-1)}
-              >
-                Go Back
-              </Button>
-            </Group>
-          </Stack>
-        </Paper>
+    // gap: 2,
+  }}
+>
+  <ChevronLeft size={18} />
+  Go Back
+</Anchor>
+        </Group>
       </Stack>
-    </Container>
+    </Center>
   );
 }

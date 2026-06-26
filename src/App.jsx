@@ -8,19 +8,9 @@ import { notifications } from "@mantine/notifications";
 
 function App() {
   return (
-    <div className="h-screen w-screen">
-      <Button
-  onClick={() =>
-    notifications.show({
-      title: "Test",
-      message: "Notification works",
-      color: "green",
-    })
-  }
->
-  Test Notification
-</Button>
-    </div>
+    <>
+    <AuthPage />
+    </>
   );
 }
 

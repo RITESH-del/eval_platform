@@ -1,43 +1,34 @@
+import { useEffect } from 'react';
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import QuizHeader from "../components/QuizHeader";
 import QuestionList from "../components/QuestionList";
 import Spinner from "../../../shared/components/Spinner";
 import { notifications } from "@mantine/notifications";
-
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  addQuestion,
-  removeQuestion,
-  updateQuestion,
-  addTestCase,
-  updateTestCase,
-  setQuiz,
-  resetQuiz,
-} from "../models/quizSlice";
-
-import {
-  Paper,
-  Stack,
-  Text,
-  ActionIcon,
-  Group,
-  Button,
-  Center,
-} from "@mantine/core";
-
+import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz,} from "../models/quizSlice";
+import { Paper, Stack, Text, ActionIcon, Group, Button, Center, } from "@mantine/core";
 import { Plus } from "lucide-react";
-import { createQuizThunk, fetchQuizThunk } from "../models/facultyThunks";
+import { createQuizThunk, fetchQuizThunk, updateQuizThunk } from "../models/facultyThunks";
 
 export default function CreateQuizPage() {
+  const { quizId } = useParams();
+  const isEditMode = Boolean(quizId);
   const dispatch = useDispatch();
 
-  const {
-    currentQuiz,
-    saving,
-    loading,
-  } = useSelector(
-    (state) => state.quiz
-  );
+  const { currentQuiz, saving, loading, } = useSelector((state) => state.quiz);
+
+
+  useEffect(() => {
+    if (isEditMode) {
+      dispatch(fetchQuizThunk(quizId));
+    }
+
+    return () => {
+      dispatch(resetQuiz());
+    };
+  }, [quizId, dispatch, isEditMode]);
+
+
 
   const handleAddQuestion = () => {
     dispatch(addQuestion());
@@ -51,11 +42,7 @@ export default function CreateQuizPage() {
     );
   };
 
-  const handleUpdateQuestion = (
-    questionId,
-    field,
-    value
-  ) => {
+  const handleUpdateQuestion = (questionId, field, value) => {
     dispatch(
       updateQuestion({
         questionId,
@@ -65,42 +52,18 @@ export default function CreateQuizPage() {
     );
   };
 
-  const handleAddTestCase = (
-    questionId
-  ) => {
-    dispatch(
-      addTestCase({
-        questionId,
-      })
-    );
+  const handleAddTestCase = (questionId) => {
+    dispatch(addTestCase({questionId}))
   };
 
-  const handleUpdateTestCase = (
-    questionId,
-    testCaseId,
-    field,
-    value
-  ) => {
-    dispatch(
-      updateTestCase({
-        questionId,
-        testCaseId,
-        field,
-        value,
-      })
-    );
+  const handleUpdateTestCase = (questionId, testCaseId, field, value) => {
+    dispatch(updateTestCase({questionId, testCaseId, field, value}));
   };
 
-//   const handlePublishQuiz = () => {
-//     console.log(currentQuiz);
-//   dispatch(createQuizThunk(currentQuiz));
-// };
 
 const handlePublishQuiz = async () => {
   try {
-    await dispatch(
-      createQuizThunk(currentQuiz)
-    ).unwrap();
+    await dispatch(isEditMode ? updateQuizThunk({ quizId, data: currentQuiz }) : createQuizThunk(currentQuiz)).unwrap();
 
     notifications.show({
       title: "Success",
@@ -108,11 +71,10 @@ const handlePublishQuiz = async () => {
       color: "green",
     });
   } catch (error) {
+   console.error("PUBLISH ERROR", error);
     notifications.show({
       title: "Error",
-      message:
-        error?.message ||
-        "Failed to publish quiz",
+      message: error?.message || "Failed to publish quiz",
       color: "red",
     });
   }
@@ -214,7 +176,7 @@ if (loading){
     </Button>
 
     <Button
-      // loading={saving}
+      loading={saving}
       onClick={handlePublishQuiz}
     >
       Publish Quiz

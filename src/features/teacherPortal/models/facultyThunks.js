@@ -90,22 +90,29 @@ export const fetchLabSessions = createAsyncThunk(
 /* For create Quiz slice */
 
 export const createQuizThunk = createAsyncThunk(
-    "quiz/createQuiz",
-    async (quizData, { rejectWithValue }) => {
-      try {
-        return await facultyAPI.createQuiz(quizData);
-      } catch (error) {
-        return rejectWithValue(error.response?.data || error.message);
-      }
+  "quiz/createQuiz",
+  async (quizData, { rejectWithValue }) => {
+    try {
+      const response = await facultyAPI.createQuiz(quizData);
+      return response.data;
+    } catch (error) {
+      console.log("Thunk Error:", error);
+
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data ||
+        error.message
+      );
     }
-  );
+  }
+);
 
 
   export const updateQuizThunk = createAsyncThunk(
     "quiz/updateQuiz",
-    async ({ quizId, quizData }, { rejectWithValue }) => {
+    async ({ quizId, data }, { rejectWithValue }) => {
       try {
-        return await facultyAPI.updateQuiz(quizId, quizData);
+        return await facultyAPI.updateQuiz(quizId, data);
       } catch (error) {
         return rejectWithValue(error.response?.data || error.message);
       }

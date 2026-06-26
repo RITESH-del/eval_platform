@@ -114,9 +114,18 @@ export default function PracticalsTable({ practicals }) {
                             >
                               View Submission
                             </Menu.Item>
+
+                            <Menu.Item
+                              onClick={() => {
+                                navigate(`/Faculty/edit-quiz/${practical.id}`);
+                              }}
+                            >
+                              Edit
+                            </Menu.Item>
             
-                            <Menu.Item>
-                              delete 
+                            <Menu.Item
+                            color="red">
+                              Delete 
                             </Menu.Item>
                           </Menu.Dropdown>
                         </Menu>

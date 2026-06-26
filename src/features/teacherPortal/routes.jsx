@@ -5,11 +5,14 @@ import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx';
 import MonitorSession from './Pages/MonitorSession.jsx';
 import CreateQuizPage from "./Pages/CreateQuizPage.jsx"
 import CommonLayout from './layout/CommonLayout.jsx';
+import ErrorPage from "../../shared/components/ErrorPage.jsx"
+
 
 export const teacherRoutes = [
   {
     path: "/Faculty",
     element: <CommonLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -49,6 +52,14 @@ export const teacherRoutes = [
             <ProtectedRoute role="faculty">
                 <CreateQuizPage />
             </ProtectedRoute>
+        )
+      },
+      {  
+        path: "edit-quiz/:quizId",
+        element: (
+          <ProtectedRoute role="faculty">
+            <CreateQuizPage />
+          </ProtectedRoute>
         )
       }
 

@@ -19,6 +19,14 @@ export default function QuizHeader() {
     (state) => state.quiz.currentQuiz
   );
 
+  const formatDateTimeLocal = (date) => {
+  if (!date) return "";
+
+  return new Date(date)
+    .toISOString()
+    .slice(0, 16);
+};
+
   return (
     <Stack mb="xl" gap="lg">
       <TextInput
@@ -71,11 +79,11 @@ export default function QuizHeader() {
               label="Marks"
               placeholder="Marks"
               min={1}
-              value={currentQuiz.totalMarks}
+              value={currentQuiz.total_marks}
               onChange={(value) =>
                 dispatch(
                   updateQuizField({
-                    field: "totalMarks",
+                    field: "total_marks",
                     value,
                   })
                 )
@@ -86,11 +94,11 @@ export default function QuizHeader() {
               label="Duration (mins)"
               placeholder="Duration"
               min={1}
-              value={currentQuiz.duration}
+              value={currentQuiz.duration_minutes}
               onChange={(value) =>
                 dispatch(
                   updateQuizField({
-                    field: "duration",
+                    field: "duration_minutes",
                     value,
                   })
                 )
@@ -103,49 +111,47 @@ export default function QuizHeader() {
               label="Target Sections"
               placeholder="Enter sections (e.g. CSE-V, CSE-3)"
               value={
-                currentQuiz.targetSections
+                Array.isArray(currentQuiz.target_sections)
+                  ? currentQuiz.target_sections
+                  : []
               }
               onChange={(value) =>
                 dispatch(
                   updateQuizField({
                     field:
-                      "targetSections",
+                      "target_sections",
                     value,
                   })
                 )
               }
             />
 
-            <TagsInput
-              label="Target Years"
-              placeholder="Enter years (e.g. 2026, 2027)"
-              value={
-                currentQuiz.targetYears
-              }
-              onChange={(value) =>
-                dispatch(
-                  updateQuizField({
-                    field: "targetYears",
-                    value,
-                  })
-                )
-              }
-            />
+            <NumberInput
+                label="Target Year"
+                min={2020}
+                max={2100}
+                value={currentQuiz.target_graduation_year}
+                onChange={(value) =>
+                  dispatch(
+                    updateQuizField({
+                      field: "target_graduation_year",
+                      value,
+                    })
+                  )
+                }
+              />
           </SimpleGrid>
 
           <SimpleGrid cols={2}>
             <TextInput
               type="datetime-local"
               label="Start Time"
-              value={
-                currentQuiz.start_time || ""
-              }
+              value={formatDateTimeLocal(currentQuiz.start_time) || ""}
               onChange={(e) =>
                 dispatch(
                   updateQuizField({
                     field: "start_time",
-                    value:
-                      e.target.value,
+                    value: e.target.value,
                   })
                 )
               }
@@ -154,15 +160,12 @@ export default function QuizHeader() {
             <TextInput
               type="datetime-local"
               label="End Time"
-              value={
-                currentQuiz.end_time || ""
-              }
+              value={formatDateTimeLocal(currentQuiz.end_time) || ""}
               onChange={(e) =>
                 dispatch(
                   updateQuizField({
                     field: "end_time",
-                    value:
-                      e.target.value,
+                    value: e.target.value,
                   })
                 )
               }
