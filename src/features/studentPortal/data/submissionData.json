@@ -1,0 +1,42 @@
+{
+  "submissions": {
+    "dsa-test-5": {
+      "examName": "DSA Test 5",
+      "studentName": "Shivesh Kumar",
+      "score": 92,
+      "totalMarks": 100,
+      "rank": 5,
+      "date": "2026-05-24",
+      "problems": [
+        {
+          "problemId": 1,
+          "title": "Detect Cycle in an Undirected Graph",
+          "description": "Given an undirected graph with V vertices and E edges, check whether it contains any cycle or not. Your function should return true if a cycle exists, else false.",
+          "constraints": "1 <= V, E <= 10^5",
+          "language": "cpp",
+          "submittedCode": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool dfs(int node, int parent, vector<int> adj[], vector<int> &vis) {\n    vis[node] = 1;\n    for(auto it : adj[node]) {\n        if(!vis[it]) {\n            if(dfs(it, node, adj, vis)) return true;\n        }\n        else if(it != parent) return true;\n    }\n    return false;\n}\n\nbool isCycle(int V, vector<int> adj[]) {\n    vector<int> vis(V, 0);\n    for(int i = 0; i < V; i++) {\n        if(!vis[i]) {\n            if(dfs(i, -1, adj, vis)) return true;\n        }\n    }\n    return false;\n}",
+          "status": "Accepted",
+          "testCasesPassed": 10,
+          "totalTestCases": 10,
+          "marksObtained": 50,
+          "maxMarks": 50,
+          "compilerOutput": ""
+        },
+        {
+          "problemId": 2,
+          "title": "Minimum Spanning Tree (Kruskal's)",
+          "description": "Given a weighted, undirected and connected graph of V vertices and E edges. The task is to find the sum of weights of the edges of the Minimum Spanning Tree.",
+          "constraints": "1 <= V <= 10^3\n1 <= E <= 10^5\n1 <= weight <= 10^4",
+          "language": "cpp",
+          "submittedCode": "#include <bits/stdc++.h>\nusing namespace std;\n\nint spanningTree(int V, vector<vector<int>> adj[]) {\n    // Incorrect edge sorting logic leading to partial test cases\n    return 0;\n}",
+          "status": "Wrong Answer",
+          "testCasesPassed": 4,
+          "totalTestCases": 10,
+          "marksObtained": 42,
+          "maxMarks": 50,
+          "compilerOutput": "Wrong Answer on Test Case 5.\nExpected: 92, Got: 0"
+        }
+      ]
+    }
+  }
+}

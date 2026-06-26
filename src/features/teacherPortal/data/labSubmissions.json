@@ -1,0 +1,32 @@
+[
+  {
+    "session_id": "s1t2u3v4-9999-abcd-1111-222233334444",
+    "university_id": "240642",
+    "section": "1",
+    "name": "Shivesh Kumar",
+    "language": "C++",
+    "autograding_score": 90,
+    "manual_score": 95,
+    "status": "submitted"
+  },
+  {
+    "session_id": "w5x6y7z8-8888-efgh-5555-666677778888",
+    "university_id": "240645",
+    "section": "2",
+    "name": "Rohit Sharma",
+    "language": "C++",
+    "autograding_score": 85,
+    "manual_score": 88,
+    "status": "submitted"
+  },
+  {
+    "session_id": "a9b0c1d2-7777-ijkl-9999-000011112222",
+    "university_id": "240650",
+    "section": "3",
+    "name": "Aman Verma",
+    "language": null,
+    "autograding_score": null,
+    "manual_score": null,
+    "status": "absent"
+  }
+]

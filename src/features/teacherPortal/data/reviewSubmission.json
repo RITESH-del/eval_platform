@@ -1,0 +1,42 @@
+{
+  "session_id": "s1t2u3v4-9999-abcd-1111-222233334444",
+  "student_details": {
+    "university_id": "240642",
+    "name": "Shivesh Kumar"
+  },
+  "exam_details": {
+    "title": "DATA STRUCTURES LAB-1"
+  },
+  "responses": [
+    {
+      "question_id": "q1a2b3c4-1111-aaaa-2222-333344445555",
+      "title": "Queue Implementation",
+      "description": "Write a clean C++ program to implement a custom queue structure using standard int arrays only inside the main block.",
+      "submission_history": [
+        {
+          "id": "sub-v1-1111-2222-3333",
+          "created_at": "2026-05-28T14:15:00Z"
+        },
+        {
+          "id": "sub-v2-4444-5555-6666",
+          "created_at": "2026-05-28T14:22:00Z"
+        }
+      ],
+      "autograding_score": 90,
+      "manual_score": 95
+    },
+    {
+      "question_id": "q9z8y7x6-2222-bbbb-3333-444455556666",
+      "title": "Stack Balancing Parentheses",
+      "description": "Write a C++ program to check if a given string of parentheses is balanced using a standard array-based stack.",
+      "submission_history": [
+        {
+          "id": "sub-v1-7777-8888-9999",
+          "created_at": "2026-05-28T15:05:00Z"
+        }
+      ],
+      "autograding_score": 85,
+      "manual_score": null
+    }
+  ]
+}
