@@ -6,33 +6,32 @@ import {
   Paper,
   Text,
   SimpleGrid,
+  Button,
+  Group
 } from "@mantine/core";
-
 import { useDispatch, useSelector } from "react-redux";
-
+import { Plus } from 'lucide-react';
 import { updateQuizField } from "../models/quizSlice";
+import { useNavigate } from "react-router";
 
 export default function QuizHeader() {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const currentQuiz = useSelector(
     (state) => state.quiz.currentQuiz
   );
 
-  const formatDateTimeLocal = (date) => {
-  if (!date) return "";
-
-  return new Date(date)
-    .toISOString()
-    .slice(0, 16);
-};
-
   return (
     <Stack mb="xl" gap="lg">
-      <TextInput
+
+      <Group justify="space-between" wrap="nowrap">
+         <TextInput
         variant="unstyled"
         size="xl"
         fw={700}
+        w="80%"
         placeholder="Enter Quiz Title"
         value={currentQuiz.title}
         onChange={(e) =>
@@ -45,6 +44,17 @@ export default function QuizHeader() {
         }
       />
 
+      <Button 
+      onClick={() => {
+        // navigate(`/Faculty/questions`);
+      }}
+      leftSection={<Plus size={18}/>}
+      >
+        Add Questions
+      </Button>
+      </Group>
+     
+
       <Paper
         withBorder
         radius="md"
@@ -56,20 +66,19 @@ export default function QuizHeader() {
           </Text>
 
           <SimpleGrid cols={3}>
-            <TagsInput
-              label="Subject"
-              placeholder="Subject"
-              maxTags={1}
+            <TextInput
+              label="Password"
+              placeholder="Start Password"
               value={
-                currentQuiz.subject
-                  ? [currentQuiz.subject]
+                currentQuiz.start_password
+                  ? [currentQuiz.start_password]
                   : []
               }
-              onChange={(value) =>
+              onChange={(e) =>
                 dispatch(
                   updateQuizField({
-                    field: "subject",
-                    value: value[0] || "",
+                    field: "start_password",
+                    value: e.target.value || "",
                   })
                 )
               }
@@ -106,7 +115,21 @@ export default function QuizHeader() {
             />
           </SimpleGrid>
 
-          <SimpleGrid cols={2}>
+          <SimpleGrid cols={3}>
+            <TextInput
+              type="datetime-local"
+              label="Start Time"
+              value={currentQuiz.start_time ?? ""}
+              onChange={(e) =>
+                dispatch(
+                  updateQuizField({
+                    field: "start_time",
+                    value: e.target.value,
+                  })
+                )
+              }
+            />
+
             <TagsInput
               label="Target Sections"
               placeholder="Enter sections (e.g. CSE-V, CSE-3)"
@@ -140,36 +163,6 @@ export default function QuizHeader() {
                   )
                 }
               />
-          </SimpleGrid>
-
-          <SimpleGrid cols={2}>
-            <TextInput
-              type="datetime-local"
-              label="Start Time"
-              value={formatDateTimeLocal(currentQuiz.start_time) || ""}
-              onChange={(e) =>
-                dispatch(
-                  updateQuizField({
-                    field: "start_time",
-                    value: e.target.value,
-                  })
-                )
-              }
-            />
-
-            <TextInput
-              type="datetime-local"
-              label="End Time"
-              value={formatDateTimeLocal(currentQuiz.end_time) || ""}
-              onChange={(e) =>
-                dispatch(
-                  updateQuizField({
-                    field: "end_time",
-                    value: e.target.value,
-                  })
-                )
-              }
-            />
           </SimpleGrid>
         </Stack>
       </Paper>

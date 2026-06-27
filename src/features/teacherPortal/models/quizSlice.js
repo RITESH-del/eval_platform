@@ -3,15 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createQuizThunk,
   fetchQuizThunk,
-  updateQuizThunk
+  updateQuizThunk,
+  deleteQuizThunk
 } from "./facultyThunks";
+
+
+/* Helper functions */
+function calculateEndTime(startTime, duration) {
+  if (!startTime || !duration) return "";
+
+  const date = new Date(startTime);
+  date.setMinutes(date.getMinutes() + Number(duration));
+
+  return date.toISOString().slice(0, 16);
+}
+
+
 
 const initialState = {
   currentQuiz: {
     id: null,
     title: "",
-    subject: "",
+    // subject: "",
     duration_minutes: 60,
+    start_password: "",
     total_marks: 100,
     start_time: "",
     end_time: "",
@@ -45,12 +60,17 @@ const quizSlice = createSlice({
       const { field, value } = action.payload;
 
       state.currentQuiz[field] = value;
+
+       if (field === "start_time" || field === "duration_minutes") {
+        state.currentQuiz.end_time = calculateEndTime(state.currentQuiz.start_time, state.currentQuiz.duration_minutes);
+       }
     },
 
     addQuestion(state) {
       state.currentQuiz.questions.push({
         id: crypto.randomUUID(),
-        // type: "",
+        title: "",
+        difficulty: "",
         statement: "",
         marks: 5,
         diagram: null,
@@ -191,8 +211,7 @@ const quizSlice = createSlice({
         (state, action) => {
           state.saving = false;
           //  console.log("PAYLOAD:", action.payload);
-          state.currentQuiz.id =
-            action.payload.id;
+          state.currentQuiz.id = action.payload.id;
         }
       )
 
@@ -200,8 +219,7 @@ const quizSlice = createSlice({
         createQuizThunk.rejected,
         (state, action) => {
           state.saving = false;
-          state.error =
-            action.payload;
+          state.error = action.payload;
         }
       )
 
@@ -229,7 +247,7 @@ const quizSlice = createSlice({
           state.error =
             action.payload;
         }
-      );
+      )
   }
 });
 

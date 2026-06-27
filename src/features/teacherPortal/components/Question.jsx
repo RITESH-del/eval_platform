@@ -64,50 +64,49 @@ export default function Question({
             </Paper>
 
             <Stack gap={0}>
-              <Text
-                size="xs"
-                fw={700}
-                c="dimmed"
-                tt="uppercase"
-              >
-                New Question
-              </Text>
-{/* 
-              <Select
-                variant="unstyled"
-                size="xs"
-                w={120}
-                placeholder="Question Type"
-                data={[
-                  {
-                    value: "coding",
-                    label: "Coding",
-                  },
-                  {
-                    value: "mcq",
-                    label: "MCQ",
-                  },
-                  {
-                    value: "subjective",
-                    label: "Subjective",
-                  },
-                ]}
-                value={question.type}
-                onChange={(value) =>
-                  onUpdateQuestion(
-                    question.id,
-                    "type",
-                    value
-                  )
-                }
-              /> */}
+              <TextInput 
+              variant="unstyled"
+              size="xl"
+              fw={500}
+              w="600px"
+              placeholder="Question Title"
+              value={question.title}
+              onChange={(e) =>
+                onUpdateQuestion(
+                  question.id,
+                  "title",
+                  e.target.value
+                )
+              }
+              
+              />
             </Stack>
           </Group>
+
+          <Group gap="md">
+
+
+          <Select
+          w={110}
+          placeholder="difficulty"
+          data={[
+            { value: "easy", label: "Easy" },
+            { value: "medium", label: "Medium" },
+            { value: "hard", label: "Hard" },
+          ]}
+          value={question.difficulty}
+          onChange={(value) =>
+            onUpdateQuestion(
+              question.id,
+              "difficulty",
+              value
+            )
+          }
+          />
 
           <Group>
             <Paper
               px="md"
-              py={6}
               radius="md"
               shadow="xs"
               bg="blue.0"
@@ -118,13 +117,13 @@ export default function Question({
                   fw={700}
                   c="dimmed"
                 >
-                  POINTS
+                  points
                 </Text>
 
                 <NumberInput
                   variant="unstyled"
                   hideControls
-                  w={25}
+                  w={15}
                   value={question.marks}
                   onChange={(value) =>
                     onUpdateQuestion(
@@ -149,6 +148,8 @@ export default function Question({
               <Trash2 size={16} />
             </ActionIcon>
           </Group>
+        </Group>
+        
         </Group>
       </Card.Section>
 

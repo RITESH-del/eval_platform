@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchFacultyProfile, fetchPastPracticals, fetchLabDetails, fetchLabSubmissions, fetchStudentSubmissionDetail, fetchQuizConfig, fetchLabSessions } from "./facultyThunks";
+import { fetchFacultyProfile, fetchPastPracticals, fetchLabDetails, fetchLabSubmissions, fetchStudentSubmissionDetail, fetchQuizConfig, fetchLabSessions, deleteQuizThunk } from "./facultyThunks";
 
 export const facultySlice = createSlice({
     name: "faculty",
@@ -120,6 +120,22 @@ export const facultySlice = createSlice({
             .addCase(fetchLabSessions.rejected, (state, action)=>{
                 state.loading = false;
                 state.error = action.payload;
+            })
+
+                  // DELETE
+            .addCase(deleteQuizThunk.pending, (state) => {
+              state.error = null;
+            })
+
+            .addCase(deleteQuizThunk.fulfilled, (state, action) => {
+
+              state.pastPracticals = state.pastPracticals.filter(
+                    practical => practical.id !== action.payload
+                );
+            })
+
+            .addCase(deleteQuizThunk.rejected, (state, action) => {
+              state.error = action.payload;
             })
     }   
 })

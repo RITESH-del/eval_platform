@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedExam } from "../models/facultySlice";
 import { useNavigate } from "react-router-dom";
 import { EllipsisVertical } from 'lucide-react';
+import { deleteQuizThunk } from "../models/facultyThunks.js";
 
 
 export default function PracticalsTable({ practicals }) {
@@ -124,7 +125,8 @@ export default function PracticalsTable({ practicals }) {
                             </Menu.Item>
             
                             <Menu.Item
-                            color="red">
+                            color="red"
+                            onClick={() => dispatch(deleteQuizThunk(practical.id))}>
                               Delete 
                             </Menu.Item>
                           </Menu.Dropdown>

@@ -135,3 +135,8 @@ export const getQuiz = async (Id) => {
   return response.data;
 };
 
+export const deleteQuiz = async(quizId) => {
+    const res = await apiClient.delete(`/faculty/labs/${quizId}`);
+    return res;
+}
+

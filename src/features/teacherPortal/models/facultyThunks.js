@@ -93,8 +93,8 @@ export const createQuizThunk = createAsyncThunk(
   "quiz/createQuiz",
   async (quizData, { rejectWithValue }) => {
     try {
-      const response = await facultyAPI.createQuiz(quizData);
-      return response.data;
+      return await facultyAPI.createQuiz(quizData);
+      
     } catch (error) {
       console.log("Thunk Error:", error);
 
@@ -132,6 +132,18 @@ export const createQuizThunk = createAsyncThunk(
     }
   );
   
+
+  export const deleteQuizThunk = createAsyncThunk(
+    "quiz/deleteQuiz",
+    async(quizId, {rejectWithValue})=>{
+        try {
+            await facultyAPI.deleteQuiz(quizId);
+            return quizId;
+        } catch (error) {
+            return rejectWithValue(error.message || 'Failed to delete quiz');
+        }
+    }
+  )
   
 
 
