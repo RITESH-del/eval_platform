@@ -18,34 +18,47 @@ const initialState = {
   error: null,
 };
 
-const extractProfile = (payload) => {
-  if (!payload || typeof payload !== 'object') {
-    return null;
-  }
+// ---------------------------------------------------------------------------
+// Payload extractors — each matches the exact shape the backend returns
+// ---------------------------------------------------------------------------
 
-  return payload.profile || payload.data || payload.student || payload;
-};
+/**
+ * Backend always returns the profile as a flat object directly.
+ * { id, university_id, name, email, section, graduation_year, role }
+ */
+const extractProfile = (payload) => payload ?? null;
 
+/**
+ * Backend always returns { exams: [...], pagination: { ... } }.
+ * Keeping a single Array.isArray fallback for safety during API transitions.
+ */
 const extractExams = (payload) => {
   if (!payload || typeof payload !== 'object') {
+    console.warn('[extractExams] Unexpected payload shape:', payload);
     return [];
   }
-
   if (Array.isArray(payload.exams)) return payload.exams;
-  if (Array.isArray(payload.results)) return payload.results;
-  if (Array.isArray(payload.data)) return payload.data;
+  // Fallback: if backend ever returns a bare array
   if (Array.isArray(payload)) return payload;
-
+  console.warn('[extractExams] Could not find exams array in payload:', payload);
   return [];
 };
 
+/**
+ * Backend always returns a pagination object.
+ * Warns loudly instead of silently falling back so shape regressions are visible.
+ */
 const extractPagination = (payload) => {
-  if (!payload || typeof payload !== 'object') {
+  if (!payload?.pagination) {
+    console.warn('[extractPagination] Missing pagination in response — using defaults. Payload:', payload);
     return initialPagination;
   }
-
-  return payload.pagination || payload.meta || initialPagination;
+  return payload.pagination;
 };
+
+// ---------------------------------------------------------------------------
+// Slice
+// ---------------------------------------------------------------------------
 
 const studentSlice = createSlice({
   name: 'student',
@@ -54,9 +67,13 @@ const studentSlice = createSlice({
     clearSelectedExam(state) {
       state.selectedExam = null;
     },
+    clearError(state) {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // ── fetchStudentProfile ──────────────────────────────────────────────
       .addCase(fetchStudentProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -69,6 +86,8 @@ const studentSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      // ── fetchStudentExams ────────────────────────────────────────────────
       .addCase(fetchStudentExams.pending, (state) => {
         state.loadingExams = true;
         state.error = null;
@@ -82,13 +101,17 @@ const studentSlice = createSlice({
         state.loadingExams = false;
         state.error = action.payload;
       })
+
+      // ── fetchStudentExamDetail ───────────────────────────────────────────
       .addCase(fetchStudentExamDetail.pending, (state) => {
         state.loadingExamDetail = true;
         state.error = null;
       })
       .addCase(fetchStudentExamDetail.fulfilled, (state, action) => {
         state.loadingExamDetail = false;
-        state.selectedExam = action.payload;
+        // Backend returns a single structured object — store it directly.
+        // Access in components as: selectedExam.exam_details.title, etc.
+        state.selectedExam = action.payload ?? null;
       })
       .addCase(fetchStudentExamDetail.rejected, (state, action) => {
         state.loadingExamDetail = false;
@@ -97,5 +120,5 @@ const studentSlice = createSlice({
   },
 });
 
-export const { clearSelectedExam } = studentSlice.actions;
+export const { clearSelectedExam, clearError } = studentSlice.actions;
 export default studentSlice.reducer;
