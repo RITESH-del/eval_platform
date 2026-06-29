@@ -1,32 +1,18 @@
-import headerMock from '../data/headerData.json';
-import middlewareMock from '../data/middlewareData.json';
-import submissionMock from '../data/submissionData.json'; // Import your new mock file
+import { apiClient } from '../../../shared/api/apiClient.js';
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-export async function getStudentHeaderContext() 
-{
-    await delay(300); 
-    return headerMock;
+export async function getStudentHeaderContext() {
+  const response = await apiClient.get('/student/profile');
+  return response.data;
 }
 
-export async function getStudentDashboardResults() 
-{
-    await delay(500); 
-    return middlewareMock;
+export async function getStudentDashboardResults(page = 1) {
+  const response = await apiClient.get('/student/exams', {
+    params: { page },
+  });
+  return response.data;
 }
 
-// Fetch practical exam results by examId
-export async function getStudentSubmissionDetails(examId) 
-{
-    await delay(500); // 500ms simulated latency
-    
-    // Grab the specific exam from the nested "submissions" map
-    const submission = submissionMock.submissions[examId];
-    
-    if (!submission) {
-        return null;
-    }
-    
-    return submission;
+export async function getStudentSubmissionDetails(examId) {
+  const response = await apiClient.get(`/student/exams/${examId}`);
+  return response.data;
 }
