@@ -14,6 +14,7 @@ import { teacherRoutes } from './features/teacherPortal/routes';
 import { studentRoutes } from './features/studentPortal/routes';
 import "@mantine/notifications/styles.css";
 import ErrorPage from "./shared/components/ErrorPage.jsx"
+import "mantine-datatable/styles.css"; // mantine-datatable stylesheet
 
 
 // lazy loading
