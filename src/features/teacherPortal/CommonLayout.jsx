@@ -1,12 +1,12 @@
 
 import { useState, useEffect } from "react";
 import { AppShell } from "@mantine/core";
-import FacultySidebar from "../components/Sidebar";
-import FacultyHeader from "../components/Header";
+import FacultySidebar from "./components/Sidebar";
+import FacultyHeader from "./components/Header";
 import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchFacultyProfile, fetchQuizConfig } from '../models/facultyThunks';
+import { fetchFacultyProfile, fetchQuizConfig } from './thunks/facultyThunks.js';
 
 export default function CommonLayout() {
   const [collapsed, setCollapsed] = useState(false);

@@ -11,8 +11,18 @@ import {
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Plus } from 'lucide-react';
-import { updateQuizField } from "../models/quizSlice";
+import { updateQuizField } from "../reducers/quizSlice.js";
 import { useNavigate } from "react-router";
+
+
+const formatDateTime = (value) => {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}T${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+};
+
 
 export default function QuizHeader() {
   const dispatch = useDispatch();
@@ -119,7 +129,7 @@ export default function QuizHeader() {
             <TextInput
               type="datetime-local"
               label="Start Time"
-              value={currentQuiz.start_time ?? ""}
+              value={formatDateTime(currentQuiz.start_time)}
               onChange={(e) =>
                 dispatch(
                   updateQuizField({

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchFacultyProfile, fetchPastPracticals, fetchLabDetails, fetchLabSubmissions, fetchStudentSubmissionDetail, fetchQuizConfig, fetchLabSessions, deleteQuizThunk } from "./facultyThunks";
+import { fetchFacultyProfile, fetchPastPracticals, fetchLabDetails, fetchLabSubmissions, fetchStudentSubmissionDetail, fetchQuizConfig, fetchLabSessions, deleteQuizThunk, updateManualScore
+    , publishResultThunk
+ } from "../thunks/facultyThunks";
 
 export const facultySlice = createSlice({
     name: "faculty",
@@ -23,6 +25,20 @@ export const facultySlice = createSlice({
         setSelectedSubmission: (state, action) => {
             state.selectedSubmission = action.payload;
         },
+        updateManualScoreLocal: (state, action) => {
+            const { submissionId, manual_score } = action.payload;
+
+            for (const response of state.studentSubmissionDetail.responses) {
+                const submission = response.submission_history.find(
+                (s) => s.id === submissionId
+                );
+
+                if (submission) {
+                submission.manual_score = manual_score;
+                break;
+                }
+            }
+        }
     },
 
     extraReducers: (builder) => {
@@ -137,8 +153,36 @@ export const facultySlice = createSlice({
             .addCase(deleteQuizThunk.rejected, (state, action) => {
               state.error = action.payload;
             })
+
+            .addCase(updateManualScore.pending, (state) => {
+              state.error = null;
+            })
+
+            .addCase(updateManualScore.fulfilled, (state, action) => {
+              state.loading = false;
+              state.error = null;
+            })
+
+            .addCase(updateManualScore.rejected, (state, action) => {
+              state.loading = false;
+              state.error = action.payload;
+            })
+
+
+
+            .addCase(publishResultThunk.fulfilled, (state, action) => {
+                const updatedExam = action.payload;
+
+                const exam = state.pastPracticals.find(
+                    p => p.id === updatedExam.id
+                );
+
+                if (exam) {
+                    exam.result_published = updatedExam.result_published;
+                }
+            })
     }   
 })
 
-export const {setSelectedExam, setSelectedSubmission, setTitle, setSubject, addQuestion,  removeQuestion, updateQuestion} = facultySlice.actions;
+export const {setSelectedExam, setSelectedSubmission, updateManualScoreLocal} = facultySlice.actions;
 export default facultySlice.reducer;

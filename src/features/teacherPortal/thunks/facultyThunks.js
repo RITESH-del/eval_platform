@@ -146,4 +146,25 @@ export const createQuizThunk = createAsyncThunk(
   )
   
 
+export const updateManualScore = createAsyncThunk(
+  "faculty/updateManualScore",
+  async({submissionId, manualScore}, {rejectWithValue}) => {
+    try {
+      const response = await facultyAPI.updateManualScore(submissionId, manualScore);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+)
 
+export const publishResultThunk = createAsyncThunk(
+  "faculty/publishResult",
+  async(examId, {rejectWithValue}) => {
+    try {
+      return await facultyAPI.publishResult(examId);
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+)

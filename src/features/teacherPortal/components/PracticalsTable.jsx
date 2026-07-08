@@ -3,15 +3,16 @@ import { Badge, Button, Paper, Text, Menu, ActionIcon } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import TableFooter from "../../../shared/components/CustomTableFooter.jsx";
 import { useDispatch } from "react-redux";
-import { setSelectedExam } from "../models/facultySlice";
+import { setSelectedExam } from "../reducers/facultySlice.js";
 import { useNavigate } from "react-router-dom";
 import { EllipsisVertical } from 'lucide-react';
-import { deleteQuizThunk } from "../models/facultyThunks.js";
+import { deleteQuizThunk, publishResultThunk } from "../thunks/facultyThunks.js";
 
 
 export default function PracticalsTable({ practicals }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
 
   const PAGE_SIZE = 10;
 
@@ -26,6 +27,12 @@ export default function PracticalsTable({ practicals }) {
       dispatch(setSelectedExam(practical));
       navigate(`/Faculty/LabDetails/${practical.id}`);
     }
+
+    const publishResult = (examId)=>{
+      dispatch(publishResultThunk(examId));
+    }
+
+    // console.log(practicals);
 
   const columns = [
           {
@@ -114,6 +121,13 @@ export default function PracticalsTable({ practicals }) {
                             }}
                             >
                               View Submission
+                            </Menu.Item>
+
+                            <Menu.Item
+                              color={practical.result_published ? "gray" : "black"}
+                              onClick={() => publishResult(practical.id)}
+                            >
+                              {practical.result_published ? "published" : "Publish Result"}
                             </Menu.Item>
 
                             <Menu.Item

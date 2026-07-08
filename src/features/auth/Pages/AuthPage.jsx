@@ -30,7 +30,7 @@ function RightPane() {
   return (
     <div className="flex flex-col flex-1 justify-center items-center bg-white">
       <Card shadow="lg" padding={30} withBorder className="min-w-120 gap-5">
-        <SegmentedControl
+        {/* <SegmentedControl
           size="md"
           value={tab}
           onChange={setTab}
@@ -38,9 +38,10 @@ function RightPane() {
             { label: "Login", value: "login" },
             { label: "Sign Up", value: "signup" },
           ]}
-        />
+        /> */}
 
-        {tab === "login" ? <LoginForm /> : <SignUpForm />}
+        {/* {tab === "login" ? <LoginForm /> : <SignUpForm />} */}
+        <LoginForm />
       </Card>
     </div>
   );

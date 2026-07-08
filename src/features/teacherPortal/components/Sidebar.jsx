@@ -36,12 +36,7 @@ const sidebarConfig = [
     leftSection: <ListTodo size={18} />,
     href: "/Faculty/Lab-Sessions"
   },
-  "divider", // i didn't have a better idea
-  {
-    label: "Settings",
-    leftSection: <Settings size={18} />,
-    href: "/TeacherHomePage/Settings"
-  },
+  "divider", 
   {
     label: "Support",
     leftSection: <CircleHelp size={18} />,

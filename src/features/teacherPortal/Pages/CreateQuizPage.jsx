@@ -5,10 +5,10 @@ import QuizHeader from "../components/QuizHeader";
 import QuestionList from "../components/QuestionList";
 import Spinner from "../../../shared/components/Spinner";
 import { notifications } from "@mantine/notifications";
-import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz,} from "../models/quizSlice";
+import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz,} from "../reducers/quizSlice.js";
 import { Paper, Stack, Text, ActionIcon, Group, Button, Center, } from "@mantine/core";
 import { Plus } from "lucide-react";
-import { createQuizThunk, fetchQuizThunk, updateQuizThunk } from "../models/facultyThunks";
+import { createQuizThunk, fetchQuizThunk, updateQuizThunk } from "../thunks/facultyThunks.js";
 
 export default function CreateQuizPage() {
   const { quizId } = useParams();

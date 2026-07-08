@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { useState, useEffect } from "react";
-import { fetchLabSessions } from '../models/facultyThunks.js';
+import { fetchLabSessions } from '../thunks/facultyThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {

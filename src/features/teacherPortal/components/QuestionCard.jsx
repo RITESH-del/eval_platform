@@ -6,7 +6,7 @@ export default function QuestionCard({ title, question }) {
     <Paper p="lg" radius="lg" withBorder>
       <Stack gap="sm">
         <Group>
-          <CircleHelp size={20} />
+          <CircleHelp size={20} /> 
           <Title order={3}>{title}</Title>
         </Group>
 

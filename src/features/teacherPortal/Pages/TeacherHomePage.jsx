@@ -3,7 +3,7 @@ import PracticalsTable from "../components/PracticalsTable";
 import { useSelector, useDispatch } from 'react-redux';
 import { Group, TextInput, Select } from "@mantine/core";
 import { Search, Calendar } from "lucide-react";
-import { fetchPastPracticals } from '../models/facultyThunks';
+import { fetchPastPracticals } from '../thunks/facultyThunks.js';
 import Spinner from '../../../shared/components/Spinner.jsx';
 
 export default function TeacherHomePage() {
@@ -15,6 +15,7 @@ export default function TeacherHomePage() {
   const practicals = useSelector((state) => state.faculty.pastPracticals);
   const loading = useSelector((state) => state.faculty.loading);
  
+  // console.log(practicals);
 
   useEffect(()=>{
     dispatch(fetchPastPracticals())

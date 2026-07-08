@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionIcon,
   Group,
@@ -8,20 +7,20 @@ import {
   Tooltip,
 } from "@mantine/core";
 
+import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function CodeSubmissionCard({
   submissionHistory = [],
+  selectedIndex,
+  onSubmissionChange,
 }) {
-  const [selectedIndex, setSelectedIndex] = useState("0");
   const [copied, setCopied] = useState(false);
 
   const selectedSubmission =
-    submissionHistory[Number(selectedIndex)];
+    submissionHistory[selectedIndex];
 
   const code = selectedSubmission?.code ?? "";
 
@@ -35,12 +34,12 @@ export default function CodeSubmissionCard({
         setCopied(false);
       }, 2000);
     } catch (error) {
-      console.error("Failed to copy:", error);
+      console.error(error);
     }
   };
 
   const dropdownData = submissionHistory.map(
-    (submission, index) => ({
+    (_, index) => ({
       value: String(index),
       label: `Submission ${index + 1}`,
     })
@@ -50,11 +49,8 @@ export default function CodeSubmissionCard({
     <Paper
       radius="lg"
       withBorder
-      style={{
-        overflow: "hidden",
-      }}
+      style={{ overflow: "hidden" }}
     >
-      {/* Header */}
       <Group
         justify="space-between"
         px="md"
@@ -64,50 +60,20 @@ export default function CodeSubmissionCard({
           borderBottom: "1px solid #2d2d2d",
         }}
       >
-        <Group gap="md">
-          {/* Mac Window Buttons
-          <Group gap={8}>
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                background: "#ff5f56",
-              }}
-            />
-
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                background: "#ffbd2e",
-              }}
-            />
-
-            <div
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: "50%",
-                background: "#27c93f",
-              }}
-            />
-          </Group> */}
-
-          <Text fw={600} c="white">
-            {selectedSubmission?.language}
-          </Text>
-        </Group>
+        <Text fw={600} c="white">
+          {selectedSubmission?.language}
+        </Text>
 
         <Group>
           {submissionHistory.length > 0 && (
             <Select
               size="xs"
-              w={130}
-              value={selectedIndex}
+              w={140}
+              value={String(selectedIndex)}
               onChange={(value) =>
-                setSelectedIndex(value || "0")
+                onSubmissionChange(
+                  Number(value ?? 0)
+                )
               }
               data={dropdownData}
               allowDeselect={false}
@@ -132,7 +98,6 @@ export default function CodeSubmissionCard({
         </Group>
       </Group>
 
-      {/* Code Area */}
       {code ? (
         <SyntaxHighlighter
           language="cpp"
@@ -141,18 +106,10 @@ export default function CodeSubmissionCard({
           wrapLongLines
           customStyle={{
             margin: 0,
-            padding: "20px",
-            fontSize: "14px",
-            maxHeight: "600px",
+            padding: 20,
+            fontSize: 14,
+            maxHeight: 600,
             overflow: "auto",
-            borderRadius: 0,
-          }}
-          lineNumberStyle={{
-            color: "#6e7681",
-            minWidth: "3em",
-            paddingRight: "1em",
-            textAlign: "right",
-            userSelect: "none",
           }}
         >
           {code}
@@ -162,7 +119,7 @@ export default function CodeSubmissionCard({
           style={{
             background: "#1e1e1e",
             color: "#8b949e",
-            padding: "40px",
+            padding: 40,
             textAlign: "center",
           }}
         >

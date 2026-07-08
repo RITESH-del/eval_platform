@@ -5,7 +5,7 @@ import {
   fetchQuizThunk,
   updateQuizThunk,
   deleteQuizThunk
-} from "./facultyThunks";
+} from "../thunks/facultyThunks";
 
 
 /* Helper functions */
@@ -18,6 +18,11 @@ function calculateEndTime(startTime, duration) {
   return date.toISOString().slice(0, 16);
 }
 
+function calculateTotalMarks(questions) {
+  return questions.reduce((sum, question) => {
+    return sum + Number(question.marks || 0);
+  }, 0);
+}
 
 
 const initialState = {
@@ -27,7 +32,7 @@ const initialState = {
     // subject: "",
     duration_minutes: 60,
     start_password: "",
-    total_marks: 100,
+    total_marks: 0,
     start_time: "",
     end_time: "",
 
@@ -76,6 +81,10 @@ const quizSlice = createSlice({
         diagram: null,
         testCases: []
       });
+
+      state.currentQuiz.total_marks = calculateTotalMarks(
+        state.currentQuiz.questions
+      );
     },
 
     removeQuestion(state, action) {
@@ -84,6 +93,10 @@ const quizSlice = createSlice({
           question =>
             question.id !== action.payload
         );
+
+      state.currentQuiz.total_marks = calculateTotalMarks(
+        state.currentQuiz.questions
+      );
     },
 
     updateQuestion(state, action) {
@@ -101,6 +114,10 @@ const quizSlice = createSlice({
       if (question) {
         question[field] = value;
       }
+
+      state.currentQuiz.total_marks = calculateTotalMarks(
+        state.currentQuiz.questions
+      );
     },
 
     addTestCase(state, action) {
@@ -184,8 +201,10 @@ const quizSlice = createSlice({
           state.loading = false;
           state.currentQuiz =
             action.payload;
-        }
-      )
+
+          state.currentQuiz.total_marks =
+            calculateTotalMarks(state.currentQuiz.questions);
+        })
 
       .addCase(
         fetchQuizThunk.rejected,

@@ -1,47 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { fetchStudentSubmissionDetail } from '../models/facultyThunks.js';
-// import Spinner from '../../../shared/components/Spinner.jsx';
-
-// import StudentDetailsHeader from '../components/StudentDetailsHeader.jsx';
-// import StudentDetailsMiddleware from '../components/StudentDetailsMiddleware.jsx';
-// import StudentDetailsFooter from '../components/StudentDetailsFooter.jsx';
-// import { useParams } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-
-
-// const StudentDetails = () => {
-//   const { examId, sessionId } = useParams();
-//   const dispatch = useDispatch();
-
-//   const {studentSubmissionDetail, loading} = useSelector((state) => state.faculty);
-
-
-//   useEffect(() => {
-//     dispatch(fetchStudentSubmissionDetail({examId, sessionId}));
-//   }, [examId, sessionId]);
-
-//   if (loading) {
-//     return (
-//         <Spinner />
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen w-full bg-[#f8fafc] py-8 px-6 box-border">
-//       <div className="w-full flex flex-col gap-6">
-        
-//         <StudentDetailsHeader data={studentSubmissionDetail} />
-//         <StudentDetailsMiddleware data={studentSubmissionDetail} />
-//         <StudentDetailsFooter />
-        
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StudentDetails;
-
-
 import {
   Button,
   Container,
@@ -50,56 +6,67 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "lucide-react";
-import Spinner from '../../../shared/components/Spinner.jsx';
+import Spinner from "../../../shared/components/Spinner.jsx";
 import QuestionCard from "../components/QuestionCard.jsx";
 import CodeSubmissionCard from "../components/CodeBox.jsx";
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchStudentSubmissionDetail } from '../models/facultyThunks.js';
-
-
+import EvaluationCard from "../components/EvaluationCard.jsx";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStudentSubmissionDetail } from "../thunks/facultyThunks.js";
 
 export default function ReviewSubmissionPage() {
-
-  const { examId, sessionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {studentSubmissionDetail: data, loading} = useSelector((state) => state.faculty);
+  const { examId, sessionId } = useParams();
 
+  const {
+    studentSubmissionDetail: data,
+    loading,
+  } = useSelector((state) => state.faculty);
+
+  const [selectedQuestion, setSelectedQuestion] = useState(0);
+  const [selectedSubmissionIndex, setSelectedSubmissionIndex] =
+    useState(0);
 
   useEffect(() => {
-    dispatch(fetchStudentSubmissionDetail({examId, sessionId}));
-  }, [examId, sessionId]);
+    dispatch(fetchStudentSubmissionDetail({ examId, sessionId }));
+  }, [dispatch, examId, sessionId]);
 
-  const student_name = data?.student_details?.name || 'Loading Name...';
-  const university_id = data?.student_details?.university_id || '------';
-  const exam_title = data?.exam_details?.title || 'Loading Exam Title...';
+  const responses = data?.responses ?? [];
 
+  useEffect(() => {
+    setSelectedQuestion(0);
+    setSelectedSubmissionIndex(0);
+  }, [responses.length]);
 
-  const code = `
-#include <iostream>
-using namespace std;
+  useEffect(() => {
+    setSelectedSubmissionIndex(0);
+  }, [selectedQuestion]);
 
-int main() {
-    int queue[100];
-    int front = 0;
-    int rear = 0;
+  const currentResponse =
+    responses[selectedQuestion] ?? null;
 
-    queue[rear++] = 10;
+  const currentSubmission = useMemo(() => {
+    if (!currentResponse) return null;
 
-    cout << queue[front];
-
-    return 0;
-}
-`;
-
-if (loading) {
     return (
-        <Spinner />
+      currentResponse.submission_history?.[
+        selectedSubmissionIndex
+      ] ??
+      currentResponse.submission_history?.[0] ??
+      null
     );
+  }, [currentResponse, selectedSubmissionIndex]);
+
+
+
+
+
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
@@ -120,35 +87,88 @@ if (loading) {
             Review Submission:
             <Text component="span" c="blue" inherit>
               {" "}
-              {student_name}
+              {data?.student_details?.name}
             </Text>
           </Title>
 
           <Group mt={6}>
-            <Text ff="monospace">{university_id}</Text>
+            <Text ff="monospace">
+              {data?.student_details?.university_id}
+            </Text>
 
             <Text c="dimmed">
-              {exam_title}
+              {data?.exam_details?.title}
             </Text>
           </Group>
         </div>
 
-        {data?.responses?.map((res) => (
-  <React.Fragment key={res.question_id}>
-    <QuestionCard
-      title={res.title}
-      question={res.description}
-    />
+        <Group align="flex-start" wrap="nowrap">
 
-    <CodeSubmissionCard
-      submissionHistory={res.submission_history}
-    />
-  </React.Fragment>
-))}
+          <Stack
+            w={220}
+            p="sm"
+            style={{
+              border:
+                "1px solid var(--mantine-color-gray-3)",
+              borderRadius: 12,
+            }}
+          >
+            <Text fw={600}>
+              Questions
+            </Text>
 
+            {responses.map((question, index) => (
+              <Button
+                key={question.question_id}
+                 fullWidth
+                 justify="flex-start"
+                variant={
+                  selectedQuestion === index
+                    ? "filled"
+                    : "subtle"
+                }
+                onClick={() =>
+                  setSelectedQuestion(index)
+                }
+              >
+                Q{index + 1}
+              </Button>
+            ))}
+          </Stack>
+
+          <Stack flex={1}>
+
+            {currentResponse && currentSubmission && (
+              <>
+                <QuestionCard
+                  title={currentResponse.title}
+                  question={currentResponse.description}
+                />
+
+                <CodeSubmissionCard
+                  submissionHistory={
+                    currentResponse.submission_history
+                  }
+                  selectedIndex={
+                    selectedSubmissionIndex
+                  }
+                  onSubmissionChange={
+                    setSelectedSubmissionIndex
+                  }
+                />
+
+                <EvaluationCard
+                  response={currentResponse}
+                  submission={currentSubmission}
+                />
+              </>
+            )}
+
+          </Stack>
+
+        </Group>
 
       </Stack>
     </Container>
   );
 }
-

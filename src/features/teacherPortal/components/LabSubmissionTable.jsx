@@ -9,7 +9,7 @@ import {
 import { DataTable } from "mantine-datatable";
 import { EllipsisVertical } from 'lucide-react';
 import TableFooter from "../../../shared/components/CustomTableFooter";
-import { setSelectedSubmission } from '../models/facultySlice';
+import { setSelectedSubmission } from '../reducers/facultySlice.js';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 

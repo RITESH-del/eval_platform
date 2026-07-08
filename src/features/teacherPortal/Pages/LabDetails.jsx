@@ -3,7 +3,7 @@ import Spinner from '../../../shared/components/Spinner.jsx';
 import { Box, Stack, Group, TextInput, Button, Badge, Select } from '@mantine/core';
 import LabDetailsHeader from '../components/LabDetailsHeader.jsx';
 import LabSubmissionTable from '../components/LabSubmissionTable.jsx';
-import { fetchLabSubmissions } from '../models/facultyThunks.js';
+import { fetchLabSubmissions } from '../thunks/facultyThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Search, Calendar, RefreshCw } from 'lucide-react';

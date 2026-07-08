@@ -143,29 +143,6 @@ export default function SubmissionTable({
                 <Menu.Item>
                   Evaluate
                 </Menu.Item>
-
-                {isPaused ? (
-  <Menu.Item
-    color="yellow"
-    onClick={() => setIsPaused(false)}
-  >
-    Resume Session
-  </Menu.Item>
-) : (
-  <Menu.Item
-    color="gray"
-    onClick={() => setIsPaused(true)}
-  >
-    Pause Session
-  </Menu.Item>
-)}
-
-                
-
-                <Menu.Item
-                color="red">
-                  Cancel Session
-                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           ),

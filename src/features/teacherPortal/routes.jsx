@@ -4,7 +4,7 @@ import StudentDetails from './Pages/StudentDetails.jsx';
 import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx'; 
 import MonitorSession from './Pages/MonitorSession.jsx';
 import CreateQuizPage from "./Pages/CreateQuizPage.jsx"
-import CommonLayout from './layout/CommonLayout.jsx';
+import CommonLayout from './CommonLayout.jsx';
 import ErrorPage from "../../shared/components/ErrorPage.jsx"
 
 
