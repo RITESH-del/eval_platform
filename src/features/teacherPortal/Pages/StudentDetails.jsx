@@ -63,6 +63,9 @@ export default function ReviewSubmissionPage() {
 
 
 
+  const student_name = data?.student_details?.name || 'Loading Name...';
+  const university_id = data?.student_details?.university_id || '------';
+  const exam_title = data?.exam_details?.title || 'Loading Exam Title...';
 
 
   if (loading) {
