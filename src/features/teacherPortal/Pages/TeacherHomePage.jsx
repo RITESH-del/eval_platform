@@ -6,6 +6,13 @@ import { Search, Calendar } from "lucide-react";
 import { fetchPastPracticals } from '../thunks/facultyThunks.js';
 import Spinner from '../../../shared/components/Spinner.jsx';
 
+const getLocalDateString = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return "";
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+};
+
 export default function TeacherHomePage() {
   const [search, setSearch] = useState("");
   const [batch, setBatch] = useState(null);
@@ -51,7 +58,7 @@ export default function TeacherHomePage() {
     // 3. Date filter
     let matchesDate = true;
     if (date) {
-      const pDate = new Date(p.start_time).toISOString().split("T")[0];
+      const pDate = getLocalDateString(p.start_time);
       matchesDate = pDate === date;
     }
 

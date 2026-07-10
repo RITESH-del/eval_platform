@@ -24,6 +24,12 @@ import {
 import SubmissionTable from "../components/SessionTable.jsx";
 import Spinner from '../../../shared/components/Spinner.jsx';
 
+const getLocalDateString = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return "";
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+};
 
 export default function LabDetails() {
   const [search, setSearch] = useState("");
@@ -118,7 +124,7 @@ export default function LabDetails() {
     // 5. Date filter
     let matchesDate = true;
     if (date) {
-      const sDate = s.start_time ? new Date(s.start_time).toISOString().split("T")[0] : null;
+      const sDate = s.start_time ? getLocalDateString(s.start_time) : null;
       matchesDate = sDate === date;
     }
 

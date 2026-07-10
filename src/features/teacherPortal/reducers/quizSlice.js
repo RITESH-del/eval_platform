@@ -13,9 +13,10 @@ function calculateEndTime(startTime, duration) {
   if (!startTime || !duration) return "";
 
   const date = new Date(startTime);
+  if (isNaN(date.getTime())) return "";
   date.setMinutes(date.getMinutes() + Number(duration));
 
-  return date.toISOString().slice(0, 16);
+  return date.toISOString();
 }
 
 function calculateTotalMarks(questions) {
@@ -62,7 +63,14 @@ const quizSlice = createSlice({
     },
 
     updateQuizField(state, action) {
-      const { field, value } = action.payload;
+      let { field, value } = action.payload;
+
+      if (field === "start_time" && value) {
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          value = date.toISOString();
+        }
+      }
 
       state.currentQuiz[field] = value;
 
