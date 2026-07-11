@@ -65,7 +65,7 @@ export default function StudentHomePageMiddleware() {
       const maxScore = Number(exam.total_marks ?? exam.max_marks ?? exam.maximum_marks ?? 100);
       const scoreValue = manualScore + autoScore;
       const status = (exam.status || '').toLowerCase();
-      const isPending = status === 'pending' || status === 'in_progress' || status === 'draft' || !maxScore || scoreValue === 0;
+const isPending = status !== 'submitted' || !exam.result_published;
 
       return {
         ...exam,
