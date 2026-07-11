@@ -284,9 +284,12 @@ export default function Question({
                   md: 2,
                 }}
               >
-                <TextInput
+                <Textarea
                   label="INPUT"
                   placeholder="e.g. root = [2,1,3]"
+                  autosize
+                  minRows={1}
+                  maxRows={5}
                   value={tc.input}
                   onChange={(e) =>
                     onUpdateTestCase(
@@ -302,10 +305,13 @@ export default function Question({
                   align="end"
                   gap="xs"
                 >
-                  <TextInput
+                  <Textarea
                     flex={1}
                     label="EXPECTED OUTPUT"
                     placeholder="e.g. true"
+                    autosize
+                    minRows={1}
+                    maxRows={5}
                     value={tc.output}
                     onChange={(e) =>
                       onUpdateTestCase(
