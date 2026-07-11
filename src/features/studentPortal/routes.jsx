@@ -1,26 +1,56 @@
 import { Navigate } from 'react-router-dom';
 import StudentHomePage from './Pages/StudentHomePage.jsx';
 import StudentSubmissionPage from './Pages/StudentSubmissionPage.jsx';
+import ErrorPage from "../../shared/components/ErrorPage.jsx";
+import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx'; 
+import CommonLayout from './CommonLayout.jsx';
 
 export const studentRoutes = [
   {
-    path: '/student',
-    element: <Navigate to="/student/results" replace />,
+    path: "/student",
+    element: <CommonLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+  {
+    index: true,
+    element: (
+    <ProtectedRoute role="student">
+      <StudentHomePage />
+    </ProtectedRoute>
+    ),
   },
   {
-    path: '/student/results',
-    element: <StudentHomePage />,
+    path: 'dashboard',
+    element: (
+    <ProtectedRoute role="student">
+      <StudentHomePage />
+    </ProtectedRoute>
+    ),
   },
   {
-    path: '/student/dashboard',
-    element: <StudentHomePage />,
+    path: 'results',
+    element: (
+    <ProtectedRoute role="student">
+      <StudentHomePage />
+    </ProtectedRoute>
+    ),
   },
   {
-    path: '/student/submission',
-    element: <Navigate to="/student/results" replace />,
+    path: 'submission',
+    element: (
+    <ProtectedRoute role="student">
+      <Navigate to="/student/results" replace />
+    </ProtectedRoute>
+    ),
   },
   {
-    path: '/student/submission/:examId',
-    element: <StudentSubmissionPage />,
+    path: 'submission/:examId',
+    element: (
+    <ProtectedRoute role="student">
+      <StudentSubmissionPage />
+    </ProtectedRoute>
+    ),
   },
-];
+  ]}
+]
+  

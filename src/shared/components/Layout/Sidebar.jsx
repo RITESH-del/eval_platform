@@ -14,40 +14,40 @@ import {
   GraduationCap,
   FileText,
   ListTodo,
-  Settings,
   CircleHelp,
-  Plus,
   LogOut,
   Menu,
 } from "lucide-react";
 
-import { logout } from '../../auth/models/authSlice';
+import { logout } from '../../../features/auth/models/authSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 const sidebarConfig = [
   {
-    label: "Past Practicals",
+    label: "Dashboard",
     leftSection: <FileText size={18} />,
-    href: "/Faculty"
+    href: "/student/dashboard"
   },
   {
-    label: "Live Monitoring",
+    label: "Exam Results",
     leftSection: <ListTodo size={18} />,
-    href: "/Faculty/Lab-Sessions"
+    href: "/student/results"
   },
   "divider", 
   {
     label: "Support",
     leftSection: <CircleHelp size={18} />,
-    href: "/TeacherHomePage/Support"
+    href: "/student/Support"
   },
 ];
 
 export default function Sidebar({
   collapsed,
   toggleSidebar,
+  sidebarConfig,
   profile,
+  children,
 }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -97,18 +97,11 @@ export default function Sidebar({
       </Stack>
 
       <Stack mt="auto">
-        <Button
-          variant="light"
-          leftSection={<Plus size={18} />}
-          fullWidth={!collapsed}
-          onClick={() => navigate("/Faculty/create-quiz")}
-        >
-          {!collapsed && "Create New Quiz"}
-        </Button>
+
+        { children }
 
         <Button
           variant="transparent"
-          // color="red"
           c="dimmed"
           leftSection={<LogOut size={18} />}
           fullWidth={!collapsed}

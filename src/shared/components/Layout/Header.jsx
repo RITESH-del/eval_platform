@@ -2,7 +2,6 @@ import {
   Group,
   Text,
   Breadcrumbs,
-//   Anchor,
   ActionIcon,
 } from "@mantine/core";
 
@@ -31,19 +30,12 @@ export default function FacultyHeader({location}) {
       </Text>
     ));
 
-
-//     const items = [
-//     <Text key="faculty">Faculty</Text>,
-//     <Text key="current">Past Practicals</Text>,
-//   ];
-
   return (
     <Group justify="space-between" mb="md">
       <div>
         <Breadcrumbs
         c={"dimmed"}
         separator={<ChevronRight size={16} />}
-        // separatorMargin={"xs"}
         styles={{
             separator: {
             color: "var(--mantine-color-dimmed)",
