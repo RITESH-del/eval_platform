@@ -33,6 +33,17 @@ export default function QuizHeader() {
     (state) => state.quiz.currentQuiz
   );
 
+  const sectionOptions = [
+  "CSE-I",
+  "CSE-II",
+  "CSE-III",
+  "CSE-IV",
+  "CSE-V",
+  "CSE-VI",
+  "CSE-VII",
+  "CSE-VIII",
+];
+
   return (
     <Stack mb="xl" gap="lg">
 
@@ -140,7 +151,7 @@ export default function QuizHeader() {
               }
             />
 
-            <TagsInput
+            {/* <TagsInput
               label="Target Sections"
               placeholder="Enter sections (e.g. CSE-V, CSE-3)"
               value={
@@ -157,6 +168,27 @@ export default function QuizHeader() {
                   })
                 )
               }
+            /> */}
+
+            <TagsInput
+              label="Target Sections"
+              placeholder="Select or type sections"
+              data={sectionOptions}
+              value={
+                Array.isArray(currentQuiz.target_sections)
+                  ? currentQuiz.target_sections
+                  : []
+              }
+              onChange={(value) =>
+                dispatch(
+                  updateQuizField({
+                    field: "target_sections",
+                    value,
+                  })
+                )
+              }
+              clearable
+              searchable
             />
 
             <NumberInput

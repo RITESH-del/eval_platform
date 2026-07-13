@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Card,
   Textarea,
@@ -13,7 +14,7 @@ import {
   Stack,
   SimpleGrid,
 } from "@mantine/core";
-
+import MarkdownEditor from '../../../shared/components/MDEditor.jsx';
 import {
   Trash2,
   Plus,
@@ -30,6 +31,19 @@ export default function Question({
   onUpdateTestCase,
   onRemoveTestCase,
 }) {
+  const [currentTestCase, setCurrentTestCase] = useState(0);
+
+  useEffect(() => {
+  if (currentTestCase >= question.testCases.length) {
+    setCurrentTestCase(
+      Math.max(0, question.testCases.length - 1)
+    );
+  }
+}, [question.testCases.length, currentTestCase]);
+
+  const tc = question.testCases[currentTestCase];
+
+
   return (
     <Card
       radius="lg"
@@ -154,7 +168,7 @@ export default function Question({
       </Card.Section>
 
       <Stack p="lg">
-        <Textarea
+        {/* <Textarea
           minRows={2}
           autosize
           variant="filled"
@@ -178,7 +192,20 @@ export default function Question({
               padding: "20px",
             },
           }}
+        /> */}
+
+        <MarkdownEditor
+          value={question.statement}
+          onChange={(markdown) =>
+            onUpdateQuestion(
+              question.id,
+              "statement",
+              markdown
+            )
+          }
         />
+
+
 
         <Paper
           p="md"
@@ -270,7 +297,7 @@ export default function Question({
           </Button>
         </Group>
 
-        {question.testCases.map(
+        {/* {question.testCases.map(
           (tc) => (
             <Paper
               key={tc.id}
@@ -340,7 +367,95 @@ export default function Question({
               </SimpleGrid>
             </Paper>
           )
-        )}
+        )} */}
+
+        {tc && (
+  <Paper
+    p="lg"
+    radius="md"
+    bg="gray.0"
+  >
+    <Group justify="space-between" mb="md">
+      <Button
+        variant="subtle"
+        disabled={currentTestCase === 0}
+        onClick={() =>
+          setCurrentTestCase((i) => i - 1)
+        }
+      >
+        Previous
+      </Button>
+
+      <Text fw={600}>
+        Test Case {currentTestCase + 1} / {question.testCases.length}
+      </Text>
+
+      <Button
+        variant="subtle"
+        disabled={
+          currentTestCase ===
+          question.testCases.length - 1
+        }
+        onClick={() =>
+          setCurrentTestCase((i) => i + 1)
+        }
+      >
+        Next
+      </Button>
+    </Group>
+
+    <SimpleGrid cols={{ base: 1, md: 2 }}>
+      <Textarea
+        label="INPUT"
+        autosize
+        minRows={1}
+        maxRows={5}
+        value={tc.input}
+        onChange={(e) =>
+          onUpdateTestCase(
+            question.id,
+            tc.id,
+            "input",
+            e.target.value
+          )
+        }
+      />
+
+      <Group align="end">
+        <Textarea
+          flex={1}
+          label="EXPECTED OUTPUT"
+          autosize
+          minRows={1}
+          maxRows={5}
+          value={tc.output}
+          onChange={(e) =>
+            onUpdateTestCase(
+              question.id,
+              tc.id,
+              "output",
+              e.target.value
+            )
+          }
+        />
+
+        <ActionIcon
+          color="red"
+          variant="light"
+          mb={2}
+          onClick={() =>
+            onRemoveTestCase(
+              question.id,
+              tc.id
+            )
+          }
+        >
+          <Trash2 size={14} />
+        </ActionIcon>
+      </Group>
+    </SimpleGrid>
+  </Paper>
+)}
       </Stack>
     </Card>
   );
