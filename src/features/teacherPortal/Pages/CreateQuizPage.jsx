@@ -167,6 +167,10 @@ if (loading){
         <Group
     justify="flex-end"
     mt="xl"
+    style={{
+      position: 'sticky',
+      bottom: '10px'
+    }}
   >
     <Button
       variant="default"

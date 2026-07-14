@@ -37,21 +37,12 @@ export default function EvaluationCard({
   };
 
   return (
-    <Paper
-      withBorder
-      radius="lg"
-      p="lg"
-    >
-      <Stack gap="lg">
-
-        <Title order={3}>
-          Evaluation
-        </Title>
 
         <Group grow>
 
-          <Paper
+          {/* <Paper
             withBorder
+            
             radius="md"
             p="md"
           >
@@ -69,38 +60,35 @@ export default function EvaluationCard({
             >
               {submission.autograding_score}
             </Text>
-          </Paper>
+          </Paper> */}
 
-          {/* <NumberInput
-            label="Manual Score"
-            value={submission.manual_score ?? ""}
-            onChange={(value) =>
-              dispatch(
-                updateManualScoreLocal({
-                  submissionId: submission.id,
-                  manual_score: value,
-                })
-              )
-            }
-            min={0}
-            placeholder="Enter score"
-          /> */}
+          <Paper withBorder radius="md" p="xs">
+  <Stack gap={2}>
+    <Text size="sm" c="dimmed">
+      Auto Grading Score
+    </Text>
+
+    <Text fw={700} size="lg">
+      {submission.autograding_score}
+    </Text>
+  </Stack>
+</Paper>
 
            <Paper
     withBorder
     radius="md"
-    p="md"
+    p="xs"
   >
     <Text
       size="sm"
       c="dimmed"
-      mb={2}
     >
       Manual Score
     </Text>
 
     <NumberInput
       variant="unstyled"
+      p={0}
       value={submission.manual_score ?? ""}
       onChange={(value) =>
         dispatch(
@@ -115,7 +103,7 @@ export default function EvaluationCard({
       placeholder="Enter score"
       styles={{
         input: {
-          fontSize: "1.5rem",
+          fontSize: "1.1rem",
           fontWeight: 700,
           padding: 0,
           border: "none",
@@ -128,16 +116,12 @@ export default function EvaluationCard({
     />
   </Paper>
 
-
-        </Group>
-
         <Group justify="flex-end">
           <Button onClick={handleSave}>
             Save Evaluation
           </Button>
         </Group>
 
-      </Stack>
-    </Paper>
+        </Group>
   );
 }

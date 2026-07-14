@@ -24,7 +24,7 @@ const sidebarConfig = [
   {
     label: "Support",
     leftSection: <CircleHelp size={18} />,
-    href: "/TeacherHomePage/Support"
+    href: "/Faculty/Support"
   },
 ];
 

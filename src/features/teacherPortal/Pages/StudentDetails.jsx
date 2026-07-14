@@ -76,14 +76,14 @@ export default function ReviewSubmissionPage() {
     <Container size="xl" py="lg">
       <Stack gap="lg">
 
-        <Button
+        {/* <Button
           variant="subtle"
           leftSection={<ChevronLeft size={18} />}
           w="fit-content"
           onClick={() => navigate(-1)}
         >
           Back
-        </Button>
+        </Button> */}
 
         <div>
           <Title order={1}>
@@ -114,6 +114,8 @@ export default function ReviewSubmissionPage() {
               border:
                 "1px solid var(--mantine-color-gray-3)",
               borderRadius: 12,
+              position: 'sticky',
+              top: '20px',
             }}
           >
             <Text fw={600}>
@@ -143,6 +145,16 @@ export default function ReviewSubmissionPage() {
 
             {currentResponse && currentSubmission && (
               <>
+              <div style={{
+                overflowY: "auto",
+                minHeight: 800,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                // hide scroll bar
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}>
                 <QuestionCard
                   title={currentResponse.title}
                   question={currentResponse.description}
@@ -159,12 +171,24 @@ export default function ReviewSubmissionPage() {
                     setSelectedSubmissionIndex
                   }
                 />
+</div>
 
+                <div
+                  style={{
+                    position: "sticky",
+                    bottom: 0,
+                    zIndex: 20,
+                    background:
+                      "var(--mantine-color-body)",
+                    paddingTop: 8,
+                  }}
+                >
                 <EvaluationCard
                   response={currentResponse}
                   submission={currentSubmission}
                 />
-              </>
+                </div>
+                </>
             )}
 
           </Stack>

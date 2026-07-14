@@ -48,8 +48,8 @@ export default function Question({
     <Card
       radius="lg"
       withBorder
+      bg="var(--mantine-color-body)"
       p={20}
-      bg="white"
       shadow="xs"
     >
       <Card.Section
@@ -62,7 +62,7 @@ export default function Question({
               w={44}
               h={44}
               radius="md"
-              bg="gray.1"
+              bg="var(--mantine-color-default)"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -123,7 +123,7 @@ export default function Question({
               px="md"
               radius="md"
               shadow="xs"
-              bg="blue.0"
+              bg="var(--mantine-color-default)"
             >
               <Group gap={6}>
                 <Text
@@ -210,7 +210,7 @@ export default function Question({
         <Paper
           p="md"
           radius="lg"
-          bg="gray.0"
+          bg="var(--mantine-color-default)"
           withBorder
         >
           <Group justify="space-between">
@@ -373,7 +373,7 @@ export default function Question({
   <Paper
     p="lg"
     radius="md"
-    bg="gray.0"
+    bg="var(--mantine-color-default)"
   >
     <Group justify="space-between" mb="md">
       <Button

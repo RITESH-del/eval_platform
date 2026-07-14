@@ -7,6 +7,35 @@ import { setSelectedExam } from "../reducers/facultySlice.js";
 import { useNavigate } from "react-router-dom";
 import { EllipsisVertical } from 'lucide-react';
 import { deleteQuizThunk, publishResultThunk } from "../thunks/facultyThunks.js";
+import { modals } from "@mantine/modals";
+
+const confirmDelete = (examId) => {
+  modals.openConfirmModal({
+    title: "Delete Quiz",
+    centered: true,
+
+    children: (
+      <Text size="sm">
+        Are you sure you want to delete this quiz?
+        <br />
+        This action cannot be undone.
+      </Text>
+    ),
+
+    labels: {
+      confirm: "Delete",
+      cancel: "Cancel",
+    },
+
+    confirmProps: {
+      color: "red",
+    },
+
+    onConfirm: () => {
+      dispatch(deleteQuizThunk(examId));
+    },
+  });
+};
 
 
 export default function PracticalsTable({ practicals }) {
@@ -139,9 +168,10 @@ export default function PracticalsTable({ practicals }) {
                             </Menu.Item>
             
                             <Menu.Item
-                            color="red"
-                            onClick={() => dispatch(deleteQuizThunk(practical.id))}>
-                              Delete 
+                              color="red"
+                              onClick={() => confirmDelete(practical.id)}
+                            >
+                              Delete
                             </Menu.Item>
                           </Menu.Dropdown>
                         </Menu>

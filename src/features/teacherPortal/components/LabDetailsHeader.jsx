@@ -10,24 +10,21 @@ const LabDetailsHeader = ({ details }) => {
   return (
     <Paper
       p="md"
+      bg="var(--mantine-color-body)"
       radius={0}
-      style={{
-        backgroundColor: '#f8fafc',
-        borderBottom: '1px solid #e2e8f0',
-      }}
     >
 
      
       <Group align="center">
-         <ActionIcon
+         {/* <ActionIcon
             size={30}
             radius="xl"
             variant="filled"
-            color="#D8DEF8"
+            bg="blue"
             onClick={() => navigate(-1)}
           >
             <ChevronLeft size={20} color="#0A2F7F" />
-          </ActionIcon>
+          </ActionIcon> */}
         <div>
           <Title
             order={1}

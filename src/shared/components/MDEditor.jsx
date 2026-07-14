@@ -9,6 +9,8 @@ import { Eye, Pencil } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
+import "../../index.css";
+
 
 export default function MarkdownEditor({
   value,
@@ -62,10 +64,21 @@ export default function MarkdownEditor({
           p="md"
           style={{
             minHeight: height,
-            maxHeight: 300,
-            overflowY: "auto",
-          }}
-        >
+              maxHeight: 300,
+              overflowY: "auto",
+
+              // Hide scrollbar
+              scrollbarWidth: "none", // Firefox
+              msOverflowStyle: "none", // IE/Edge
+            }}
+            styles={{
+              root: {
+                "&::-webkit-scrollbar": {
+                  display: "none",
+                },
+              },
+            }}
+>
           <article
             className="markdown-body"
             style={{
@@ -89,11 +102,19 @@ export default function MarkdownEditor({
           variant="unstyled"
           value={value}
           onChange={handleChange}
-          styles={{
-            input: {
-              paddingRight: 48,
-            },
-          }}
+           styles={{
+              input: {
+                paddingRight: 48,
+
+                /* Hide scrollbar */
+                scrollbarWidth: "none",      // Firefox
+                msOverflowStyle: "none",     // IE/Edge
+
+                "&::-webkit-scrollbar": {
+                  display: "none",           // Chrome, Safari
+                },
+              },
+            }}
         />
       )}
     </Paper>

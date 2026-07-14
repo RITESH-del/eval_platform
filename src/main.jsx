@@ -15,6 +15,7 @@ import { studentRoutes } from './features/studentPortal/routes';
 import "@mantine/notifications/styles.css";
 import ErrorPage from "./shared/components/ErrorPage.jsx"
 import "mantine-datatable/styles.css"; // mantine-datatable stylesheet
+import { ModalsProvider } from "@mantine/modals";
 
 
 // lazy loading
@@ -41,9 +42,11 @@ createRoot(document.getElementById("root")).render(
     <MantineProvider>
       <Suspense fallback={<Spinner />}>
       <Notifications position="top-right" zIndex={10000} />
+      <ModalsProvider>
         <RouterProvider
           router={router}
           />
+      </ModalsProvider>
       </Suspense>
     </MantineProvider>
   </Provider>
