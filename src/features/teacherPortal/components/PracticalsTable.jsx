@@ -9,7 +9,7 @@ import { EllipsisVertical } from 'lucide-react';
 import { deleteQuizThunk, publishResultThunk } from "../thunks/facultyThunks.js";
 import { modals } from "@mantine/modals";
 
-const confirmDelete = (examId) => {
+const confirmDelete = (dispatch, examId) => {
   modals.openConfirmModal({
     title: "Delete Quiz",
     centered: true,
@@ -169,7 +169,7 @@ export default function PracticalsTable({ practicals }) {
             
                             <Menu.Item
                               color="red"
-                              onClick={() => confirmDelete(practical.id)}
+                              onClick={() => confirmDelete(dispatch, practical.id)}
                             >
                               Delete
                             </Menu.Item>

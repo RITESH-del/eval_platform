@@ -207,7 +207,7 @@ export default function Question({
 
 
 
-        <Paper
+        {/*<Paper
           p="md"
           radius="lg"
           bg="var(--mantine-color-default)"
@@ -259,7 +259,7 @@ export default function Question({
               />
             </Button>
           </Group>
-        </Paper>
+        </Paper> */}
 
         <Group
           justify="space-between"
@@ -408,7 +408,7 @@ export default function Question({
       <Textarea
         label="INPUT"
         autosize
-        minRows={1}
+        minRows={5}
         maxRows={5}
         value={tc.input}
         onChange={(e) =>
@@ -426,7 +426,7 @@ export default function Question({
           flex={1}
           label="EXPECTED OUTPUT"
           autosize
-          minRows={1}
+          minRows={5}
           maxRows={5}
           value={tc.output}
           onChange={(e) =>

@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import "../../index.css";
+import rehypeRaw from "rehype-raw";
 
 
 export default function MarkdownEditor({
@@ -87,7 +88,10 @@ export default function MarkdownEditor({
               paddingRight: 48,
             }}
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown 
+             remarkPlugins={[remarkGfm]}
+             rehypePlugins={[rehypeRaw]}
+             >
               {value}
             </ReactMarkdown>
           </article>
