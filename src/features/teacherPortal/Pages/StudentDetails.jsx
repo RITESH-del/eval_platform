@@ -18,6 +18,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudentSubmissionDetail } from "../thunks/facultyThunks.js";
 import { updateManualScore } from "../thunks/facultyThunks.js";
+import { notifications } from "@mantine/notifications";
+
 
 export default function ReviewSubmissionPage() {
   const dispatch = useDispatch();
@@ -88,7 +90,7 @@ export default function ReviewSubmissionPage() {
 }, [currentResponse]);
 
 
-const handleSave = () => {
+const handleSave = async () => {
   const payload = responses.flatMap((response) =>
     response.submission_history
       .filter((submission) => submission.manual_score != null)
@@ -98,7 +100,22 @@ const handleSave = () => {
       }))
   );
 
-  dispatch(updateManualScore(payload));
+  try {
+      await dispatch(updateManualScore(payload)).unwrap();
+      notifications.show({
+        title: "Success",
+        message: "Manual score updated successfully",
+        color: "green",
+      });
+  } catch(error){
+    console.error("Failed to update manual score", error);
+    notifications.show({
+          title: "Error",
+          message: error?.message || "Failed to update manual score",
+          color: "red",
+        });
+  }
+
 };
 
 
