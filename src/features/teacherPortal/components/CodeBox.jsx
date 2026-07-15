@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Check, Copy } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -19,8 +19,10 @@ export default function CodeSubmissionCard({
 }) {
   const [copied, setCopied] = useState(false);
 
+
   const selectedSubmission =
-    submissionHistory[selectedIndex];
+    submissionHistory[selectedIndex ?? bestIndex];
+  
 
   const code = selectedSubmission?.code ?? "";
 

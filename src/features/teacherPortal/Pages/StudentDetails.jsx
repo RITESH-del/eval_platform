@@ -5,16 +5,19 @@ import {
   Stack,
   Text,
   Title,
+  Progress,
+  Space
 } from "@mantine/core";
-import React, { useEffect, useMemo, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import Spinner from "../../../shared/components/Spinner.jsx";
 import QuestionCard from "../components/QuestionCard.jsx";
 import CodeSubmissionCard from "../components/CodeBox.jsx";
+import { CircleCheck } from "lucide-react";
 import EvaluationCard from "../components/EvaluationCard.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudentSubmissionDetail } from "../thunks/facultyThunks.js";
+import { updateManualScore } from "../thunks/facultyThunks.js";
 
 export default function ReviewSubmissionPage() {
   const dispatch = useDispatch();
@@ -28,8 +31,7 @@ export default function ReviewSubmissionPage() {
   } = useSelector((state) => state.faculty);
 
   const [selectedQuestion, setSelectedQuestion] = useState(0);
-  const [selectedSubmissionIndex, setSelectedSubmissionIndex] =
-    useState(0);
+  const [selectedSubmissionIndex, setSelectedSubmissionIndex] = useState(0);
 
   useEffect(() => {
     dispatch(fetchStudentSubmissionDetail({ examId, sessionId }));
@@ -37,14 +39,23 @@ export default function ReviewSubmissionPage() {
 
   const responses = data?.responses ?? [];
 
-  useEffect(() => {
-    setSelectedQuestion(0);
-    setSelectedSubmissionIndex(0);
-  }, [responses.length]);
+  const total_q = responses.length;
+  
+  const reviewed_q = useMemo(() => {
+  return responses.filter((response) =>
+    response.submission_history?.some(
+      (submission) => submission.manual_score != null
+    )
+  ).length;
+}, [responses]);
+  
+  
 
   useEffect(() => {
-    setSelectedSubmissionIndex(0);
-  }, [selectedQuestion]);
+    setSelectedQuestion(0);
+  }, [responses.length]);
+
+
 
   const currentResponse =
     responses[selectedQuestion] ?? null;
@@ -61,11 +72,64 @@ export default function ReviewSubmissionPage() {
     );
   }, [currentResponse, selectedSubmissionIndex]);
 
+  useEffect(() => {
+  if (!currentResponse?.submission_history?.length) return;
+
+  const bestIndex = currentResponse.submission_history.reduce(
+    (best, submission, index, arr) =>
+      submission.autograding_score >
+      arr[best].autograding_score
+        ? index
+        : best,
+    0
+  );
+
+  setSelectedSubmissionIndex(bestIndex);
+}, [currentResponse]);
+
+
+const handleSave = () => {
+  const payload = responses.flatMap((response) =>
+    response.submission_history
+      .filter((submission) => submission.manual_score != null)
+      .map((submission) => ({
+        submission_id: submission.id,
+        manual_score: submission.manual_score,
+      }))
+  );
+
+  dispatch(updateManualScore(payload));
+};
 
 
   const student_name = data?.student_details?.name || 'Loading Name...';
   const university_id = data?.student_details?.university_id || '------';
   const exam_title = data?.exam_details?.title || 'Loading Exam Title...';
+
+  const autoGradingMarks = useMemo(() => {
+  return responses.reduce(
+    (total, response) => total + (response.autograding_score ?? 0),
+    0
+  );
+}, [responses]);
+
+const manualScore = useMemo(() => {
+  return responses.reduce((total, response) => {
+    const submission =
+      response.submission_history.find(
+        (s) => s.manual_score != null
+      ) ??
+      response.submission_history.reduce(
+        (best, current) =>
+          current.autograding_score > best.autograding_score
+            ? current
+            : best
+      );
+
+    return total + (submission.manual_score ?? submission.autograding_score);
+  }, 0);
+}, [responses]);
+
 
 
   if (loading) {
@@ -126,7 +190,14 @@ export default function ReviewSubmissionPage() {
               <Button
                 key={question.question_id}
                  fullWidth
-                 justify="flex-start"
+                 rightSection={
+                   question.submission_history?.some(
+                     (submission) => submission.manual_score != null
+                   )
+                     ? <CircleCheck size="14" />
+                     : null
+                 }
+                 justify="space-between"
                 variant={
                   selectedQuestion === index
                     ? "filled"
@@ -139,6 +210,48 @@ export default function ReviewSubmissionPage() {
                 Q{index + 1}
               </Button>
             ))}
+
+            <Stack>
+               <Group justify="space-between">
+          <Text fw={600}>
+              Progress
+            </Text>
+            <Text fw={400}>
+              {`${reviewed_q}/${total_q} Reviewed`}
+            </Text>
+            </Group>
+            <Progress size="sm" value={reviewed_q/total_q * 100} />
+          </Stack>
+           
+           <Stack>
+             <Group justify="space-between">
+          <Text fw={600}>
+              Auto Graded Marks
+            </Text>
+            <Text fw={400}>
+              {autoGradingMarks}
+            </Text>
+            </Group>
+
+
+            <Progress size="sm" value={autoGradingMarks/total_q} />
+           </Stack>
+
+           <Stack>
+             <Group justify="space-between">
+          <Text fw={600}>
+              Manual Score
+            </Text>
+            <Text fw={400}>
+              {manualScore}
+            </Text>
+            </Group>
+
+
+            <Progress size="sm" value={manualScore/total_q} />
+           </Stack>
+
+
           </Stack>
 
           <Stack flex={1}>
@@ -184,8 +297,8 @@ export default function ReviewSubmissionPage() {
                   }}
                 >
                 <EvaluationCard
-                  response={currentResponse}
                   submission={currentSubmission}
+                  handleSave={handleSave}
                 />
                 </div>
                 </>

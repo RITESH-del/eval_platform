@@ -4,6 +4,8 @@ import StudentSubmissionPage from './Pages/StudentSubmissionPage.jsx';
 import ErrorPage from "../../shared/components/ErrorPage.jsx";
 import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx'; 
 import CommonLayout from './CommonLayout.jsx';
+import SupportPage from '../../shared/components/Support.jsx';
+
 
 export const studentRoutes = [
   {
@@ -51,6 +53,14 @@ export const studentRoutes = [
     </ProtectedRoute>
     ),
   },
+  {
+    path:'support',
+    element:(
+      <ProtectedRoute role="student">
+      <SupportPage />
+    </ProtectedRoute>
+    )
+  }
   ]}
 ]
   

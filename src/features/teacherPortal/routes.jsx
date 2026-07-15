@@ -6,7 +6,7 @@ import CreateQuizPage from "./Pages/CreateQuizPage.jsx"
 import CommonLayout from './CommonLayout.jsx';
 import ErrorPage from "../../shared/components/ErrorPage.jsx";
 import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx';
-import SupportPage from './Pages/Support.jsx';
+import SupportPage from '../../shared/components/Support.jsx';
 
 
 export const teacherRoutes = [

@@ -79,11 +79,9 @@ export const deleteQuiz = async(quizId) => {
     return res;
 }
 
-export const updateManualScore = async(submissionId, manualScore) => {
-    const res = await apiClient.patch(`/faculty/submissions/${submissionId}/manual-score`,
-       {
-            manual_score: manualScore,
-        }
+export const updateManualScore = async(payload) => {
+    const res = await apiClient.patch(`/faculty/manual-score`,
+       payload
     );
     return res;
 }

@@ -148,9 +148,9 @@ export const createQuizThunk = createAsyncThunk(
 
 export const updateManualScore = createAsyncThunk(
   "faculty/updateManualScore",
-  async({submissionId, manualScore}, {rejectWithValue}) => {
+  async(payload, {rejectWithValue}) => {
     try {
-      const response = await facultyAPI.updateManualScore(submissionId, manualScore);
+      const response = await facultyAPI.updateManualScore(payload);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

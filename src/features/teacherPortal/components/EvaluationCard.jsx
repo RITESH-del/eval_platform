@@ -9,11 +9,11 @@ import {
   Title,
 } from "@mantine/core";
 
-import { updateManualScore } from "../thunks/facultyThunks.js";
 import { updateManualScoreLocal } from "../reducers/facultySlice.js";
 
 export default function EvaluationCard({
   submission,
+  handleSave
 }) {
   const dispatch = useDispatch();
 
@@ -26,15 +26,6 @@ export default function EvaluationCard({
       </Paper>
     );
   }
-
-  const handleSave = () => {
-    dispatch(
-      updateManualScore({
-        submissionId: submission.id,
-        manualScore: submission.manual_score,
-      })
-    );
-  };
 
   return (
 
