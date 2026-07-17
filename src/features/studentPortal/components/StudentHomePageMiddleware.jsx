@@ -67,7 +67,8 @@ export default function StudentHomePageMiddleware() {
       const status = (exam.status || '').toLowerCase();
 
       const hasSubmitted = status === 'submitted';
-      const resultsAvailable = hasSubmitted && !!exam.result_published;
+      // const resultsAvailable = hasSubmitted && !!exam.result_published;
+      const resultsAvailable = !!exam.result_published;
 
       return {
         ...exam,
@@ -122,6 +123,9 @@ export default function StudentHomePageMiddleware() {
       </div>
     );
   }
+
+  console.log(exams[0]);
+  console.log(exams);
 
   return (
     <main className="flex-1 overflow-auto bg-white">
