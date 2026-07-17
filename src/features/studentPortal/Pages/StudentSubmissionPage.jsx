@@ -7,8 +7,8 @@ export default function StudentSubmissionPage() {
   const { examId } = useParams();
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white">
-      <StudentSubmissionPageHeader />
+    <div className="min-h-screen text-white">
+      {/* <StudentSubmissionPageHeader /> */}
       <StudentSubmissionPageMiddleware
         examId={examId}
         onBack={() => window.history.back()}

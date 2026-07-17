@@ -5,7 +5,8 @@ import ErrorPage from "../../shared/components/ErrorPage.jsx";
 import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx'; 
 import CommonLayout from './CommonLayout.jsx';
 import SupportPage from '../../shared/components/Support.jsx';
-
+import StudentDashPage from './Pages/DashboardPage.jsx';
+import ReviewSubmissionPage from './Pages/SubmissionPage.jsx';
 
 export const studentRoutes = [
   {
@@ -25,7 +26,7 @@ export const studentRoutes = [
     path: 'dashboard',
     element: (
     <ProtectedRoute role="student">
-      <StudentHomePage />
+      <StudentDashPage />
     </ProtectedRoute>
     ),
   },
@@ -46,10 +47,11 @@ export const studentRoutes = [
     ),
   },
   {
-    path: 'submission/:examId',
+    path: 'submission/:examId/session/:sessionId',
     element: (
     <ProtectedRoute role="student">
-      <StudentSubmissionPage />
+      {/* <StudentSubmissionPage /> */}
+      <ReviewSubmissionPage />
     </ProtectedRoute>
     ),
   },

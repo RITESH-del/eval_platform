@@ -58,7 +58,7 @@ export default function SubmissionTable({
           title: "Section",
           render: ({ section }) => (
             <Badge variant="light">
-              {section}
+              {section ?? "-"}
             </Badge>
           ),
         },

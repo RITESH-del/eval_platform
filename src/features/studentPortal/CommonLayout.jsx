@@ -7,6 +7,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudentProfile } from './models/studentThunks.js';
 import { FileText, ListTodo, CircleHelp } from "lucide-react";
+import { useMediaQuery } from "@mantine/hooks";
+
 
 const sidebarConfig = [
   {
@@ -31,6 +33,9 @@ export default function CommonLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const { pathname } = useLocation();
 
+  const isMobile = useMediaQuery("(max-width: 48em)");
+
+
   const dispatch = useDispatch();
 
   const profile = useSelector((state) => state.student.profile);
@@ -41,23 +46,33 @@ export default function CommonLayout() {
 
   return (
     <AppShell
-      navbar={{
-        width: collapsed ? 80 : 280,
-        breakpoint: 0,
-      }}
-      padding="lg"
-    >
-      <Sidebar
-        profile={profile}
-        collapsed={collapsed}
-        toggleSidebar={() =>
-          setCollapsed((prev) => !prev)
+      navbar={
+    isMobile
+      ? undefined
+      : {
+          width: collapsed ? 80 : 280,
+          breakpoint: 0,
         }
-        sidebarConfig={sidebarConfig}
-      />
-      <AppShell.Main>
-        <Header location={ pathname }/>
-
+  }
+  padding={isMobile ? "xl" : "lg"}
+    >
+      {!isMobile && (
+          <Sidebar
+            profile={profile}
+            collapsed={collapsed}
+            toggleSidebar={() =>
+              setCollapsed((prev) => !prev)
+            }
+            sidebarConfig={sidebarConfig}
+          />
+        )}
+      <AppShell.Main
+        px={isMobile ? "lg" : ""}
+        py={isMobile ? "lg" : ""}
+      >
+        {!isMobile && (
+          <Header location={pathname} />
+        )}
         <Outlet />
       </AppShell.Main>
     </AppShell>

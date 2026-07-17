@@ -83,7 +83,8 @@ const LabDetails = () => {
             data={[
               { value: "ongoing", label: "Ongoing" },
               { value: "submitted", label: "Submitted" },
-              { value: "evaluated", label: "Evaluated" },
+              { value: "absent", label: "Absent" },
+              { value: "evaluated", label: "Evaluated"}
             ]}
           />
       </Group>
