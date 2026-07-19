@@ -48,9 +48,9 @@ const LabDetails = () => {
       } else if (status === "submitted") {
         matchesStatus = subStatus === "submitted";
       } else if (status === "evaluated") {
-        matchesStatus =
-          subStatus === "evaluated" ||
-          (sub.total_manual_score !== null && sub.total_manual_score !== undefined);
+        matchesStatus = subStatus === "evaluated";
+      } else if (status === "absent") {
+        matchesStatus = subStatus === "absent";
       }
     }
 

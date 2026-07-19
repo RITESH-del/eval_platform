@@ -47,20 +47,17 @@ export default function StudentExamResultsPage({
       title: "Exam",
       render: (exam) => (
         <div className="flex items-center gap-3">
-          {/* <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-            <FileText size={18} />
-          </div> */}
 
           <div>
             <Text fw={600}>{exam.title}</Text>
 
-            <Text size="xs" c="dimmed">
+            {/* <Text size="xs" c="dimmed">
               {exam.submittedAt
                 ? new Date(
                     exam.submittedAt
                   ).toLocaleDateString("en-IN")
                 : "Not Available"}
-            </Text>
+            </Text> */}
           </div>
         </div>
       ),

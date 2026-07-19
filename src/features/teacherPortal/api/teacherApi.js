@@ -79,9 +79,9 @@ export const deleteQuiz = async(quizId) => {
     return res;
 }
 
-export const updateManualScore = async(payload) => {
-    const res = await apiClient.patch(`/faculty/manual-score`,
-       payload
+export const updateManualScore = async({payload, sessionId}) => {
+    const res = await apiClient.patch(`/faculty/manual-score/${sessionId}`, 
+      payload
     );
     return res;
 }

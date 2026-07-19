@@ -112,9 +112,9 @@ export default function LabDetails() {
       } else if (status === "submitted") {
         matchesStatus = sStatus === "submitted";
       } else if (status === "evaluated") {
-        matchesStatus =
-          sStatus === "evaluated" ||
-          (s.total_manual_score !== null && s.total_manual_score !== undefined);
+        matchesStatus = sStatus === "evaluated";
+      } else if (status === "absent") {
+        matchesStatus = sStatus === "absent";
       }
     }
 
@@ -178,6 +178,7 @@ export default function LabDetails() {
               { value: "ongoing", label: "Ongoing" },
               { value: "submitted", label: "Submitted" },
               { value: "evaluated", label: "Evaluated" },
+              { value: "absent", label: "Absent"}
             ]}
             clearable
           />

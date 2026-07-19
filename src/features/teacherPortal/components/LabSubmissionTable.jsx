@@ -91,11 +91,17 @@ export default function SubmissionTable({
           textAlign: "right",
           render: ({ status }) => (
             <Badge
-              color= {
-                status?.toLowerCase() === "ongoing"
-                ? "green"
-                : "blue"
-  }
+             color={
+  status?.toLowerCase() === "ongoing"
+    ? "gray"
+    : status?.toLowerCase() === "submitted"
+    ? "blue"
+    : status?.toLowerCase() === "absent"
+    ? "red"
+    : status?.toLowerCase() === "evaluated"
+    ? "green"
+    : "gray"
+}
             >
               {status}
             </Badge>

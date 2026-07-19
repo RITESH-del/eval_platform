@@ -101,7 +101,7 @@ const handleSave = async () => {
   );
 
   try {
-      await dispatch(updateManualScore(payload)).unwrap();
+      await dispatch(updateManualScore({payload, sessionId})).unwrap();
       notifications.show({
         title: "Success",
         message: "Manual score updated successfully",
