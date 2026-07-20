@@ -69,7 +69,7 @@ export default function ReviewSubmissionPage() {
   const responses =
     data?.responses ?? [];
 
-  const total_q = responses.length;
+  const total_q = responses.length * 100;
 
   useEffect(() => {
     setSelectedQuestion(0);

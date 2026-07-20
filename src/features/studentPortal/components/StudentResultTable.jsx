@@ -130,7 +130,7 @@ export default function StudentExamResultsPage({
   title: "Actions",
   textAlign: "right",
   render: (exam) =>
-    exam.status === "submitted" ? (
+    exam.status === "evaluated" ? (
       <Anchor
         fw={600}
         onClick={(e) => {
@@ -138,7 +138,6 @@ export default function StudentExamResultsPage({
           navigate(`/student/submission/${exam.exam_id}/session/${exam.session_id}`);
         }}
         pr={10}
-        
       >
         View
       </Anchor>
