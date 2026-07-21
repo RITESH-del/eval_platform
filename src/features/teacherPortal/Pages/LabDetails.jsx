@@ -7,7 +7,7 @@ import { fetchLabSubmissions } from '../thunks/facultyThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Search, Calendar, RefreshCw, Download} from 'lucide-react';
-import { exportToExcel } from '../../../shared/utils/exporttoExcel.js';
+import { exportToExcel } from '../../../shared/utils/exportToExcel.js';
 import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
 
 const LabDetails = () => {
