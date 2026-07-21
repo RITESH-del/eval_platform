@@ -87,6 +87,7 @@ const quizSlice = createSlice({
         statement: "",
         marks: 5,
         diagram: null,
+        testCaseFile: null,
         testCases: []
       });
 
@@ -129,21 +130,30 @@ const quizSlice = createSlice({
     },
 
     addTestCase(state, action) {
-      const { questionId } = action.payload;
+  const {
+    questionId,
+    input = "",
+    output = "",
+    url = null,
+    filename = null,
+    public_id = null,
+  } = action.payload;
 
-      const question =
-        state.currentQuiz.questions.find(
-          q => q.id === questionId
-        );
+  const question = state.currentQuiz.questions.find(
+    q => q.id === questionId
+  );
 
-      if (!question) return;
+  if (!question) return;
 
-      question.testCases.push({
-        id: crypto.randomUUID(),
-        input: "",
-        output: ""
-      });
-    },
+  question.testCases.push({
+    id: crypto.randomUUID(),
+    input,
+    output,
+    url,
+    filename,
+    public_id,
+  });
+},
 
     removeTestCase(state, action) {
       const {
@@ -163,6 +173,31 @@ const quizSlice = createSlice({
           tc => tc.id !== testCaseId
         );
     },
+
+    setTestCaseFile(state, action) {
+  const { questionId, filename, url, public_id } = action.payload;
+
+  const question = state.currentQuiz.questions.find(
+    q => q.id === questionId
+  );
+
+  if (!question) return;
+
+  question.testCaseFile = {
+    filename,
+    url,
+    public_id,
+  };
+},
+removeTestCaseFile(state, action) {
+  const question = state.currentQuiz.questions.find(
+    q => q.id === action.payload
+  );
+
+  if (!question) return;
+
+  question.testCaseFile = null;
+},
 
     updateTestCase(state, action) {
       const {
@@ -187,6 +222,27 @@ const quizSlice = createSlice({
       if (!testCase) return;
 
       testCase[field] = value;
+    },
+
+    setUpdateProgress(state, action) {
+      const {
+        questionId,
+        filename,
+        url,
+        public_id,
+      } = action.payload;
+
+      const question = state.currentQuiz.questions.find(
+        q => q.id === questionId
+      );
+
+      if (!question) return;
+
+      question.testCaseFile = {
+        filename,
+        url,
+        public_id,
+      };
     }
   },
 
@@ -289,7 +345,11 @@ export const {
 
   addTestCase,
   removeTestCase,
-  updateTestCase
+  updateTestCase,
+
+  setUpdateProgress,
+  setTestCaseFile,
+  removeTestCaseFile,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

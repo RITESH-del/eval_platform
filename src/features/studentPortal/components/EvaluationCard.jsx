@@ -35,7 +35,7 @@ export default function EvaluationCard({submission}) {
       size="sm"
       c="dimmed"
     >
-      Manual Score
+      Awarded Score
     </Text>
     <Text fw={700} size="lg">
       {submission.manual_score ?? "-"}

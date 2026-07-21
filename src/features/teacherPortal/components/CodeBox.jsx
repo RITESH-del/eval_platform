@@ -102,20 +102,24 @@ export default function CodeSubmissionCard({
 
       {code ? (
         <SyntaxHighlighter
-          language="cpp"
-          style={vscDarkPlus}
-          showLineNumbers
-          wrapLongLines
-          customStyle={{
-            margin: 0,
-            padding: 20,
-            fontSize: 14,
-            maxHeight: 600,
-            overflow: "auto",
-          }}
-        >
-          {code}
-        </SyntaxHighlighter>
+  language="cpp"
+  style={vscDarkPlus}
+  showLineNumbers
+  wrapLongLines
+  customStyle={{
+    margin: 0,
+    padding: 20,
+    fontSize: 14,
+    width: "100%",
+    maxWidth: "100%",
+    maxHeight: 600,
+    overflowX: "auto",
+    overflowY: "auto",
+    boxSizing: "border-box",
+  }}
+>
+  {code}
+</SyntaxHighlighter>
       ) : (
         <div
           style={{

@@ -6,8 +6,9 @@ import LabSubmissionTable from '../components/LabSubmissionTable.jsx';
 import { fetchLabSubmissions } from '../thunks/facultyThunks.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Search, Calendar, RefreshCw } from 'lucide-react';
-
+import { Search, Calendar, RefreshCw, Download} from 'lucide-react';
+import { exportToExcel } from '../../../shared/utils/exporttoExcel.js';
+import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
 
 const LabDetails = () => {
   const [search, setSearch] = useState("");
@@ -57,6 +58,14 @@ const LabDetails = () => {
     return matchesSearch && matchesStatus;
   });
 
+ const handleExport = () => {
+  const data = filteredSubmissions.map(
+    ({ session_id, start_time, ...rest }) => rest
+  );
+
+  exportToExcel(data, details?.title);
+};
+
   return (
     <Box sx={{ minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc', padding: '2rem 1.5rem' }}>
       <Stack spacing="md">
@@ -87,6 +96,12 @@ const LabDetails = () => {
               { value: "evaluated", label: "Evaluated"}
             ]}
           />
+
+          <Button radius="xl"
+          leftSection={<Download size={16}/>}
+           onClick={handleExport}>
+            Export
+          </Button>
       </Group>
 
 

@@ -5,7 +5,7 @@ import QuizHeader from "../components/QuizHeader";
 import QuestionList from "../components/QuestionList";
 import Spinner from "../../../shared/components/Spinner";
 import { notifications } from "@mantine/notifications";
-import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz,} from "../reducers/quizSlice.js";
+import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz, setTestCaseFile, removeTestCaseFile,} from "../reducers/quizSlice.js";
 import { Paper, Stack, Text, ActionIcon, Group, Button, Center, } from "@mantine/core";
 import { Plus } from "lucide-react";
 import { createQuizThunk, fetchQuizThunk, updateQuizThunk } from "../thunks/facultyThunks.js";
@@ -52,19 +52,55 @@ export default function CreateQuizPage() {
     );
   };
 
+  // const handleAddTestCase = (questionId) => {
+  //   dispatch(addTestCase({questionId}))
+  // };
+
+  // const handleUpdateTestCase = (questionId, testCaseId, field, value) => {
+  //   dispatch(updateTestCase({questionId, testCaseId, field, value}));
+  // };
+
+  
+  
   const handleAddTestCase = (questionId) => {
-    dispatch(addTestCase({questionId}))
+    dispatch(addTestCase({ questionId }));
   };
-
-  const handleUpdateTestCase = (questionId, testCaseId, field, value) => {
-    dispatch(updateTestCase({questionId, testCaseId, field, value}));
+  
+  const handleUpdateTestCase = (
+    questionId,
+    testCaseId,
+    field,
+    value
+  ) => {
+    dispatch(
+      updateTestCase({
+        questionId,
+        testCaseId,
+        field,
+        value,
+      })
+    );
   };
+  
+  const handleUploadTestCaseFile = (questionId, file) => {
+  dispatch(
+    setTestCaseFile({
+      questionId,
+      ...file,
+    })
+  );
+};
 
+const handleRemoveTestCaseFile = (
+  questionId
+) => {
+  dispatch(removeTestCaseFile(questionId));
+};
 
 const handlePublishQuiz = async () => {
   try {
     await dispatch(isEditMode ? updateQuizThunk({ quizId, data: currentQuiz }) : createQuizThunk(currentQuiz)).unwrap();
-
+    console.log(currentQuiz);
     notifications.show({
       title: "Success",
       message: "Quiz published successfully",
@@ -94,7 +130,7 @@ if (loading){
     <>
       <QuizHeader />
 
-      <QuestionList
+      {/* <QuestionList
         questions={
           currentQuiz.questions
         }
@@ -110,7 +146,24 @@ if (loading){
         onUpdateTestCase={
           handleUpdateTestCase
         }
-      />
+      /> */}
+
+      <QuestionList
+  questions={currentQuiz.questions}
+  onRemoveQuestion={handleRemoveQuestion}
+  onUpdateQuestion={handleUpdateQuestion}
+
+  onAddTestCase={handleAddTestCase}
+  onUpdateTestCase={handleUpdateTestCase}
+
+  onUploadTestCaseFile={
+    handleUploadTestCaseFile
+  }
+
+  onRemoveTestCaseFile={
+    handleRemoveTestCaseFile
+  }
+/>
 
       <Paper
         withBorder

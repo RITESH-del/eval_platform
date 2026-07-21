@@ -56,7 +56,7 @@ export const teacherRoutes = [
         )
       },
       {
-        path: "create-quiz",
+        path: "create-practical",
         element: (
           <ProtectedRoute role="faculty">
             <CreateQuizPage />
@@ -64,7 +64,7 @@ export const teacherRoutes = [
         ),
       },
       {
-        path: "edit-quiz/:quizId",
+        path: "edit-practical/:quizId",
         element: (
           <ProtectedRoute role="faculty">
             <CreateQuizPage />

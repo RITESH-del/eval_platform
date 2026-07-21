@@ -1,13 +1,16 @@
 
 import { useState, useEffect } from "react";
-import { AppShell } from "@mantine/core";
-import Sidebar from "../../shared/components/Layout/Sidebar.jsx";
-import Header from "../../shared/components/Layout/Header.jsx";
+import { AppShell, Container } from "@mantine/core";
+// import Sidebar from "../../shared/components/Layout/Sidebar.jsx";
+// import Header from "../../shared/components/Layout/Header.jsx";
 import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudentProfile } from './models/studentThunks.js';
 import { FileText, ListTodo, CircleHelp } from "lucide-react";
 import { useMediaQuery } from "@mantine/hooks";
+import Header from "./components/Header.jsx";
+import { useNavigate } from 'react-router';
+import { logout } from "../auth/models/authSlice";
 
 
 const sidebarConfig = [
@@ -37,6 +40,7 @@ export default function CommonLayout() {
 
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const profile = useSelector((state) => state.student.profile);
 
@@ -44,19 +48,27 @@ export default function CommonLayout() {
     dispatch(fetchStudentProfile());
   }, []);
 
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      dispatch(logout());
+      navigate("/login");
+    };
+
   return (
     <AppShell
-      navbar={
-    isMobile
-      ? undefined
-      : {
-          width: collapsed ? 80 : 280,
-          breakpoint: 0,
-        }
-  }
-  padding={isMobile ? "xl" : "lg"}
+     padding="md"
+     header={{ height: 70 }}
+  //     navbar={
+  //   isMobile
+  //     ? undefined
+  //     : {
+  //         width: collapsed ? 80 : 280,
+  //         breakpoint: 0,
+  //       }
+  // }
+  // padding={isMobile ? "xl" : "lg"}
     >
-      {!isMobile && (
+      {/* {!isMobile && (
           <Sidebar
             profile={profile}
             collapsed={collapsed}
@@ -65,15 +77,30 @@ export default function CommonLayout() {
             }
             sidebarConfig={sidebarConfig}
           />
-        )}
-      <AppShell.Main
-        px={isMobile ? "lg" : ""}
-        py={isMobile ? "lg" : ""}
-      >
-        {!isMobile && (
-          <Header location={pathname} />
-        )}
-        <Outlet />
+        )} */}
+
+    <AppShell.Header>
+    <Header
+      user={profile}
+      onSupport={() => navigate("/student/support")}
+      onLogout={handleLogout}
+    />
+    </AppShell.Header>
+
+      <AppShell.Main>
+        {/* {!isMobile && (
+          // <Header location={pathname} />
+        )} */}
+      {!isMobile ? (
+      <Container
+        size="xl"
+        py="md"
+        px="3xl"
+      > <Outlet />
+        </Container>
+      ) : (
+      <Outlet />
+      )}
       </AppShell.Main>
     </AppShell>
   );

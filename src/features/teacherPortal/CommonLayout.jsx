@@ -11,7 +11,7 @@ import { fetchFacultyProfile } from './thunks/facultyThunks.js';
 
 const sidebarConfig = [
   {
-    label: "Past Practicals",
+    label: "Practicals",
     leftSection: <FileText size={18} />,
     href: "/Faculty"
   },
@@ -61,9 +61,9 @@ export default function CommonLayout() {
           variant="light"
           leftSection={<Plus size={18} />}
           fullWidth={!collapsed}
-          onClick={() => navigate("/Faculty/create-quiz")}
+          onClick={() => navigate("/Faculty/create-practical")}
         >
-          {!collapsed && "Create New Quiz"}
+          {!collapsed && "New Practical"}
         </Button>}
       />
       <AppShell.Main>

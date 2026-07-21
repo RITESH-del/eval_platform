@@ -153,7 +153,7 @@ export default function PracticalsTable({ practicals }) {
                             </Menu.Item>
 
                             <Menu.Item
-                              color={practical.result_published ? "gray" : "black"}
+                              color={practical.result_published ? "gray" : "var(--mantine-text-color)"}
                               onClick={() => publishResult(practical.id)}
                             >
                               {practical.result_published ? "published" : "Publish Result"}
@@ -161,7 +161,7 @@ export default function PracticalsTable({ practicals }) {
 
                             <Menu.Item
                               onClick={() => {
-                                navigate(`/Faculty/edit-quiz/${practical.id}`);
+                                navigate(`/Faculty/edit-practical/${practical.id}`);
                               }}
                             >
                               Edit

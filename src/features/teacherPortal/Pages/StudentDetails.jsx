@@ -190,6 +190,7 @@ const manualScore = useMemo(() => {
 
           <Stack
             w={220}
+            miw={220}
             p="sm"
             style={{
               border:

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SegmentedControl, Card } from "@mantine/core";
+import { SegmentedControl, Card, Group} from "@mantine/core";
 import LoginForm from "../components/LoginForm";
 import SignUpForm from "../components/SignUpForm";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ function RightPane() {
 
 
   return (
-    <div className="flex flex-col flex-1 justify-center items-center bg-white">
+    <div className="flex flex-col flex-1 justify-center items-center bg-[var(--mantine-color-body)]">
       <Card shadow="lg" padding={30} withBorder className="min-w-120 gap-5">
         {/* <SegmentedControl
           size="md"
@@ -59,9 +59,15 @@ export default function AuthPage() {
   const [tab, setTab] = useState("login");
 
   return (
-    <div className="h-screen flex">
+    <Group 
+      gap={0}
+      h="100vh"
+      wrap="nowrap"
+      align="stretch"
+      bg="var(--mantine-color-body)"
+      >
       <LeftPane />
       <RightPane />
-    </div>
+    </Group>
   );
 }

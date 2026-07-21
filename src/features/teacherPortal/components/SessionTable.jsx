@@ -83,7 +83,7 @@ export default function SubmissionTable({
 
         {
           accessor: "total_autograding_score",
-          title: "App Marks",
+          title: "System Evaluated Marks",
           render: ({ total_autograding_score }) => (
             <Code>{total_autograding_score}</Code>
           ),
@@ -92,7 +92,7 @@ export default function SubmissionTable({
 
         {
           accessor: "total_manual_score",
-          title: "Teacher Marks",
+          title: "Awarded Marks",
           textAlign: "center",
           render: ({ total_manual_score }) =>
             total_manual_score ?? "—",

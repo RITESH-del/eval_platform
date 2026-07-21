@@ -13,6 +13,7 @@ import {
   ThemeIcon,
   Stack,
   SimpleGrid,
+  Badge
 } from "@mantine/core";
 import MarkdownEditor from '../../../shared/components/MDEditor.jsx';
 import {
@@ -20,18 +21,28 @@ import {
   Plus,
   Upload,
   FileCode,
+  CloudUpload
 } from "lucide-react";
+import { apiClient } from '../../../shared/api/apiClient.js';
+import UploadCard from '../../../shared/components/UploadCard.jsx';
 
 export default function Question({
   question,
   index,
   onRemoveQuestion,
   onUpdateQuestion,
+
   onAddTestCase,
   onUpdateTestCase,
   onRemoveTestCase,
+
+  onUploadTestCaseFile,
+  onRemoveTestCaseFile,
 }) {
   const [currentTestCase, setCurrentTestCase] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
 
   useEffect(() => {
   if (currentTestCase >= question.testCases.length) {
@@ -42,6 +53,83 @@ export default function Question({
 }, [question.testCases.length, currentTestCase]);
 
   const tc = question.testCases[currentTestCase];
+
+  const handleImageUpload = async (file) => {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const { data } = await apiClient.post(
+        "/faculty/upload-image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const imageMarkdown = `\n\n![${file.name}](${data.url})\n`;
+      const htmlImage = `\n\n<img  src="${data.url}"  alt="${file.name}"  width="400"/>\n`;
+
+      onUpdateQuestion(question.id, "statement",  (question.statement ?? "") + imageMarkdown + htmlImage);
+};
+
+const handleTestCasesUpload = async (file) => {
+  try {
+    setUploading(true);
+
+    setUploadProgress({
+      fileName: file.name,
+      progress: 0,
+    });
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("question_id", question.id);
+
+    const { data } = await apiClient.post(
+      "/faculty/upload-test-cases",
+      formData,
+      {
+        onUploadProgress: (event) => {
+          const progress = Math.round(
+            (event.loaded * 100) / event.total
+          );
+
+          setUploadProgress({
+            fileName: file.name,
+            progress,
+          });
+        },
+      }
+    );
+
+    setUploadProgress({
+      fileName: file.name,
+      progress: 100,
+    });
+
+    // dispatch(
+    //   setUpdateProgress({
+    //     questionId: question.id,
+    //     filename: file.name,
+    //     url: data.url,
+    //     public_id: data.public_id,
+    //   })
+    // );
+
+    onUploadTestCaseFile(question.id, {
+  filename: file.name,
+  url: data.url,
+  public_id: data.public_id,
+});
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setUploading(false);
+  }
+};
+
 
 
   return (
@@ -102,7 +190,7 @@ export default function Question({
 
           <Select
           w={110}
-          placeholder="difficulty"
+          placeholder="Difficulty"
           data={[
             { value: "easy", label: "Easy" },
             { value: "medium", label: "Medium" },
@@ -119,19 +207,13 @@ export default function Question({
           />
 
           <Group>
-            <Paper
-              px="md"
-              radius="md"
-              shadow="xs"
-              bg="var(--mantine-color-default)"
-            >
-              <Group gap={6}>
+              {/* <Group gap={6}>
                 <Text
                   size="xs"
                   fw={700}
                   c="dimmed"
                 >
-                  points
+                  Points
                 </Text>
 
                 <NumberInput
@@ -147,8 +229,21 @@ export default function Question({
                     )
                   }
                 />
-              </Group>
-            </Paper>
+              </Group> */}
+
+          <NumberInput
+            value={question.marks}
+            min={1}
+            w={100}
+            rightSection={
+              <Text size="xs" c="dimmed">
+                PTS
+              </Text>
+            }
+            onChange={(value) =>
+              onUpdateQuestion(question.id, "marks", value)
+            }
+          />
 
             <ActionIcon
               variant="subtle"
@@ -168,32 +263,6 @@ export default function Question({
       </Card.Section>
 
       <Stack p="lg">
-        {/* <Textarea
-          minRows={2}
-          autosize
-          variant="filled"
-          placeholder="Enter question statement..."
-          value={question.statement}
-          onChange={(e) =>
-            onUpdateQuestion(
-              question.id,
-              "statement",
-              e.target.value
-            )
-          }
-          styles={{
-            input: {
-              background:
-                "#f8f9fb",
-              border: "none",
-              borderRadius:
-                "10px",
-              fontSize: "16px",
-              padding: "20px",
-            },
-          }}
-        /> */}
-
         <MarkdownEditor
           value={question.statement}
           onChange={(markdown) =>
@@ -207,7 +276,7 @@ export default function Question({
 
 
 
-        {/*<Paper
+        <Paper
           p="md"
           radius="lg"
           bg="var(--mantine-color-default)"
@@ -232,8 +301,7 @@ export default function Question({
                   size="xs"
                   c="dimmed"
                 >
-                  PDF, PNG OR JPG
-                  UP TO 10MB
+                  PNG OR JPG UP TO 10MB
                 </Text>
               </Stack>
             </Group>
@@ -248,18 +316,17 @@ export default function Question({
               <input
                 hidden
                 type="file"
-                accept="image/*,.pdf"
-                onChange={(e) =>
-                  onUpdateQuestion(
-                    question.id,
-                    "diagram",
-                    e.target.files?.[0]
-                  )
-                }
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleImageUpload(file);
+                  }
+                }}
               />
             </Button>
           </Group>
-        </Paper> */}
+        </Paper>
 
         <Group
           justify="space-between"
@@ -281,11 +348,94 @@ export default function Question({
             </Text>
           </Group>
 
+          {/* <Button
+          variant=""
+          leftSection={<CloudUpload size={16}/>}
+          component="label">
+            Upload
+            <input
+                hidden
+                type="file"
+                accept=".txt"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleTestCasesUpload(file);
+                  }
+                }}
+              />
+          </Button> */}
+
+          {/* {!uploadProgress ? (
+  <Button
+    leftSection={<CloudUpload size={16} />}
+    component="label"
+  >
+    Upload TXT
+
+    <input
+      hidden
+      type="file"
+      accept=".txt"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) handleTestCasesUpload(file);
+      }}
+    />
+  </Button>
+) : (
+  <UploadCard
+    fileName={uploadProgress.fileName}
+    progress={uploadProgress.progress}
+    uploading={uploading}
+    onRemove={() => {
+      setUploadProgress(null);
+    }}
+  />
+)} */}
+
+{question.testCaseFile?.url ? (
+  <UploadCard
+    fileName={question.testCaseFile.filename}
+    uploading={uploading}
+    url={question.testCaseFile.url}
+    onRemove={() => { // Later, add a delete api
+      onRemoveTestCaseFile(question.id);
+      setUploadProgress(null);
+    }}
+  />
+) : uploading ? (
+  <UploadCard
+    fileName={uploadProgress.fileName}
+    progress={uploadProgress.progress}
+    uploading={uploading}
+    onRemove={() => {
+      setUploadProgress(null);
+    }}
+  />
+) : (
+  <Group>
+  <Button
+    leftSection={<CloudUpload size={16} />}
+    component="label"
+  >
+    Upload
+    <input
+      hidden
+      type="file"
+      accept=".txt"
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        if (file) handleTestCasesUpload(file);
+      }}
+    />
+  </Button>
+
           <Button
             variant="subtle"
-            size="xs"
+            // size="xs"
             leftSection={
-              <Plus size={14} />
+              <Plus size={18} />
             }
             onClick={() =>
               onAddTestCase(
@@ -293,83 +443,18 @@ export default function Question({
               )
             }
           >
-            Add Case
+            Add
           </Button>
+  </Group>
+)}
+
+          
+            
+
+
         </Group>
 
-        {/* {question.testCases.map(
-          (tc) => (
-            <Paper
-              key={tc.id}
-              p="lg"
-              radius="md"
-              bg="gray.0"
-            >
-              <SimpleGrid
-                cols={{
-                  base: 1,
-                  md: 2,
-                }}
-              >
-                <Textarea
-                  label="INPUT"
-                  placeholder="e.g. root = [2,1,3]"
-                  autosize
-                  minRows={1}
-                  maxRows={5}
-                  value={tc.input}
-                  onChange={(e) =>
-                    onUpdateTestCase(
-                      question.id,
-                      tc.id,
-                      "input",
-                      e.target.value
-                    )
-                  }
-                />
-
-                <Group
-                  align="end"
-                  gap="xs"
-                >
-                  <Textarea
-                    flex={1}
-                    label="EXPECTED OUTPUT"
-                    placeholder="e.g. true"
-                    autosize
-                    minRows={1}
-                    maxRows={5}
-                    value={tc.output}
-                    onChange={(e) =>
-                      onUpdateTestCase(
-                        question.id,
-                        tc.id,
-                        "output",
-                        e.target.value
-                      )
-                    }
-                  />
-
-                  <ActionIcon
-                    color="red"
-                    variant="light"
-                    mb={2}
-                    onClick={() =>
-                      onRemoveTestCase(
-                        question.id,
-                        tc.id
-                      )
-                    }
-                  >
-                    <Trash2 size={14} />
-                  </ActionIcon>
-                </Group>
-              </SimpleGrid>
-            </Paper>
-          )
-        )} */}
-
-        {tc && (
+ {tc && (
   <Paper
     p="lg"
     radius="md"

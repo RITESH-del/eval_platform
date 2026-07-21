@@ -7,6 +7,7 @@ import {
   Text,
   SimpleGrid,
   Button,
+  Select,
   Group
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,15 +34,27 @@ export default function QuizHeader() {
     (state) => state.quiz.currentQuiz
   );
 
-  const sectionOptions = [
-  "CSE-I",
-  "CSE-II",
-  "CSE-III",
-  "CSE-IV",
-  "CSE-V",
-  "CSE-VI",
-  "CSE-VII",
-  "CSE-VIII",
+const sectionOptions = [
+  { group: "Computer Science (CSE)", items: [
+    "CSE-I",
+    "CSE-II",
+    "CSE-III",
+    "CSE-IV",
+    "CSE-V",
+    "CSE-VI",
+    "CSE-VII",
+    "CSE-VIII",
+  ]},
+  { group: "Electronics (ECE)", items: [
+    "ECE-I",
+    "ECE-II",
+    "ECE-III",
+    "ECE-IV",
+    "ECE-V",
+    "ECE-VI",
+    "ECE-VII",
+    "ECE-VIII",
+  ]},
 ];
 
   return (
@@ -53,7 +66,7 @@ export default function QuizHeader() {
         size="xl"
         fw={700}
         w="80%"
-        placeholder="Enter Quiz Title"
+        placeholder="Enter Practical Title"
         value={currentQuiz.title}
         onChange={(e) =>
           dispatch(
@@ -87,6 +100,65 @@ export default function QuizHeader() {
           </Text>
 
           <SimpleGrid cols={3}>
+             <TextInput
+              label="Course Name"
+              placeholder="Enter Course Name"
+              value={
+                currentQuiz.course_name
+                  ? [currentQuiz.course_name]
+                  : []
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateQuizField({
+                    field: "course_name",
+                    value: e.target.value || "",
+                  })
+                )
+              }
+            />
+
+             <TextInput
+              label="Course Code"
+              placeholder="Enter Course Code"
+              value={
+                currentQuiz.course_code
+                  ? [currentQuiz.course_code]
+                  : []
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateQuizField({
+                    field: "course_code",
+                    value: e.target.value || "",
+                  })
+                )
+              }
+            />
+
+ <Select
+  label="Exam Category"
+  placeholder="Select exam category"
+  data={[
+    { value: "regular", label: "Regular" },
+    { value: "repeat", label: "Repeat" },
+  ]}
+  value={currentQuiz.exam_category}
+  onChange={(value) =>
+    dispatch(
+      updateQuizField({
+        field: "exam_category",
+        value,
+      })
+    )
+  }
+  clearable
+/>
+
+
+          </SimpleGrid>
+
+          <SimpleGrid cols={3}>
             <TextInput
               label="Password"
               placeholder="Start Password"
@@ -106,18 +178,11 @@ export default function QuizHeader() {
             />
 
             <NumberInput
-              label="Marks"
-              placeholder="Marks"
+              label="Total Marks"
+              placeholder="Total Marks"
               min={1}
               value={currentQuiz.total_marks}
-              onChange={(value) =>
-                dispatch(
-                  updateQuizField({
-                    field: "total_marks",
-                    value,
-                  })
-                )
-              }
+               readOnly
             />
 
             <NumberInput
@@ -192,7 +257,7 @@ export default function QuizHeader() {
             />
 
             <NumberInput
-                label="Target Year"
+                label="Batch"
                 min={2020}
                 max={2100}
                 value={currentQuiz.target_graduation_year}

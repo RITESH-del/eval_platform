@@ -22,14 +22,14 @@ export const studentRoutes = [
     </ProtectedRoute>
     ),
   },
-  {
-    path: 'dashboard',
-    element: (
-    <ProtectedRoute role="student">
-      <StudentDashPage />
-    </ProtectedRoute>
-    ),
-  },
+  // {
+  //   path: 'dashboard',
+  //   element: (
+  //   <ProtectedRoute role="student">
+  //     <StudentDashPage />
+  //   </ProtectedRoute>
+  //   ),
+  // },
   {
     path: 'results',
     element: (
