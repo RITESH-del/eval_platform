@@ -168,3 +168,34 @@ export const publishResultThunk = createAsyncThunk(
     }
   }
 )
+
+
+// Add / Update Teacher Remarks
+export const addTeacherRemarks = createAsyncThunk(
+  "faculty/addTeacherRemarks",
+  async ({ sessionId, remark }, { rejectWithValue }) => {
+    try {
+      const data = await facultyAPI.postTeacherRemarks(sessionId, remark);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to add remarks"
+      );
+    }
+  }
+);
+
+// Fetch Teacher Remarks
+export const getTeacherRemarks = createAsyncThunk(
+  "faculty/getTeacherRemarks",
+  async (sessionId, { rejectWithValue }) => {
+    try {
+      const data = await facultyAPI.fetchTeacherRemarks(sessionId);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to fetch remarks"
+      );
+    }
+  }
+);

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchFacultyProfile, fetchPastPracticals, fetchLabDetails, fetchLabSubmissions, fetchStudentSubmissionDetail, fetchQuizConfig, fetchLabSessions, deleteQuizThunk, updateManualScore
-    , publishResultThunk
+    , publishResultThunk, getTeacherRemarks, addTeacherRemarks
  } from "../thunks/facultyThunks";
 
 export const facultySlice = createSlice({
@@ -15,6 +15,10 @@ export const facultySlice = createSlice({
         studentSubmissionDetail: null,
         selectedExam: null,
         selectedSubmission: null,
+        teacherRemark: null,
+        addTeacherRemarkLoading: false,
+        fetchTeacherRemarkLoading: false,
+        teacherRemarkError: null,
         loading: false,
         error: null,
     },
@@ -38,7 +42,8 @@ export const facultySlice = createSlice({
                 break;
                 }
             }
-        }
+        },
+
     },
 
     extraReducers: (builder) => {
@@ -181,6 +186,44 @@ export const facultySlice = createSlice({
                     exam.result_published = updatedExam.result_published;
                 }
             })
+
+             // ===========================
+  // Fetch Teacher Remarks
+  // ===========================
+
+  .addCase(getTeacherRemarks.pending, (state) => {
+    state.fetchTeacherRemarkLoading = true;
+    state.teacherRemarkError = null;
+  })
+
+  .addCase(getTeacherRemarks.fulfilled, (state, action) => {
+    state.fetchTeacherRemarkLoading = false;
+    state.teacherRemark = action.payload;
+  })
+
+  .addCase(getTeacherRemarks.rejected, (state, action) => {
+    state.fetchTeacherRemarkLoading = false;
+    state.teacherRemarkError = action.payload;
+  })
+
+  // ===========================
+  // Add Teacher Remarks
+  // ===========================
+
+  .addCase(addTeacherRemarks.pending, (state) => {
+    state.addTeacherRemarkLoading = true;
+    state.teacherRemarkError = null;
+  })
+
+  .addCase(addTeacherRemarks.fulfilled, (state, action) => {
+    state.addTeacherRemarkLoading = false;
+    state.teacherRemark = action.payload;
+  })
+
+  .addCase(addTeacherRemarks.rejected, (state, action) => {
+    state.addTeacherRemarkLoading = false;
+    state.teacherRemarkError = action.payload;
+  });
     }   
 })
 

@@ -91,3 +91,13 @@ export const publishResult = async(examId) => {
     return res.data;
 }
 
+
+export const postTeacherRemarks = async(sessionId, remark) => {
+  const res = await apiClient.post("/faculty/add-remarks", { session_id: sessionId, description: remark });
+  return res.data;
+}
+
+export const fetchTeacherRemarks = async(sessionId) => {
+  const res = await apiClient.get(`/faculty/remarks/${sessionId}`)
+  return res.data;
+}

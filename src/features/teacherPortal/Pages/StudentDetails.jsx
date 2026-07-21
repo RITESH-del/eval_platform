@@ -6,20 +6,21 @@ import {
   Text,
   Title,
   Progress,
-  Space
 } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import Spinner from "../../../shared/components/Spinner.jsx";
 import QuestionCard from "../components/QuestionCard.jsx";
 import CodeSubmissionCard from "../components/CodeBox.jsx";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Plus} from "lucide-react";
 import EvaluationCard from "../components/EvaluationCard.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStudentSubmissionDetail } from "../thunks/facultyThunks.js";
 import { updateManualScore } from "../thunks/facultyThunks.js";
 import { notifications } from "@mantine/notifications";
-
+import { useDisclosure } from "@mantine/hooks";
+import TeacherRemarksModal from "../components/TeacherRemarkModal.jsx";
+import { getTeacherRemarks, addTeacherRemarks } from "../thunks/facultyThunks.js";
 
 export default function ReviewSubmissionPage() {
   const dispatch = useDispatch();
@@ -27,10 +28,7 @@ export default function ReviewSubmissionPage() {
 
   const { examId, sessionId } = useParams();
 
-  const {
-    studentSubmissionDetail: data,
-    loading,
-  } = useSelector((state) => state.faculty);
+  const { studentSubmissionDetail: data, loading, teacherRemark, addTeacherRemarkLoading } = useSelector((state) => state.faculty);
 
   const [selectedQuestion, setSelectedQuestion] = useState(0);
   const [selectedSubmissionIndex, setSelectedSubmissionIndex] = useState(0);
@@ -147,6 +145,39 @@ const manualScore = useMemo(() => {
   }, 0);
 }, [responses]);
 
+useEffect(() => {
+  dispatch(getTeacherRemarks(sessionId));
+}, [dispatch, sessionId]);
+
+
+const [opened, { open, close }] = useDisclosure(false);
+
+const handleRemark = async (remark) => {
+  try {
+    await dispatch(addTeacherRemarks({sessionId, remark})).unwrap();
+    
+    close();
+
+    notifications.show({
+      title: "Success",
+      message: "Remark added successfully",
+      color: "green",
+    });
+
+  } catch (err) {
+    console.error("Failed to add remark", err);
+
+    notifications.show({
+      title: "Error",
+      message:
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to add remark",
+      color: "red",
+    });
+  }
+};
+
 
 
   if (loading) {
@@ -167,6 +198,7 @@ const manualScore = useMemo(() => {
         </Button> */}
 
         <div>
+          <Group flex={1} justify="space-between">
           <Title order={1}>
             Review Submission:
             <Text component="span" c="blue" inherit>
@@ -174,6 +206,22 @@ const manualScore = useMemo(() => {
               {data?.student_details?.name}
             </Text>
           </Title>
+
+          <Button 
+          radius="md"
+          onClick={open}
+          leftSection={<Plus size={16} />}
+          >
+            Add Remarks
+          </Button>
+
+      <TeacherRemarksModal
+        opened={opened}
+        onClose={close}
+        onSave={handleRemark}
+        loading={addTeacherRemarkLoading}
+        initialRemark={teacherRemark?.teacher_remarks} />
+    </Group>
 
           <Group mt={6}>
             <Text ff="monospace">
@@ -188,6 +236,14 @@ const manualScore = useMemo(() => {
 
         <Group align="flex-start" wrap="nowrap">
 
+          <div 
+          style={{
+              border: "none",
+              background: "transparent",
+              position: 'sticky',
+              top: '20px',
+            }}>
+
           <Stack
             w={220}
             miw={220}
@@ -196,8 +252,8 @@ const manualScore = useMemo(() => {
               border:
                 "1px solid var(--mantine-color-gray-3)",
               borderRadius: 12,
-              position: 'sticky',
-              top: '20px',
+              // position: 'sticky',
+              // top: '20px',
             }}
           >
             <Text fw={600}>
@@ -229,7 +285,10 @@ const manualScore = useMemo(() => {
               </Button>
             ))}
 
+
+
             <Stack>
+
                <Group justify="space-between">
           <Text fw={600}>
               Progress
@@ -271,6 +330,44 @@ const manualScore = useMemo(() => {
 
 
           </Stack>
+
+          {/* <Stack
+            w={220}
+            miw={220}
+            p="sm"
+            mt={20}
+            style={{
+              border:
+                "1px solid var(--mantine-color-gray-3)",
+              borderRadius: 12,
+            }}
+          > */}
+
+            {/* <Text fw={600}>
+              Teacher Remarks
+            </Text> */}
+
+            {/* <Textarea
+              w={"100%"}
+              mt={20}
+              autosize
+              minRows={5}
+              label="Teacher Remarks"
+              withAsterisk
+              placeholder="Enter teacher remarks here"
+              value={value}
+              onChange={(event) => setValue(event.currentTarget.value.slice(0, maxLength))}
+               bottomSection={
+        <Text size="xs" c="dimmed">
+          {value.length}/{maxLength} characters
+        </Text>
+      }
+            /> */}
+
+          {/* </Stack> */}
+
+          </div>
+
 
           <Stack flex={1}>
 
