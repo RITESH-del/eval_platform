@@ -24,7 +24,7 @@ const App = lazy(() => import("./App.jsx"));
 
 
 const theme = createTheme({
-  fontFamily: "Roboto",
+  fontFamily: "Helvetica",
   primary: "black",
   defaultRadius: "md",
   

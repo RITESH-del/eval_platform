@@ -68,7 +68,7 @@ export default function TeacherHomePage() {
   return (
   <>
   {/* Filter & Search bar */}
-        <Group mb="xs" wrap="nowrap">
+        <Group mb="xs" wrap="nowrap" mt={50}>
           <TextInput
             flex={1}
             radius="xl"

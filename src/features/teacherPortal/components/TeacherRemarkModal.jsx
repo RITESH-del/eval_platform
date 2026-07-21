@@ -73,7 +73,7 @@ export default function TeacherRemarksModal({
             size="xs"
             c="dimmed"
           >
-            {remark.length} / 1000 characters
+            {remark ? remark.length : 0} / 1000 characters
           </Text>
 
           <Group>
