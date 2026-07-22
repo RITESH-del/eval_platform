@@ -12,9 +12,9 @@
   padding-top: 80px;
   border-radius: 0;
 
-  @media (max-width: $mantine-breakpoint-sm) {
+  @media (max-width: 48em) {
     max-width: 100%;
-  }
+    }
 }
 
 .title {
