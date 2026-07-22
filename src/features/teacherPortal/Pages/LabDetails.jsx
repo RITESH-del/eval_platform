@@ -60,7 +60,7 @@ const LabDetails = () => {
 
  const handleExport = () => {
   const data = filteredSubmissions.map(
-    ({ session_id, start_time, ...rest }) => rest
+    ({ session_id, start_time, remark, ...rest }) => rest
   );
 
   exportToExcel(data, details?.title);

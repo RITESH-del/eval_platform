@@ -169,18 +169,10 @@ export default function ReviewSubmissionPage() {
     return <Spinner />;
   }
 
-  const student_name =
-    data?.student_details?.name ??
-    "Loading Name...";
-
-  const university_id =
-    data?.student_details
-      ?.university_id ??
-    "------";
-
-  const exam_title =
-    data?.exam_details?.title ??
-    "Loading Exam Title...";
+  const student_name = data?.student_details?.name ?? "Loading Name...";
+  const university_id = data?.student_details?.university_id ?? "------";
+  const exam_title = data?.exam_details?.title ?? "Loading Exam Title...";
+  const teacher_remarks = data?.teacher_remarks || "No remarks yet";
 
     return (
   <Container size="xl" py="lg">
@@ -202,6 +194,14 @@ export default function ReviewSubmissionPage() {
       ============================ */}
       {!isMobile ? (
         <Group align="flex-start" wrap="nowrap">
+
+          <div style={{
+            position: "sticky",
+            top: 20,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}>
 
           <Paper
             w={240}
@@ -304,6 +304,19 @@ export default function ReviewSubmissionPage() {
             </Stack>
           </Paper>
 
+          <Paper
+          w={240}
+          p="sm"
+          withBorder
+          radius="md"
+          >
+            <Title fw={600} size={18} c={"blue"}>Teacher Remarks</Title>
+            <Text mt={10}>
+              {teacher_remarks}
+            </Text>
+          </Paper>
+          </div>
+
           <Stack flex={1} gap="md">
 
             {currentResponse &&
@@ -363,126 +376,6 @@ export default function ReviewSubmissionPage() {
              Mobile Layout
         ============================ */
         <Stack gap="md">
-
-          {/* <Paper
-            withBorder
-            radius="md"
-            p="sm"
-          >
-            <Group justify="space-between">
-
-              <Text fw={600}>
-                Questions
-              </Text>
-
-              <Burger
-                opened={
-                  sidebarOpened
-                }
-                onClick={() =>
-                  setSidebarOpened(
-                    (o) => !o
-                  )
-                }
-                size="sm"
-              />
-            </Group>
-
-            <Collapse
-              in={sidebarOpened}
-            >
-              <Stack mt="md">
-
-                {responses.map(
-                  (
-                    question,
-                    index
-                  ) => (
-                    <Button
-                      key={
-                        question.question_id
-                      }
-                      fullWidth
-                      justify="space-between"
-                      variant={
-                        selectedQuestion ===
-                        index
-                          ? "filled"
-                          : "subtle"
-                      }
-                      rightSection={
-                        question.submission_history?.some(
-                          (
-                            submission
-                          ) =>
-                            submission.manual_score !=
-                            null
-                        ) ? (
-                          <CircleCheck
-                            size={14}
-                          />
-                        ) : null
-                      }
-                      onClick={() => {
-                        setSelectedQuestion(
-                          index
-                        );
-
-                        setSidebarOpened(
-                          false
-                        );
-                      }}
-                    >
-                      Question{" "}
-                      {index + 1}
-                    </Button>
-                  )
-                )}
-
-                <Divider />
-
-                <Group justify="space-between">
-                  <Text fw={600}>
-                    Auto Grade
-                  </Text>
-
-                  <Text>
-                    {autoGradingMarks}
-                  </Text>
-                </Group>
-
-                <Progress
-                  value={
-                    total_q
-                      ? (autoGradingMarks /
-                          total_q) *
-                        100
-                      : 0
-                  }
-                />
-
-                <Group justify="space-between">
-                  <Text fw={600}>
-                    Manual Score
-                  </Text>
-
-                  <Text>
-                    {manualScore}
-                  </Text>
-                </Group>
-
-                <Progress
-                  value={
-                    total_q
-                      ? (manualScore /
-                          total_q) *
-                        100
-                      : 0
-                  }
-                />
-              </Stack>
-            </Collapse>
-          </Paper> */}
 
           <Accordion
   variant="contained"
@@ -587,6 +480,17 @@ export default function ReviewSubmissionPage() {
                 />
               </>
             )}
+
+            <Paper
+          p="sm"
+          withBorder
+          radius="md"
+          >
+            <Title fw={600} size={18} c={"blue"}>Teacher Remarks</Title>
+            <Text mt={10}>
+              {teacher_remarks}
+            </Text>
+          </Paper>
         </Stack>
       )}
     </Stack>

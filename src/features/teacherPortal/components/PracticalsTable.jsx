@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Badge, Button, Paper, Text, Menu, ActionIcon } from "@mantine/core";
+import { Badge, Button, Paper, Text, Menu, ActionIcon, Tooltip } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import TableFooter from "../../../shared/components/CustomTableFooter.jsx";
 import { useDispatch } from "react-redux";
@@ -77,9 +77,24 @@ export default function PracticalsTable({ practicals }) {
             accessor: "target_section",
             title: "Section",
             render: (practical) => (
-              <Badge variant="light">
-                {practical.target_section}
-              </Badge>
+              <Tooltip
+                label={practical.target_section}
+                withArrow
+                position="top"
+              >
+                <Badge
+                  variant="light"
+                  maw={100}
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                  }}
+                >
+                  {practical.target_section}
+                </Badge>
+              </Tooltip>
             ),
           },
 

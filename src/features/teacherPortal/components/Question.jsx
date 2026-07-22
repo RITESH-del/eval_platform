@@ -68,10 +68,10 @@ export default function Question({
         }
       );
 
-      const imageMarkdown = `\n\n![${file.name}](${data.url})\n`;
+      // const imageMarkdown = `\n\n![${file.name}](${data.url})\n`;
       const htmlImage = `\n\n<img  src="${data.url}"  alt="${file.name}"  width="400"/>\n`;
 
-      onUpdateQuestion(question.id, "statement",  (question.statement ?? "") + imageMarkdown + htmlImage);
+      onUpdateQuestion(question.id, "statement",  (question.statement ?? "") + htmlImage);
 };
 
 const handleTestCasesUpload = async (file) => {

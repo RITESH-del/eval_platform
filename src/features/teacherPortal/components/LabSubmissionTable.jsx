@@ -1,19 +1,228 @@
+// import { useState } from "react";
+// import {
+//   ActionIcon,
+//   Badge,
+//   Code,
+//   Menu,
+//   Text,
+// } from "@mantine/core";
+// import { DataTable } from "mantine-datatable";
+// import { EllipsisVertical } from 'lucide-react';
+// import TableFooter from "../../../shared/components/CustomTableFooter";
+// import { setSelectedSubmission } from '../reducers/facultySlice.js';
+// import { useNavigate } from 'react-router-dom';
+// import { useDispatch } from 'react-redux';
+
+// const PAGE_SIZE = 10;
+
+// export default function SubmissionTable({
+//   records,
+//   examId,
+// }) {
+//   const [page, setPage] = useState(1);
+
+//   const from = (page - 1) * PAGE_SIZE;
+//   const to = from + PAGE_SIZE;
+
+//   const paginatedRecords = records.slice(
+//     from,
+//     to
+//   );
+
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+
+//   const columns = [
+//         {
+//           accessor: "university_id",
+//           title: "Roll No.",
+//           render: ({ university_id }) => (
+//             <Code>{university_id}</Code>
+//           ),
+//         },
+//         {
+//           accessor: "section",
+//           title: "Section",
+//           render: ({ section }) => (
+//             <Badge variant="light">
+//               {section ?? "-"}
+//             </Badge>
+//           ),
+//         },
+
+//         {
+//           accessor: "name",
+//           title: "Student",
+//           render: ({ name }) => (
+//             <Text fw={600}>
+//               {name}
+//             </Text>
+//           ),
+//         },
+
+//         {
+//           accessor: "language",
+//           title: "Language",
+//           render: ({ language }) => (
+//             <Code>{language}</Code>
+//           ),
+//         },
+
+//         {
+//           accessor: "total_autograding_score",
+//           title: "System Evaluated Marks",
+//           render: ({ total_autograding_score }) => (
+//             <Code>{total_autograding_score ?? 0}</Code>
+//           ),
+//           textAlign: "center",
+//         },
+
+//         {
+//           accessor: "total_manual_score",
+//           title: "Awarded Marks",
+//           textAlign: "center",
+//           render: ({ total_manual_score }) =>
+//             total_manual_score ?? "-",
+//         },
+
+//         {
+//           accessor: "status",
+//           title: "Status",
+//           textAlign: "right",
+//           render: ({ status }) => (
+//             <Badge
+//              color={
+//   status?.toLowerCase() === "ongoing"
+//     ? "gray"
+//     : status?.toLowerCase() === "submitted"
+//     ? "blue"
+//     : status?.toLowerCase() === "absent"
+//     ? "red"
+//     : status?.toLowerCase() === "evaluated"
+//     ? "green"
+//     : "gray"
+// }
+//             >
+//               {status}
+//             </Badge>
+//           ),
+//         },
+
+//         {
+//           accessor: "actions",
+//           title: "Actions",
+//           textAlign: "right",
+//           render: (student) => (
+//             <Menu shadow="md">
+//               <Menu.Target>
+//                 <ActionIcon
+//                   variant="subtle"
+//                 >
+//                   <EllipsisVertical
+//                     size={18}
+//                   />
+//                 </ActionIcon>
+//               </Menu.Target>
+
+            
+
+
+//               <Menu.Dropdown>
+//                 <Menu.Item
+//                  onClick={() => {
+//                 const isAbsent = student.status === 'absent';
+//                 if (!isAbsent) {
+//                   dispatch(setSelectedSubmission(student))
+//                   navigate(`/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`);
+//                 }
+//               }}
+//                 >
+//                   View Evaluation
+//                 </Menu.Item>
+
+//                 {/* <Menu.Item>
+//                   Evaluate
+//                 </Menu.Item> */}
+//               </Menu.Dropdown>
+//             </Menu>
+//           ),
+//         },
+//       ];
+
+//   return (
+//     <>
+//     <DataTable
+//       withTableBorder
+//       borderRadius="md"
+//       my={4}
+//       striped
+//       highlightOnHover
+//       records={paginatedRecords}
+//       totalRecords={records.length}
+//     //   recordsPerPage={PAGE_SIZE}
+//     //   page={page}
+//     //   onPageChange={setPage}
+//       columns={columns}
+//     />
+
+//      <TableFooter
+//     page={page}
+//     totalPages={Math.ceil(
+//       records.length / PAGE_SIZE
+//     )}
+//     totalRecords={records.length}
+//     recordsShown={records.length}
+//     onPageChange={setPage}
+//     label="practicals"
+//   /> 
+//   </>
+//   );
+// }
+
 import { useState } from "react";
 import {
   ActionIcon,
+  Avatar,
   Badge,
   Code,
+  Group,
   Menu,
+  Stack,
   Text,
+  Tooltip,
 } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
-import { EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical } from "lucide-react";
 import TableFooter from "../../../shared/components/CustomTableFooter";
-import { setSelectedSubmission } from '../reducers/facultySlice.js';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { setSelectedSubmission } from "../reducers/facultySlice.js";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const PAGE_SIZE = 10;
+
+const avatarColors = [
+  "red",
+  "pink",
+  "grape",
+  "violet",
+  "indigo",
+  "blue",
+  "cyan",
+  "teal",
+  "green",
+  "lime",
+  "yellow",
+  "orange",
+];
+
+const getAvatarColor = (name = "") => {
+  const hash = [...name].reduce(
+    (acc, char) => acc + char.charCodeAt(0),
+    0
+  );
+
+  return avatarColors[hash % avatarColors.length];
+};
 
 export default function SubmissionTable({
   records,
@@ -24,157 +233,182 @@ export default function SubmissionTable({
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE;
 
-  const paginatedRecords = records.slice(
-    from,
-    to
-  );
+  const paginatedRecords = records.slice(from, to);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const columns = [
-        {
-          accessor: "university_id",
-          title: "Roll No.",
-          render: ({ university_id }) => (
-            <Code>{university_id}</Code>
-          ),
-        },
-        {
-          accessor: "section",
-          title: "Section",
-          render: ({ section }) => (
-            <Badge variant="light">
-              {section ?? "-"}
-            </Badge>
-          ),
-        },
+     {
+      accessor: "name",
+      title: "Student",
+      render: ({ name, email }) => (
+        <Group gap="sm" wrap="nowrap">
+          <Avatar
+            radius="xl"
+            color={getAvatarColor(name)}
+          >
+            {name
+              ?.split(" ")
+              .map((word) => word[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase()}
+          </Avatar>
 
-        {
-          accessor: "name",
-          title: "Student",
-          render: ({ name }) => (
-            <Text fw={600}>
+          <Stack gap={2}>
+            <Text fw={600} size="sm">
               {name}
             </Text>
-          ),
-        },
 
-        {
-          accessor: "language",
-          title: "Language",
-          render: ({ language }) => (
-            <Code>{language}</Code>
-          ),
-        },
-
-        {
-          accessor: "total_autograding_score",
-          title: "System Evaluated Marks",
-          render: ({ total_autograding_score }) => (
-            <Code>{total_autograding_score ?? 0}</Code>
-          ),
-          textAlign: "center",
-        },
-
-        {
-          accessor: "total_manual_score",
-          title: "Awarded Marks",
-          textAlign: "center",
-          render: ({ total_manual_score }) =>
-            total_manual_score ?? "-",
-        },
-
-        {
-          accessor: "status",
-          title: "Status",
-          textAlign: "right",
-          render: ({ status }) => (
-            <Badge
-             color={
-  status?.toLowerCase() === "ongoing"
-    ? "gray"
-    : status?.toLowerCase() === "submitted"
-    ? "blue"
-    : status?.toLowerCase() === "absent"
-    ? "red"
-    : status?.toLowerCase() === "evaluated"
-    ? "green"
-    : "gray"
-}
+            <Text
+              size="xs"
+              c="dimmed"
+              lineClamp={1}
             >
-              {status}
-            </Badge>
-          ),
-        },
+              {email}
+            </Text>
+          </Stack>
+        </Group>
+      ),
+    },
+    {
+  accessor: "remark",
+  title: "Remarks",
+  render: ({ remark }) => (
+    <Tooltip
+      label={remark || "No remark"}
+      multiline
+      w={350}
+    >
+      <Text
+        size="sm"
+        maw={100}
+        lineClamp={1}
+        c={remark ? undefined : "dimmed"}
+      >
+        {remark || "No remark"}
+      </Text>
+    </Tooltip>
+  ),
+},
+    {
+      accessor: "university_id",
+      title: "Roll No.",
+      render: ({ university_id }) => (
+        <Code>{university_id}</Code>
+      ),
+    },
+    {
+      accessor: "section",
+      title: "Section",
+      render: ({ section }) => (
+        <Badge variant="light">
+          {section ?? "-"}
+        </Badge>
+      ),
+    },
+    {
+      accessor: "language",
+      title: "Language",
+      render: ({ language }) => (
+        <Code>{language}</Code>
+      ),
+    },
+    {
+      accessor: "total_autograding_score",
+      title: "System Evaluated Marks",
+      textAlign: "center",
+      render: ({ total_autograding_score }) => (
+        <Code>{total_autograding_score ?? 0}</Code>
+      ),
+    },
+    {
+      accessor: "total_manual_score",
+      title: "Awarded Marks",
+      textAlign: "center",
+      render: ({ total_manual_score }) =>
+        total_manual_score ?? "-",
+    },
+    {
+      accessor: "status",
+      title: "Status",
+      textAlign: "right",
+      render: ({ status }) => (
+        <Badge
+          color={
+            status?.toLowerCase() === "ongoing"
+              ? "gray"
+              : status?.toLowerCase() === "submitted"
+              ? "blue"
+              : status?.toLowerCase() === "absent"
+              ? "red"
+              : status?.toLowerCase() === "evaluated"
+              ? "green"
+              : "gray"
+          }
+        >
+          {status}
+        </Badge>
+      ),
+    },
+    {
+      accessor: "actions",
+      title: "Actions",
+      textAlign: "right",
+      render: (student) => (
+        <Menu shadow="md">
+          <Menu.Target>
+            <ActionIcon variant="subtle">
+              <EllipsisVertical size={18} />
+            </ActionIcon>
+          </Menu.Target>
 
-        {
-          accessor: "actions",
-          title: "Actions",
-          textAlign: "right",
-          render: (student) => (
-            <Menu shadow="md">
-              <Menu.Target>
-                <ActionIcon
-                  variant="subtle"
-                >
-                  <EllipsisVertical
-                    size={18}
-                  />
-                </ActionIcon>
-              </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              onClick={() => {
+                if (student.status !== "absent") {
+                  dispatch(
+                    setSelectedSubmission(student)
+                  );
 
-            
-
-
-              <Menu.Dropdown>
-                <Menu.Item
-                 onClick={() => {
-                const isAbsent = student.status === 'absent';
-                if (!isAbsent) {
-                  dispatch(setSelectedSubmission(student))
-                  navigate(`/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`);
+                  navigate(
+                    `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
+                  );
                 }
               }}
-                >
-                  View Evaluation
-                </Menu.Item>
-
-                {/* <Menu.Item>
-                  Evaluate
-                </Menu.Item> */}
-              </Menu.Dropdown>
-            </Menu>
-          ),
-        },
-      ];
+            >
+              View Evaluation
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      ),
+    },
+  ];
 
   return (
     <>
-    <DataTable
-      withTableBorder
-      borderRadius="md"
-      my={4}
-      striped
-      highlightOnHover
-      records={paginatedRecords}
-      totalRecords={records.length}
-    //   recordsPerPage={PAGE_SIZE}
-    //   page={page}
-    //   onPageChange={setPage}
-      columns={columns}
-    />
+      <DataTable
+        withTableBorder
+        borderRadius="md"
+        my={4}
+        striped
+        highlightOnHover
+        records={paginatedRecords}
+        totalRecords={records.length}
+        columns={columns}
+      />
 
-     <TableFooter
-    page={page}
-    totalPages={Math.ceil(
-      records.length / PAGE_SIZE
-    )}
-    totalRecords={records.length}
-    recordsShown={records.length}
-    onPageChange={setPage}
-    label="practicals"
-  /> 
-  </>
+      <TableFooter
+        page={page}
+        totalPages={Math.ceil(
+          records.length / PAGE_SIZE
+        )}
+        totalRecords={records.length}
+        recordsShown={paginatedRecords.length}
+        onPageChange={setPage}
+        label="practicals"
+      />
+    </>
   );
 }

@@ -45,15 +45,15 @@ const sectionOptions = [
     "CSE-VII",
     "CSE-VIII",
   ]},
-  { group: "Electronics (ECE)", items: [
-    "ECE-I",
-    "ECE-II",
-    "ECE-III",
-    "ECE-IV",
-    "ECE-V",
-    "ECE-VI",
-    "ECE-VII",
-    "ECE-VIII",
+  { group: "Electronics (ECOM E)", items: [
+    "ECOM E-I",
+    "ECOM E-II",
+    "ECOM E-III",
+    "ECOM E-IV",
+    "ECOM E-V",
+    "ECOM E-VI",
+    "ECOM E-VII",
+    "ECOM E-VIII",
   ]},
 ];
 
@@ -160,8 +160,8 @@ const sectionOptions = [
 
           <SimpleGrid cols={3}>
             <TextInput
-              label="Password"
-              placeholder="Start Password"
+              label="Exam Password"
+              placeholder="Enter Start Password"
               value={
                 currentQuiz.start_password
                   ? [currentQuiz.start_password]

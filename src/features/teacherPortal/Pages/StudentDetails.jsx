@@ -35,6 +35,7 @@ export default function ReviewSubmissionPage() {
 
   useEffect(() => {
     dispatch(fetchStudentSubmissionDetail({ examId, sessionId }));
+    dispatch(getTeacherRemarks(sessionId));
   }, [dispatch, examId, sessionId]);
 
   const responses = data?.responses ?? [];
@@ -145,9 +146,6 @@ const manualScore = useMemo(() => {
   }, 0);
 }, [responses]);
 
-useEffect(() => {
-  dispatch(getTeacherRemarks(sessionId));
-}, [dispatch, sessionId]);
 
 
 const [opened, { open, close }] = useDisclosure(false);
@@ -155,6 +153,7 @@ const [opened, { open, close }] = useDisclosure(false);
 const handleRemark = async (remark) => {
   try {
     await dispatch(addTeacherRemarks({sessionId, remark})).unwrap();
+    await dispatch(getTeacherRemarks(sessionId));
     
     close();
 

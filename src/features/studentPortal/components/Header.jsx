@@ -43,7 +43,7 @@ export default function Header({
         <Group gap="sm">
           <GraduationCap size={28} />
 
-          <Text fw={700} size="lg">
+          <Text fw={700} size="lg" c={"blue"}>
             Student Portal
           </Text>
         </Group>
@@ -89,7 +89,7 @@ export default function Header({
 
         </Group>
 
-          <Text fw={700}>
+          <Text fw={700} c={"blue"}>
             Student Portal
           </Text>
         <Menu
