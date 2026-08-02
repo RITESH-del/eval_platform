@@ -78,14 +78,16 @@ const sectionOptions = [
         }
       />
 
-      <Button 
+      {/* <Button 
       onClick={() => {
         // navigate(`/Faculty/questions`);
       }}
       leftSection={<Plus size={18}/>}
       >
         Add Questions
-      </Button>
+      </Button> */}
+
+      <Text fw={700} size="xl">Total marks : {currentQuiz.total_marks}</Text>
       </Group>
      
 
@@ -177,13 +179,13 @@ const sectionOptions = [
               }
             />
 
-            <NumberInput
+            {/* <NumberInput
               label="Total Marks"
               placeholder="Total Marks"
               min={1}
               value={currentQuiz.total_marks}
                readOnly
-            />
+            /> */}
 
             <NumberInput
               label="Duration (mins)"
@@ -199,6 +201,22 @@ const sectionOptions = [
                 )
               }
             />
+
+            <NumberInput
+                label="Batch"
+                min={2020}
+                max={2100}
+                placeholder="Enter batch"
+                value={currentQuiz.target_graduation_year}
+                onChange={(value) =>
+                  dispatch(
+                    updateQuizField({
+                      field: "target_graduation_year",
+                      value,
+                    })
+                  )
+                }
+              />
           </SimpleGrid>
 
           <SimpleGrid cols={3}>
@@ -256,20 +274,23 @@ const sectionOptions = [
               searchable
             />
 
-            <NumberInput
-                label="Batch"
-                min={2020}
-                max={2100}
-                value={currentQuiz.target_graduation_year}
-                onChange={(value) =>
-                  dispatch(
-                    updateQuizField({
-                      field: "target_graduation_year",
-                      value,
-                    })
-                  )
-                }
-              />
+            
+
+              <TextInput
+              type="text"
+              label="Faculty Name"
+              placeholder="Enter your name"
+              value={currentQuiz.faculty_name}
+              onChange={(e) =>
+                dispatch(
+                  updateQuizField({
+                    field: "faculty_name",
+                    value: e.target.value,
+                  })
+                )
+              }
+            />
+
           </SimpleGrid>
         </Stack>
       </Paper>

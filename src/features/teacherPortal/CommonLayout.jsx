@@ -20,12 +20,18 @@ const sidebarConfig = [
     leftSection: <ListTodo size={18} />,
     href: "/Faculty/Lab-Sessions"
   },
-  "divider", 
+  {
+    label: "Create Practical",
+    leftSection: <Plus size={18} />,
+    href: "/Faculty/create-practical"
+  },
+  // "divider", 
   {
     label: "Support",
     leftSection: <CircleHelp size={18} />,
     href: "/Faculty/Support"
   },
+
 ];
 
 export default function CommonLayout() {
@@ -57,14 +63,14 @@ export default function CommonLayout() {
           setCollapsed((prev) => !prev)
         }
         sidebarConfig={sidebarConfig}
-        children={<Button
-          variant="light"
-          leftSection={<Plus size={18} />}
-          fullWidth={!collapsed}
-          onClick={() => navigate("/Faculty/create-practical")}
-        >
-          {!collapsed && "New Practical"}
-        </Button>}
+        // children={<Button
+        //   variant="light"
+        //   leftSection={<Plus size={18} />}
+        //   fullWidth={!collapsed}
+        //   onClick={() => navigate("/Faculty/create-practical")}
+        // >
+        //   {!collapsed && "New Practical"}
+        // </Button>}
       />
       <AppShell.Main>
         <Header location={ pathname }/>

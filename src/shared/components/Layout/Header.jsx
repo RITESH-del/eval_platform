@@ -7,6 +7,7 @@ import {
 
 import { Bell, ChevronRight } from "lucide-react";
 import { useParams } from "react-router-dom";
+import ToggleModeBtn from "../ToggleModeBtn";
 
 export default function FacultyHeader({location}) {
     const date = new Date();
@@ -52,9 +53,10 @@ export default function FacultyHeader({location}) {
           Academic Year {year-1} - {year}
         </Text>
 
-        <ActionIcon variant="subtle">
-          <Bell size={18} />
-        </ActionIcon>
+        {/* <ActionIcon variant="subtle"> */}
+          {/* <Bell size={18} /> */}
+          <ToggleModeBtn />
+        {/* </ActionIcon> */}
       </Group>
     </Group>
   );
