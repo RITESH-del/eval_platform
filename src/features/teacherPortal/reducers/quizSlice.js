@@ -174,8 +174,30 @@ const quizSlice = createSlice({
         );
     },
 
-    setTestCaseFile(state, action) {
-  const { questionId, filename, url, public_id } = action.payload;
+//     setTestCaseFile(state, action) {
+//   const { questionId, filename, url, public_id } = action.payload;
+
+//   const question = state.currentQuiz.questions.find(
+//     q => q.id === questionId
+//   );
+
+//   if (!question) return;
+
+//   question.testCaseFile = {
+//     filename,
+//     url,
+//     public_id,
+//   };
+// },
+
+setTestCaseFile(state, action) {
+  const {
+    questionId,
+    filename,
+    url,
+    public_id,
+    testCases = [],
+  } = action.payload;
 
   const question = state.currentQuiz.questions.find(
     q => q.id === questionId
@@ -188,7 +210,14 @@ const quizSlice = createSlice({
     url,
     public_id,
   };
+
+  question.testCases = testCases.map(tc => ({
+    id: tc.id ?? crypto.randomUUID(),
+    input: tc.input,
+    output: tc.output,
+  }));
 },
+
 removeTestCaseFile(state, action) {
   const question = state.currentQuiz.questions.find(
     q => q.id === action.payload
@@ -197,6 +226,7 @@ removeTestCaseFile(state, action) {
   if (!question) return;
 
   question.testCaseFile = null;
+  question.testCases = [];
 },
 
     updateTestCase(state, action) {
@@ -224,26 +254,26 @@ removeTestCaseFile(state, action) {
       testCase[field] = value;
     },
 
-    setUpdateProgress(state, action) {
-      const {
-        questionId,
-        filename,
-        url,
-        public_id,
-      } = action.payload;
+    // setUpdateProgress(state, action) {
+    //   const {
+    //     questionId,
+    //     filename,
+    //     url,
+    //     public_id,
+    //   } = action.payload;
 
-      const question = state.currentQuiz.questions.find(
-        q => q.id === questionId
-      );
+    //   const question = state.currentQuiz.questions.find(
+    //     q => q.id === questionId
+    //   );
 
-      if (!question) return;
+    //   if (!question) return;
 
-      question.testCaseFile = {
-        filename,
-        url,
-        public_id,
-      };
-    }
+    //   question.testCaseFile = {
+    //     filename,
+    //     url,
+    //     public_id,
+    //   };
+    // }
   },
 
   extraReducers: builder => {
@@ -347,7 +377,7 @@ export const {
   removeTestCase,
   updateTestCase,
 
-  setUpdateProgress,
+  // setUpdateProgress,
   setTestCaseFile,
   removeTestCaseFile,
 } = quizSlice.actions;

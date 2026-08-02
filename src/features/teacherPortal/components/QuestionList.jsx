@@ -34,6 +34,7 @@ export default function QuestionList({
   onUpdateQuestion,
   onAddTestCase,
   onUpdateTestCase,
+   onRemoveTestCase,
   onUploadTestCaseFile,
   onRemoveTestCaseFile,
 }) {
@@ -48,6 +49,7 @@ export default function QuestionList({
           onUpdateQuestion={onUpdateQuestion}
           onAddTestCase={onAddTestCase}
           onUpdateTestCase={onUpdateTestCase}
+           onRemoveTestCase={onRemoveTestCase}
           onUploadTestCaseFile={onUploadTestCaseFile}
           onRemoveTestCaseFile={onRemoveTestCaseFile}
         />

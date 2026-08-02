@@ -5,7 +5,7 @@ import QuizHeader from "../components/QuizHeader";
 import QuestionList from "../components/QuestionList";
 import Spinner from "../../../shared/components/Spinner";
 import { notifications } from "@mantine/notifications";
-import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, resetQuiz, setTestCaseFile, removeTestCaseFile,} from "../reducers/quizSlice.js";
+import { addQuestion, removeQuestion, updateQuestion, addTestCase, updateTestCase, setQuiz, removeTestCase, resetQuiz, setTestCaseFile, removeTestCaseFile,} from "../reducers/quizSlice.js";
 import { Paper, Stack, Text, ActionIcon, Group, Button, Center, } from "@mantine/core";
 import { Plus } from "lucide-react";
 import { createQuizThunk, fetchQuizThunk, updateQuizThunk } from "../thunks/facultyThunks.js";
@@ -42,6 +42,18 @@ export default function CreateQuizPage() {
     );
   };
 
+  const handleRemoveTestCase = (
+  questionId,
+  testCaseId
+) => {
+  dispatch(
+    removeTestCase({
+      questionId,
+      testCaseId,
+    })
+  );
+};
+
   const handleUpdateQuestion = (questionId, field, value) => {
     dispatch(
       updateQuestion({
@@ -52,13 +64,6 @@ export default function CreateQuizPage() {
     );
   };
 
-  // const handleAddTestCase = (questionId) => {
-  //   dispatch(addTestCase({questionId}))
-  // };
-
-  // const handleUpdateTestCase = (questionId, testCaseId, field, value) => {
-  //   dispatch(updateTestCase({questionId, testCaseId, field, value}));
-  // };
 
   
   
@@ -100,7 +105,6 @@ const handleRemoveTestCaseFile = (
 const handlePublishQuiz = async () => {
   try {
     await dispatch(isEditMode ? updateQuizThunk({ quizId, data: currentQuiz }) : createQuizThunk(currentQuiz)).unwrap();
-    console.log(currentQuiz);
     notifications.show({
       title: "Success",
       message: "Quiz published successfully",
@@ -155,6 +159,7 @@ if (loading){
 
   onAddTestCase={handleAddTestCase}
   onUpdateTestCase={handleUpdateTestCase}
+  onRemoveTestCase={handleRemoveTestCase}
 
   onUploadTestCaseFile={
     handleUploadTestCaseFile

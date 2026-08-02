@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { apiClient } from '../../../shared/api/apiClient.js';
 import UploadCard from '../../../shared/components/UploadCard.jsx';
-
+import { useDispatch } from "react-redux";
 export default function Question({
   question,
   index,
@@ -37,11 +37,14 @@ export default function Question({
   onRemoveTestCase,
 
   onUploadTestCaseFile,
+  setTestCaseFile,  
   onRemoveTestCaseFile,
 }) {
   const [currentTestCase, setCurrentTestCase] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(null);
   const [uploading, setUploading] = useState(false);
+
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -122,7 +125,18 @@ const handleTestCasesUpload = async (file) => {
   filename: file.name,
   url: data.url,
   public_id: data.public_id,
+  testCases: data.testCases
 });
+
+// dispatch(
+//   setTestCaseFile({
+//     questionId: question.id,
+//     filename: file.name,
+//     url: data.url,
+//     public_id: data.public_id,
+//     testCases: data.testCases,
+//   })
+// );
   } catch (err) {
     console.error(err);
   } finally {
@@ -246,16 +260,15 @@ const handleTestCasesUpload = async (file) => {
           />
 
             <ActionIcon
-              variant="subtle"
-              color="red"
-              onClick={() =>
-                onRemoveQuestion(
-                  question.id
-                )
-              }
-            >
-              <Trash2 size={16} />
-            </ActionIcon>
+  color="red"
+  variant="light"
+  mb={2}
+  onClick={() => {
+    onRemoveTestCase(question.id, tc.id);
+  }}
+>
+  <Trash2 size={14} />
+</ActionIcon>
           </Group>
         </Group>
         
@@ -423,7 +436,7 @@ const handleTestCasesUpload = async (file) => {
     <input
       hidden
       type="file"
-      accept=".txt"
+      accept=".pdf"
       onChange={(e) => {
         const file = e.target.files?.[0];
         if (file) handleTestCasesUpload(file);
