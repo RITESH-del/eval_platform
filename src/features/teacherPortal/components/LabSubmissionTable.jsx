@@ -368,33 +368,64 @@ export default function SubmissionTable({
       accessor: "actions",
       title: "Actions",
       textAlign: "right",
+      // render: (student) => (
+      //   <Menu shadow="md">
+      //     <Menu.Target>
+      //       <ActionIcon variant="subtle">
+      //         <EllipsisVertical size={18} />
+      //       </ActionIcon>
+      //     </Menu.Target>
+
+      //     <Menu.Dropdown>
+      //       <Menu.Item
+      //         onClick={(student) => {
+      //           if (student.status !== "absent") {
+      //             dispatch(
+      //               setSelectedSubmission(student)
+      //             );
+
+      //             navigate(
+      //               `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
+      //             );
+      //           }
+      //         }}
+      //       >
+      //         View Evaluation
+      //       </Menu.Item>
+      //     </Menu.Dropdown>
+      //   </Menu>
+      // ),
+
       render: (student) => (
-        <Menu shadow="md">
-          <Menu.Target>
-            <ActionIcon variant="subtle">
-              <EllipsisVertical size={18} />
-            </ActionIcon>
-          </Menu.Target>
+  <Menu shadow="md">
+    <Menu.Target>
+      <ActionIcon
+        variant="subtle"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <EllipsisVertical size={18} />
+      </ActionIcon>
+    </Menu.Target>
 
-          <Menu.Dropdown>
-            <Menu.Item
-              onClick={(student) => {
-                if (student.status !== "absent") {
-                  dispatch(
-                    setSelectedSubmission(student)
-                  );
+    <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
+      <Menu.Item
+        onClick={(e) => {
+          e.stopPropagation();
 
-                  navigate(
-                    `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
-                  );
-                }
-              }}
-            >
-              View Evaluation
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      ),
+          if (student.status !== "absent") {
+            dispatch(setSelectedSubmission(student));
+
+            navigate(
+              `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
+            );
+          }
+        }}
+      >
+        View Evaluation
+      </Menu.Item>
+    </Menu.Dropdown>
+  </Menu>
+),
     },
   ];
 

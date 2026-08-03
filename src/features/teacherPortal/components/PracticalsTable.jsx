@@ -154,51 +154,106 @@ export default function PracticalsTable({ practicals }) {
             //   </Button>
             // ),
 
-             render: (practical) => (
-                        <Menu shadow="md">
-                          <Menu.Target>
-                            <ActionIcon
-                              variant="subtle"
-                            >
-                              <EllipsisVertical
-                                size={18}
-                              />
-                            </ActionIcon>
-                          </Menu.Target>
+            //  render: (practical) => (
+            //             <Menu shadow="md">
+            //               <Menu.Target>
+            //                 <ActionIcon
+            //                   variant="subtle"
+            //                 >
+            //                   <EllipsisVertical
+            //                     size={18}
+            //                   />
+            //                 </ActionIcon>
+            //               </Menu.Target>
             
-                          <Menu.Dropdown>
-                            <Menu.Item
-                             onClick={()=>{
-                                 handleClick(practical)                
-                            }}
-                            >
-                              View Submission
-                            </Menu.Item>
+            //               <Menu.Dropdown>
+            //                 <Menu.Item
+            //                  onClick={()=>{
+            //                      handleClick(practical)                
+            //                 }}
+            //                 >
+            //                   View Submission
+            //                 </Menu.Item>
 
-                            <Menu.Item
-                              color={practical.result_published ? "gray" : "var(--mantine-text-color)"}
-                              onClick={() => publishResult(practical.id)}
-                            >
-                              {practical.result_published ? "published" : "Publish Result"}
-                            </Menu.Item>
+            //                 <Menu.Item
+            //                   color={practical.result_published ? "gray" : "var(--mantine-text-color)"}
+            //                   onClick={() => publishResult(practical.id)}
+            //                 >
+            //                   {practical.result_published ? "published" : "Publish Result"}
+            //                 </Menu.Item>
 
-                            <Menu.Item
-                              onClick={() => {
-                                navigate(`/Faculty/edit-practical/${practical.id}`);
-                              }}
-                            >
-                              Edit
-                            </Menu.Item>
+            //                 <Menu.Item
+            //                   onClick={() => {
+            //                     navigate(`/Faculty/edit-practical/${practical.id}`);
+            //                   }}
+            //                 >
+            //                   Edit
+            //                 </Menu.Item>
             
-                            <Menu.Item
-                              color="red"
-                              onClick={() => confirmDelete(dispatch, practical.id)}
-                            >
-                              Delete
-                            </Menu.Item>
-                          </Menu.Dropdown>
-                        </Menu>
-                      ),
+            //                 <Menu.Item
+            //                   color="red"
+            //                   onClick={() => confirmDelete(dispatch, practical.id)}
+            //                 >
+            //                   Delete
+            //                 </Menu.Item>
+            //               </Menu.Dropdown>
+            //             </Menu>
+            //           ),
+
+            render: (practical) => (
+  <Menu shadow="md">
+    <Menu.Target>
+      <ActionIcon
+        variant="subtle"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <EllipsisVertical size={18} />
+      </ActionIcon>
+    </Menu.Target>
+
+    <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
+      <Menu.Item
+        onClick={(e) => {
+          e.stopPropagation();
+          handleClick(practical);
+        }}
+      >
+        View Submission
+      </Menu.Item>
+
+      <Menu.Item
+        color={practical.result_published ? "gray" : undefined}
+        onClick={(e) => {
+          e.stopPropagation();
+          publishResult(practical.id);
+        }}
+      >
+        {practical.result_published
+          ? "Published"
+          : "Publish Result"}
+      </Menu.Item>
+
+      <Menu.Item
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/Faculty/edit-practical/${practical.id}`);
+        }}
+      >
+        Edit
+      </Menu.Item>
+
+      <Menu.Item
+        color="red"
+        onClick={(e) => {
+          e.stopPropagation();
+          confirmDelete(dispatch, practical.id);
+        }}
+      >
+        Delete
+      </Menu.Item>
+    </Menu.Dropdown>
+  </Menu>
+)
           },
         ];
 
