@@ -13,7 +13,8 @@ import {
   ThemeIcon,
   Stack,
   SimpleGrid,
-  Badge
+  Badge,
+  NativeSelect
 } from "@mantine/core";
 import MarkdownEditor from '../../../shared/components/MDEditor.jsx';
 import {
@@ -183,7 +184,7 @@ const handleTestCasesUpload = async (file) => {
               <TextInput 
               variant="unstyled"
               size="xl"
-              fw={500}
+              fw={400}
               w="600px"
               placeholder="Question Title"
               value={question.title}
@@ -200,8 +201,6 @@ const handleTestCasesUpload = async (file) => {
           </Group>
 
           <Group gap="md">
-
-
           <Select
           w={110}
           placeholder="Difficulty"
@@ -219,6 +218,39 @@ const handleTestCasesUpload = async (file) => {
             )
           }
           />
+
+          <Select
+  w={150}
+  placeholder="Output type"
+  value={question.output_type}
+  onChange={(value) =>
+    onUpdateQuestion(
+      question.id,
+      "output_type",
+       Number(value)
+    )
+  }
+  data={[
+    {
+      group: "Standard One-Line Outputs",
+      items: [
+        { value: "3", label: "Exact Text Match (Standard)" },
+        { value: "1", label: "Decimal Match (with Tolerance)" },
+        { value: "2", label: "Strict Number/String Match" },
+        { value: "4", label: "Unordered List / Array" },
+      ],
+    },
+    {
+      group: "Multi-line / Matrix Outputs",
+      items: [
+        { value: "5", label: "Exact Multi-line (Matrix)" },
+        { value: "6", label: "Unordered Rows" },
+        { value: "7", label: "Unordered Items in Strict Rows" },
+        { value: "8", label: "Fully Unordered Multi-line" },
+      ],
+    },
+  ]}
+/>
 
           <Group>
               {/* <Group gap={6}>
