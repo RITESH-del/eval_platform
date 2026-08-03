@@ -238,6 +238,18 @@ export default function SubmissionTable({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  function handleClick(student)  {
+                if (student.status !== "absent") {
+                  dispatch(
+                    setSelectedSubmission(student)
+                  );
+
+                  navigate(
+                    `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
+                  );
+                }
+              }
+
   const columns = [
      {
       accessor: "name",
@@ -366,7 +378,7 @@ export default function SubmissionTable({
 
           <Menu.Dropdown>
             <Menu.Item
-              onClick={() => {
+              onClick={(student) => {
                 if (student.status !== "absent") {
                   dispatch(
                     setSelectedSubmission(student)
@@ -397,6 +409,8 @@ export default function SubmissionTable({
         records={paginatedRecords}
         totalRecords={records.length}
         columns={columns}
+        onRowClick={({ record }) => handleClick(record)}
+  rowClassName={() => "clickable-row"}
       />
 
       <TableFooter

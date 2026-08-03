@@ -4,3 +4,12 @@
   touch-action: none;
   user-select: none;
 }
+
+
+/* WYSIWYG editing area */
+/* Dark mode only */
+[data-mantine-color-scheme="dark"] .toastui-editor-ww-container,
+[data-mantine-color-scheme="dark"] .ProseMirror {
+  background: #252423 !important;
+  color: #f2f2f2 !important;
+}

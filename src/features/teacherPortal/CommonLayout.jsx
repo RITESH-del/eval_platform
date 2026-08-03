@@ -5,7 +5,7 @@ import Sidebar from "../../shared/components/Layout/Sidebar.jsx";
 import Header from "../../shared/components/Layout/Header.jsx";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FileText, ListTodo, CircleHelp, Plus } from "lucide-react";
+import { FileText, ListTodo, CircleHelp, Plus, LogOut } from "lucide-react";
 import { Button } from "@mantine/core";
 import { fetchFacultyProfile } from './thunks/facultyThunks.js';
 
@@ -15,11 +15,11 @@ const sidebarConfig = [
     leftSection: <FileText size={18} />,
     href: "/Faculty"
   },
-  {
-    label: "Live Monitoring",
-    leftSection: <ListTodo size={18} />,
-    href: "/Faculty/Lab-Sessions"
-  },
+  // {
+  //   label: "Live Monitoring",
+  //   leftSection: <ListTodo size={18} />,
+  //   href: "/Faculty/Lab-Sessions"
+  // },
   {
     label: "Create Practical",
     leftSection: <Plus size={18} />,
@@ -31,6 +31,14 @@ const sidebarConfig = [
     leftSection: <CircleHelp size={18} />,
     href: "/Faculty/Support"
   },
+  // {
+  //   label: "Logout",
+  //   leftSection: <LogOut size={18}/>,
+  //   onClick: () => {
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   }
+  // }
 
 ];
 

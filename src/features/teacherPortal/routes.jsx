@@ -51,7 +51,7 @@ export const teacherRoutes = [
         path: "support",
         element: (
           <ProtectedRoute role="faculty">
-            <SupportPage />
+            <SupportPage  role="faculty" />
           </ProtectedRoute>
         )
       },

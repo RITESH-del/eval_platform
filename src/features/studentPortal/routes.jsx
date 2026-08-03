@@ -59,7 +59,7 @@ export const studentRoutes = [
     path:'support',
     element:(
       <ProtectedRoute role="student">
-      <SupportPage />
+      <SupportPage role="student"/>
     </ProtectedRoute>
     )
   }

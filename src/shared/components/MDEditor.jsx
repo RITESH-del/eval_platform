@@ -303,13 +303,13 @@ root.addEventListener("dblclick", handleDoubleClick);
         height="300px"
         theme={colorScheme === "dark" ? "dark" : undefined}
         usageStatistics={false}
-        hideModeSwitch={false}
+        hideModeSwitch={true}
         autofocus={false}
         toolbarItems={[
           ["heading", "bold", "italic", "strike"],
           ["hr", "quote"],
           ["ul", "ol", "task"],
-          ["table", "image", "link"],
+          ["table", "link"],
           ["code", "codeblock"],
         ]}
         onChange={() => {

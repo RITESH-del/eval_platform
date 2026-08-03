@@ -97,6 +97,14 @@ export default function PracticalsTable({ practicals }) {
               </Tooltip>
             ),
           },
+          {
+            accessor: "id",
+            title: "Exam Start Password"
+          },
+           {
+            accessor: "start_password_hash",
+            title: "Exam End Password"
+          },
 
           {
             accessor: "target_graduation_year",
@@ -206,9 +214,12 @@ export default function PracticalsTable({ practicals }) {
         highlightOnHover
         striped
         borderRadius="md"
-        columns={columns} />
+        columns={columns}
+        onRowClick={({ record }) => handleClick(record)}
+  rowClassName={() => "clickable-row"}
+      />
 
-         <TableFooter
+        <TableFooter
             page={page}
             totalPages={Math.ceil(
             practicals.length / PAGE_SIZE
