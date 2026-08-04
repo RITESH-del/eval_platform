@@ -282,7 +282,7 @@ const handleTestCasesUpload = async (file) => {
             min={1}
             w={100}
             rightSection={
-              <Text size="xs" c="dimmed">
+              <Text size="xs" c="dimmed" pr={10}>
                 PTS
               </Text>
             }
