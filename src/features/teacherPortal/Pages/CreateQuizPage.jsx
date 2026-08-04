@@ -227,7 +227,8 @@ if (loading){
     mt="xl"
     style={{
       position: 'sticky',
-      bottom: '10px'
+      bottom: '10px',
+      zIndex: 9999,
     }}
   >
     <Button
@@ -241,8 +242,10 @@ if (loading){
       loading={saving}
       onClick={handlePublishQuiz}
     >
-      Publish Quiz
+      Publish Practical
     </Button>
+
+
   </Group>
     </>
   );
