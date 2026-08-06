@@ -296,7 +296,7 @@ const handleTestCasesUpload = async (file) => {
   variant="light"
   mb={2}
   onClick={() => {
-    onRemoveTestCase(question.id, tc.id);
+    onRemoveQuestion(question.id);
   }}
 >
   <Trash2 size={14} />

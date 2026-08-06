@@ -303,7 +303,7 @@ root.addEventListener("dblclick", handleDoubleClick);
         height="300px"
         theme={colorScheme === "dark" ? "dark" : undefined}
         usageStatistics={false}
-        hideModeSwitch={true}
+        hideModeSwitch={false}
         autofocus={false}
         toolbarItems={[
           ["heading", "bold", "italic", "strike"],

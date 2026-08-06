@@ -16,3 +16,43 @@
 
 
 
+/* Markdown editor (CodeMirror) */
+[data-mantine-color-scheme="dark"] .toastui-editor-md-container,
+[data-mantine-color-scheme="dark"] .toastui-editor-md-container .CodeMirror,
+[data-mantine-color-scheme="dark"] .toastui-editor-md-container .CodeMirror-scroll {
+  background: #252423 !important;
+  color: #f2f2f2 !important;
+}
+
+/* Mode switch */
+[data-mantine-color-scheme="dark"] .toastui-editor-mode-switch {
+  background: #252423 !important;
+  border-top: 1px solid #3b3b3b !important;
+}
+
+/* Buttons */
+[data-mantine-color-scheme="dark"] .toastui-editor-mode-switch .tab-item {
+  background: #252423 !important;
+  color: #bdbdbd !important;
+  border-color: #3b3b3b !important;
+}
+
+/* Active tab */
+[data-mantine-color-scheme="dark"] .toastui-editor-mode-switch .tab-item.active {
+  background: #33312f !important;
+  color: #ffffff !important;
+}
+
+/* Hover */
+[data-mantine-color-scheme="dark"] .toastui-editor-mode-switch .tab-item:hover {
+  background: #3a3836 !important;
+}
+
+.toastui-editor-mode-switch .tab-item:last-child {
+  font-size: 0;
+}
+
+.toastui-editor-mode-switch .tab-item:last-child::after {
+  content: "Preview";
+  font-size: 14px;
+}
