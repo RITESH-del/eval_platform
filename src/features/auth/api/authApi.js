@@ -16,3 +16,11 @@ export const googleLogin = (credential) =>
 export const fetchCurrentUser = async () => {
     return await apiClient.get("/auth/profile");
 };
+
+export const changePasswd = async (email, password, newPassword) => {
+    return await apiClient.post("/auth/change-password", {
+        email,
+        password,
+        newPassword
+    });
+};

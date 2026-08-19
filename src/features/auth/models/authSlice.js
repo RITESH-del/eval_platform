@@ -1,6 +1,6 @@
 // features/auth/model/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, signupUser, fetchCurrentUser } from "./authThunks";
+import { loginUser, signupUser, fetchCurrentUser, changePassword } from "./authThunks";
 
 const authSlice = createSlice({
   name: "auth",
@@ -48,7 +48,30 @@ const authSlice = createSlice({
         .addCase(fetchCurrentUser.rejected, (state) => {
             state.loading = false;
             state.user = null;
-        });
+        })
+
+    builder
+    // other cases...
+
+    .addCase(changePassword.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+
+    .addCase(changePassword.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+
+      // If your backend returns updated user data
+      if (action.payload.user) {
+        state.user = action.payload.user;
+      }
+    })
+
+    .addCase(changePassword.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || "Failed to change password";
+    });
   },
 });
 

@@ -67,8 +67,8 @@ export default function AuthPage() {
         </Button>
 
         <Text ta="center" mt="md">
-          {" "}
-          <Anchor href="#" fw={500} onClick={(event) => event.preventDefault()}>
+          First Login?{" "}
+          <Anchor href="#" fw={500} onClick={() => navigate("/change-password")}>
             change password
           </Anchor>
         </Text>

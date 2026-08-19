@@ -1,7 +1,7 @@
 // features/auth/model/authThunks.js
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { login, signup } from "../api/authApi";
+import { login, signup, changePasswd } from "../api/authApi";
 
 export const loginUser = createAsyncThunk(
   "auth/login",
@@ -44,4 +44,31 @@ export const fetchCurrentUser = createAsyncThunk(
             );
         }
     }
+);
+
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+
+  async (
+    { email, currentPassword, newPassword },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await changePasswd(
+        email,
+        currentPassword,
+        newPassword
+      );
+
+      console.log("thunks running")
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        "Failed to change password"
+      );
+    }
+  }
 );
