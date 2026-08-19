@@ -66,12 +66,12 @@ export default function AuthPage() {
           Login
         </Button>
 
-        {/* <Text ta="center" mt="md">
-          Don&apos;t have an account?{' '}
+        <Text ta="center" mt="md">
+          {" "}
           <Anchor href="#" fw={500} onClick={(event) => event.preventDefault()}>
-            Register
+            change password
           </Anchor>
-        </Text> */}
+        </Text>
       </Paper>
     </div>
   )}

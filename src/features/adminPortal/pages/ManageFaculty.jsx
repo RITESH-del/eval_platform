@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFacultiesThunk } from "../thunks/adminThunks.js";
+import { fetchFacultiesThunk, createFacultyThunk, importFacultiesThunk } from "../thunks/adminThunks.js";
 import { Group, TextInput,Button } from "@mantine/core";
 import { Search, Calendar } from "lucide-react";
 import FacultyTable from "../components/FacultyTable.jsx";
@@ -64,12 +64,12 @@ export default function ManageFaculty() {
   onCreate={(data) => {
     console.log("Create faculty:", data);
 
-    // dispatch(createFacultyThunk(data));
+    dispatch(createFacultyThunk(data));
   }}
   onUploadExcel={(file) => {
     console.log("Excel file:", file);
 
-    // dispatch(importFacultyExcelThunk(file));
+    dispatch(importFacultiesThunk(file));
   }}
 />
     </>

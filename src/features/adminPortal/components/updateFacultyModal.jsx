@@ -500,7 +500,7 @@ export default function UpdateFacultyModal({
 
           {/* Employee ID + Department */}
           <Group grow align="flex-start">
-            <TextInput
+            {/* <TextInput
               label="Employee ID"
               placeholder="FAC-8924-M"
               leftSection={<Hash size={16} />}
@@ -526,7 +526,7 @@ export default function UpdateFacultyModal({
                   color: "#929292",
                 },
               }}
-            />
+            /> */}
 
             <Select
               label="Department"

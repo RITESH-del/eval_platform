@@ -219,13 +219,21 @@ export const fetchStudentsThunk = createAsyncThunk(
  */
 export const createStudentThunk = createAsyncThunk(
   "admin/createStudent",
-  async (studentData) => {
-    const response = await apiClient.post(
-      "/admin/users/student",
-      studentData
-    );
+  async (studentData, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post(
+        "/admin/users/student",
+        studentData
+      );
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message
+      );
+    }
   }
 );
 

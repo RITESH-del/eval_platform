@@ -5,7 +5,7 @@ import Sidebar from "../../shared/components/Layout/Sidebar.jsx";
 import Header from "../../shared/components/Layout/Header.jsx";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FileText, ListTodo, CircleHelp, Plus, LogOut } from "lucide-react";
+import { UserRoundPen, Plus } from "lucide-react";
 import { Button } from "@mantine/core";
 import { fetchProfile } from './thunks/adminThunks.js';
 
@@ -13,7 +13,7 @@ const sidebarConfig = [
 
   {
     label: "Manage Faculty",
-    leftSection: <Plus size={18} />,
+    leftSection: <UserRoundPen />,
     href: "/admin"
   },
   {
