@@ -12,6 +12,8 @@ import { Notifications } from "@mantine/notifications";
 import { authRoutes } from './features/auth/routes'
 import { teacherRoutes } from './features/teacherPortal/routes';
 import { studentRoutes } from './features/studentPortal/routes';
+import { adminRoutes } from './features/adminPortal/routes.jsx';
+
 import "@mantine/notifications/styles.css";
 import ErrorPage from "./shared/components/ErrorPage.jsx"
 import "mantine-datatable/styles.css"; // mantine-datatable stylesheet
@@ -98,7 +100,8 @@ const router = createBrowserRouter([
     },
       ...authRoutes,
       ...teacherRoutes,
-      ...studentRoutes
+      ...studentRoutes,
+      ...adminRoutes
   
 ]);
 
