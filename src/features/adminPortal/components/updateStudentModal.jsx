@@ -73,10 +73,6 @@
 //     { value: "D", label: "Section D" },
 //   ];
 
-//   /*
-//    * Populate the form when the selected
-//    * student changes.
-//    */
 //   useEffect(() => {
 //     if (!student) return;
 
@@ -127,9 +123,23 @@
 //       padding={0}
 //       radius="md"
 //       withCloseButton={false}
+//       styles={{
+//         content: {
+//           backgroundColor: "#1f1f1f",
+//           color: "#f5f5f5",
+//         },
+//         header: {
+//           backgroundColor: "#1f1f1f",
+//           color: "#f5f5f5",
+//         },
+//         body: {
+//           padding: 0,
+//           backgroundColor: "#1f1f1f",
+//         },
+//       }}
 //       overlayProps={{
-//         backgroundOpacity: 0.45,
-//         blur: 2,
+//         backgroundOpacity: 0.65,
+//         blur: 4,
 //       }}
 //     >
 //       {/* Header */}
@@ -137,10 +147,8 @@
 //         px="xl"
 //         py="lg"
 //         style={{
-//           borderBottom:
-//             "1px solid var(--mantine-color-gray-2)",
-//           background:
-//             "linear-gradient(180deg, #f8faff 0%, #ffffff 100%)",
+//           borderBottom: "1px solid #303030",
+//           background: "#1f1f1f",
 //         }}
 //       >
 //         <Group justify="space-between" align="flex-start">
@@ -148,6 +156,7 @@
 //             <Text
 //               fw={650}
 //               size="lg"
+//               c="gray.0"
 //               style={{
 //                 letterSpacing: "-0.02em",
 //               }}
@@ -155,7 +164,7 @@
 //               Update Student
 //             </Text>
 
-//             <Text size="sm" c="dimmed" mt={3}>
+//             <Text size="sm" c="gray.5" mt={3}>
 //               Update the student's academic and account
 //               information.
 //             </Text>
@@ -174,21 +183,40 @@
 //       </Box>
 
 //       {/* Form */}
-//       <Box px="xl" py="lg">
+//       <Box
+//         px="xl"
+//         py="lg"
+//         style={{
+//           background: "#1f1f1f",
+//         }}
+//       >
 //         <Stack gap="md">
 
-//           {/* Name */}
+//           {/* Full Name */}
 //           <TextInput
 //             label="Full Name"
 //             placeholder="e.g. Aarav Sharma"
-//             leftSection={
-//               <UserRound size={16} />
-//             }
+//             leftSection={<UserRound size={16} />}
 //             value={name}
 //             onChange={(e) =>
 //               setName(e.currentTarget.value)
 //             }
 //             radius="sm"
+//             styles={{
+//               label: {
+//                 color: "#e5e5e5",
+//                 fontWeight: 600,
+//                 marginBottom: 6,
+//               },
+//               input: {
+//                 backgroundColor: "#292929",
+//                 borderColor: "#404040",
+//                 color: "#f5f5f5",
+//               },
+//               section: {
+//                 color: "#929292",
+//               },
+//             }}
 //           />
 
 //           {/* Student ID + Department */}
@@ -196,14 +224,27 @@
 //             <TextInput
 //               label="Student ID"
 //               placeholder="BMU24CSE001"
-//               leftSection={
-//                 <Hash size={16} />
-//               }
+//               leftSection={<Hash size={16} />}
 //               value={studentId}
 //               onChange={(e) =>
 //                 setStudentId(e.currentTarget.value)
 //               }
 //               radius="sm"
+//               styles={{
+//                 label: {
+//                   color: "#e5e5e5",
+//                   fontWeight: 600,
+//                   marginBottom: 6,
+//                 },
+//                 input: {
+//                   backgroundColor: "#292929",
+//                   borderColor: "#404040",
+//                   color: "#f5f5f5",
+//                 },
+//                 section: {
+//                   color: "#929292",
+//                 },
+//               }}
 //             />
 
 //             <Select
@@ -216,6 +257,21 @@
 //               value={department}
 //               onChange={setDepartment}
 //               radius="sm"
+//               styles={{
+//                 label: {
+//                   color: "#e5e5e5",
+//                   fontWeight: 600,
+//                   marginBottom: 6,
+//                 },
+//                 input: {
+//                   backgroundColor: "#292929",
+//                   borderColor: "#404040",
+//                   color: "#f5f5f5",
+//                 },
+//                 section: {
+//                   color: "#929292",
+//                 },
+//               }}
 //             />
 //           </Group>
 
@@ -228,18 +284,46 @@
 //               value={graduationYear}
 //               onChange={setGraduationYear}
 //               radius="sm"
+//               styles={{
+//                 label: {
+//                   color: "#e5e5e5",
+//                   fontWeight: 600,
+//                   marginBottom: 6,
+//                 },
+//                 input: {
+//                   backgroundColor: "#292929",
+//                   borderColor: "#404040",
+//                   color: "#f5f5f5",
+//                 },
+//                 section: {
+//                   color: "#929292",
+//                 },
+//               }}
 //             />
 
 //             <Select
 //               label="Section"
 //               placeholder="Select section"
-//               leftSection={
-//                 <Layers3 size={16} />
-//               }
+//               leftSection={<Layers3 size={16} />}
 //               data={sections}
 //               value={section}
 //               onChange={setSection}
 //               radius="sm"
+//               styles={{
+//                 label: {
+//                   color: "#e5e5e5",
+//                   fontWeight: 600,
+//                   marginBottom: 6,
+//                 },
+//                 input: {
+//                   backgroundColor: "#292929",
+//                   borderColor: "#404040",
+//                   color: "#f5f5f5",
+//                 },
+//                 section: {
+//                   color: "#929292",
+//                 },
+//               }}
 //             />
 //           </Group>
 
@@ -247,22 +331,35 @@
 //           <TextInput
 //             label="Institutional Email"
 //             placeholder="aarav.sharma@bmu.edu.in"
-//             leftSection={
-//               <Mail size={16} />
-//             }
+//             leftSection={<Mail size={16} />}
 //             value={email}
 //             onChange={(e) =>
 //               setEmail(e.currentTarget.value)
 //             }
 //             radius="sm"
+//             styles={{
+//               label: {
+//                 color: "#e5e5e5",
+//                 fontWeight: 600,
+//                 marginBottom: 6,
+//               },
+//               input: {
+//                 backgroundColor: "#292929",
+//                 borderColor: "#404040",
+//                 color: "#f5f5f5",
+//               },
+//               section: {
+//                 color: "#929292",
+//               },
+//             }}
 //           />
 
 //           {/* Authentication */}
 //           <Box
 //             p="md"
 //             style={{
-//               background: "#f3f7ff",
-//               border: "1px solid #dce8ff",
+//               background: "#182b42",
+//               border: "1px solid #24466d",
 //               borderRadius: 8,
 //             }}
 //           >
@@ -280,13 +377,17 @@
 //               </ThemeIcon>
 
 //               <Box>
-//                 <Text size="sm" fw={600}>
+//                 <Text
+//                   size="sm"
+//                   fw={600}
+//                   c="gray.1"
+//                 >
 //                   Student Authentication
 //                 </Text>
 
 //                 <Text
 //                   size="xs"
-//                   c="dimmed"
+//                   c="gray.4"
 //                   mt={3}
 //                   lh={1.5}
 //                 >
@@ -297,7 +398,6 @@
 //               </Box>
 //             </Group>
 //           </Box>
-
 //         </Stack>
 //       </Box>
 
@@ -306,10 +406,8 @@
 //         px="xl"
 //         py="md"
 //         style={{
-//           borderTop:
-//             "1px solid var(--mantine-color-gray-2)",
-//           background:
-//             "var(--mantine-color-gray-0)",
+//           borderTop: "1px solid #303030",
+//           background: "#1f1f1f",
 //         }}
 //       >
 //         <Group justify="flex-end">
@@ -317,15 +415,20 @@
 //             variant="default"
 //             radius="sm"
 //             onClick={handleClose}
+//             styles={{
+//               root: {
+//                 backgroundColor: "#292929",
+//                 borderColor: "#404040",
+//                 color: "#f5f5f5",
+//               },
+//             }}
 //           >
 //             Cancel
 //           </Button>
 
 //           <Button
 //             radius="sm"
-//             leftSection={
-//               <Save size={16} />
-//             }
+//             leftSection={<Save size={16} />}
 //             disabled={!isValid}
 //             loading={loading}
 //             onClick={handleSubmit}
@@ -338,7 +441,6 @@
 //   );
 // }
 
-
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -350,6 +452,7 @@ import {
   Text,
   Box,
   ThemeIcon,
+  useMantineColorScheme,
 } from "@mantine/core";
 
 import {
@@ -369,6 +472,10 @@ export default function UpdateStudentModal({
   onUpdate,
   loading = false,
 }) {
+  const { colorScheme } = useMantineColorScheme();
+
+  const isDark = colorScheme === "dark";
+
   const [name, setName] = useState("");
   const [studentId, setStudentId] = useState("");
   const [department, setDepartment] = useState("");
@@ -408,11 +515,52 @@ export default function UpdateStudentModal({
   ];
 
   const sections = [
-    { value: "A", label: "Section A" },
-    { value: "B", label: "Section B" },
-    { value: "C", label: "Section C" },
-    { value: "D", label: "Section D" },
+    { value: "I", label: "Section I" },
+    { value: "II", label: "Section II" },
+    { value: "III", label: "Section III" },
+    { value: "IV", label: "Section IV" },
+    { value: "V", label: "Section V" },
+    { value: "VI", label: "Section VI" },
+    { value: "VII", label: "Section VII" },
+    { value: "VIII", label: "Section VIII" },
+    { value: "IX", label: "Section IX" },
+    { value: "X", label: "Section X" },
   ];
+
+  /*
+  |--------------------------------------------------------------------------
+  | Theme colors
+  |--------------------------------------------------------------------------
+  */
+
+  const colors = {
+    background: isDark ? "#1f1f1f" : "#ffffff",
+    input: isDark ? "#292929" : "#ffffff",
+    border: isDark ? "#404040" : "#ced4da",
+    text: isDark ? "#f5f5f5" : "#212529",
+    muted: isDark ? "#929292" : "#868e96",
+
+    authBackground: isDark ? "#182b42" : "#eef6ff",
+    authBorder: isDark ? "#24466d" : "#b8d8f8",
+  };
+
+  const inputStyles = {
+    label: {
+      color: colors.text,
+      fontWeight: 600,
+      marginBottom: 6,
+    },
+
+    input: {
+      backgroundColor: colors.input,
+      borderColor: colors.border,
+      color: colors.text,
+    },
+
+    section: {
+      color: colors.muted,
+    },
+  };
 
   useEffect(() => {
     if (!student) return;
@@ -420,11 +568,13 @@ export default function UpdateStudentModal({
     setName(student.name ?? "");
     setStudentId(student.student_id ?? "");
     setDepartment(student.department ?? "");
+
     setGraduationYear(
       student.graduation_year
         ? String(student.graduation_year)
         : ""
     );
+
     setSection(student.section ?? "");
     setEmail(student.email ?? "");
   }, [student]);
@@ -466,38 +616,44 @@ export default function UpdateStudentModal({
       withCloseButton={false}
       styles={{
         content: {
-          backgroundColor: "#1f1f1f",
-          color: "#f5f5f5",
+          backgroundColor: colors.background,
+          color: colors.text,
         },
+
         header: {
-          backgroundColor: "#1f1f1f",
-          color: "#f5f5f5",
+          backgroundColor: colors.background,
+          color: colors.text,
         },
+
         body: {
           padding: 0,
-          backgroundColor: "#1f1f1f",
+          backgroundColor: colors.background,
         },
       }}
       overlayProps={{
-        backgroundOpacity: 0.65,
+        backgroundOpacity: isDark ? 0.65 : 0.35,
         blur: 4,
       }}
     >
       {/* Header */}
+
       <Box
         px="xl"
         py="lg"
         style={{
-          borderBottom: "1px solid #303030",
-          background: "#1f1f1f",
+          borderBottom: `1px solid ${colors.border}`,
+          background: colors.background,
         }}
       >
-        <Group justify="space-between" align="flex-start">
+        <Group
+          justify="space-between"
+          align="flex-start"
+        >
           <Box>
             <Text
               fw={650}
               size="lg"
-              c="gray.0"
+              c={isDark ? "gray.0" : "dark.8"}
               style={{
                 letterSpacing: "-0.02em",
               }}
@@ -505,7 +661,11 @@ export default function UpdateStudentModal({
               Update Student
             </Text>
 
-            <Text size="sm" c="gray.5" mt={3}>
+            <Text
+              size="sm"
+              c="dimmed"
+              mt={3}
+            >
               Update the student's academic and account
               information.
             </Text>
@@ -524,16 +684,18 @@ export default function UpdateStudentModal({
       </Box>
 
       {/* Form */}
+
       <Box
         px="xl"
         py="lg"
         style={{
-          background: "#1f1f1f",
+          background: colors.background,
         }}
       >
         <Stack gap="md">
 
           {/* Full Name */}
+
           <TextInput
             label="Full Name"
             placeholder="e.g. Aarav Sharma"
@@ -543,49 +705,22 @@ export default function UpdateStudentModal({
               setName(e.currentTarget.value)
             }
             radius="sm"
-            styles={{
-              label: {
-                color: "#e5e5e5",
-                fontWeight: 600,
-                marginBottom: 6,
-              },
-              input: {
-                backgroundColor: "#292929",
-                borderColor: "#404040",
-                color: "#f5f5f5",
-              },
-              section: {
-                color: "#929292",
-              },
-            }}
+            styles={inputStyles}
           />
 
           {/* Student ID + Department */}
+
           <Group grow align="flex-start">
             <TextInput
-              label="Student ID"
-              placeholder="BMU24CSE001"
+              label="Enrollment Number"
+              placeholder="e.g 240001"
               leftSection={<Hash size={16} />}
               value={studentId}
               onChange={(e) =>
                 setStudentId(e.currentTarget.value)
               }
               radius="sm"
-              styles={{
-                label: {
-                  color: "#e5e5e5",
-                  fontWeight: 600,
-                  marginBottom: 6,
-                },
-                input: {
-                  backgroundColor: "#292929",
-                  borderColor: "#404040",
-                  color: "#f5f5f5",
-                },
-                section: {
-                  color: "#929292",
-                },
-              }}
+              styles={inputStyles}
             />
 
             <Select
@@ -598,25 +733,12 @@ export default function UpdateStudentModal({
               value={department}
               onChange={setDepartment}
               radius="sm"
-              styles={{
-                label: {
-                  color: "#e5e5e5",
-                  fontWeight: 600,
-                  marginBottom: 6,
-                },
-                input: {
-                  backgroundColor: "#292929",
-                  borderColor: "#404040",
-                  color: "#f5f5f5",
-                },
-                section: {
-                  color: "#929292",
-                },
-              }}
+              styles={inputStyles}
             />
           </Group>
 
           {/* Graduation Year + Section */}
+
           <Group grow align="flex-start">
             <Select
               label="Graduation Year"
@@ -625,21 +747,7 @@ export default function UpdateStudentModal({
               value={graduationYear}
               onChange={setGraduationYear}
               radius="sm"
-              styles={{
-                label: {
-                  color: "#e5e5e5",
-                  fontWeight: 600,
-                  marginBottom: 6,
-                },
-                input: {
-                  backgroundColor: "#292929",
-                  borderColor: "#404040",
-                  color: "#f5f5f5",
-                },
-                section: {
-                  color: "#929292",
-                },
-              }}
+              styles={inputStyles}
             />
 
             <Select
@@ -650,25 +758,12 @@ export default function UpdateStudentModal({
               value={section}
               onChange={setSection}
               radius="sm"
-              styles={{
-                label: {
-                  color: "#e5e5e5",
-                  fontWeight: 600,
-                  marginBottom: 6,
-                },
-                input: {
-                  backgroundColor: "#292929",
-                  borderColor: "#404040",
-                  color: "#f5f5f5",
-                },
-                section: {
-                  color: "#929292",
-                },
-              }}
+              styles={inputStyles}
             />
           </Group>
 
           {/* Email */}
+
           <TextInput
             label="Institutional Email"
             placeholder="aarav.sharma@bmu.edu.in"
@@ -678,29 +773,16 @@ export default function UpdateStudentModal({
               setEmail(e.currentTarget.value)
             }
             radius="sm"
-            styles={{
-              label: {
-                color: "#e5e5e5",
-                fontWeight: 600,
-                marginBottom: 6,
-              },
-              input: {
-                backgroundColor: "#292929",
-                borderColor: "#404040",
-                color: "#f5f5f5",
-              },
-              section: {
-                color: "#929292",
-              },
-            }}
+            styles={inputStyles}
           />
 
           {/* Authentication */}
+
           <Box
             p="md"
             style={{
-              background: "#182b42",
-              border: "1px solid #24466d",
+              background: colors.authBackground,
+              border: `1px solid ${colors.authBorder}`,
               borderRadius: 8,
             }}
           >
@@ -721,14 +803,18 @@ export default function UpdateStudentModal({
                 <Text
                   size="sm"
                   fw={600}
-                  c="gray.1"
+                  c={
+                    isDark
+                      ? "gray.1"
+                      : "dark.7"
+                  }
                 >
                   Student Authentication
                 </Text>
 
                 <Text
                   size="xs"
-                  c="gray.4"
+                  c="dimmed"
                   mt={3}
                   lh={1.5}
                 >
@@ -743,12 +829,13 @@ export default function UpdateStudentModal({
       </Box>
 
       {/* Footer */}
+
       <Box
         px="xl"
         py="md"
         style={{
-          borderTop: "1px solid #303030",
-          background: "#1f1f1f",
+          borderTop: `1px solid ${colors.border}`,
+          background: colors.background,
         }}
       >
         <Group justify="flex-end">
@@ -758,9 +845,9 @@ export default function UpdateStudentModal({
             onClick={handleClose}
             styles={{
               root: {
-                backgroundColor: "#292929",
-                borderColor: "#404040",
-                color: "#f5f5f5",
+                backgroundColor: colors.input,
+                borderColor: colors.border,
+                color: colors.text,
               },
             }}
           >

@@ -134,6 +134,30 @@ export default function ManageStudents() {
   }
 };
 
+const departmentOptions = [
+  ...new Set(
+    students
+      ?.map((student) => student.department)
+      .filter(Boolean)
+  ),
+].map((department) => ({
+  value: department,
+  label: department.toUpperCase(),
+}));
+
+const graduationYearOptions = [
+  ...new Set(
+    students
+      ?.map((student) => student.graduation_year)
+      .filter(Boolean)
+  ),
+]
+  .sort((a, b) => a - b)
+  .map((year) => ({
+    value: String(year),
+    label: String(year),
+  }));
+
   return (
     <Box mt={50}>
 
@@ -166,23 +190,7 @@ export default function ManageStudents() {
           placeholder="All Departments"
           value={department}
           onChange={setDepartment}
-          data={[
-            {
-              value: "cse",
-              label:
-                "Computer Science & Engineering",
-            },
-            {
-              value: "ece",
-              label:
-                "Electronics & Communication",
-            },
-            {
-              value: "me",
-              label:
-                "Mechanical Engineering",
-            },
-          ]}
+          data={departmentOptions}
           clearable
         />
 
@@ -192,24 +200,7 @@ export default function ManageStudents() {
           placeholder="Graduation Year"
           value={graduationYear}
           onChange={setGraduationYear}
-          data={[
-            {
-              value: "2026",
-              label: "2026",
-            },
-            {
-              value: "2027",
-              label: "2027",
-            },
-            {
-              value: "2028",
-              label: "2028",
-            },
-            {
-              value: "2029",
-              label: "2029",
-            },
-          ]}
+          data={graduationYearOptions}
           clearable
         />
 

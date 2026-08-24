@@ -10,11 +10,13 @@ import {
   Box,
   ThemeIcon,
   FileInput,
+  useMantineColorScheme,
 } from "@mantine/core";
 
 import {
   UserRound,
   Mail,
+  Phone,
   LockKeyhole,
   FileSpreadsheet,
   Upload,
@@ -27,12 +29,20 @@ export default function CreateFacultyModal({
   onClose,
   onCreate,
   onUploadExcel,
+  loading = false,
+  error = null,
 }) {
+  const { colorScheme } = useMantineColorScheme();
+
+  const isDark = colorScheme === "dark";
+
   const [mode, setMode] = useState("single");
 
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [excelFile, setExcelFile] = useState(null);
 
   const departments = [
@@ -58,6 +68,96 @@ export default function CreateFacultyModal({
     },
   ];
 
+  /*
+  |--------------------------------------------------------------------------
+  | Theme
+  |--------------------------------------------------------------------------
+  */
+
+  const colors = {
+    background: isDark ? "#1f1f1f" : "#ffffff",
+
+    input: isDark
+      ? "#292929"
+      : "#ffffff",
+
+    border: isDark
+      ? "#404040"
+      : "#ced4da",
+
+    text: isDark
+      ? "#f5f5f5"
+      : "#212529",
+
+    muted: isDark
+      ? "#929292"
+      : "#868e96",
+
+    uploadBackground: isDark
+      ? "#242424"
+      : "#f8f9fa",
+
+    securityBackground: isDark
+      ? "#182b42"
+      : "#eef6ff",
+
+    securityBorder: isDark
+      ? "#24466d"
+      : "#b8d8f8",
+
+    badgeBackground: isDark
+      ? "#292929"
+      : "#f1f3f5",
+
+    badgeBorder: isDark
+      ? "#383838"
+      : "#dee2e6",
+
+    errorBackground: isDark
+      ? "#3b1f1f"
+      : "#fff5f5",
+
+    errorBorder: isDark
+      ? "#6b3030"
+      : "#ffc9c9",
+  };
+
+  const inputStyles = {
+    label: {
+      color: colors.text,
+      fontWeight: 600,
+      marginBottom: 6,
+    },
+
+    input: {
+      backgroundColor: colors.input,
+      borderColor: colors.border,
+      color: colors.text,
+    },
+
+    section: {
+      color: colors.muted,
+    },
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Email Validation
+  |--------------------------------------------------------------------------
+  */
+
+  const isValidEmail = (value) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      value.trim()
+    );
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Create / Import
+  |--------------------------------------------------------------------------
+  */
+
   const handleCreate = () => {
     if (mode === "excel") {
       if (!excelFile) return;
@@ -66,17 +166,35 @@ export default function CreateFacultyModal({
       return;
     }
 
+    if (
+      !name.trim() ||
+      !department ||
+      !email.trim() ||
+      !isValidEmail(email) ||
+      !phoneNumber.trim()
+    ) {
+      return;
+    }
+
     onCreate?.({
       name: name.trim(),
       department,
       email: email.trim(),
+      phone_number: phoneNumber.trim(),
     });
   };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Close
+  |--------------------------------------------------------------------------
+  */
 
   const handleClose = () => {
     setName("");
     setDepartment("");
     setEmail("");
+    setPhoneNumber("");
     setExcelFile(null);
     setMode("single");
 
@@ -86,7 +204,9 @@ export default function CreateFacultyModal({
   const isValid =
     name.trim() &&
     department &&
-    email.trim();
+    email.trim() &&
+    isValidEmail(email) &&
+    phoneNumber.trim();
 
   return (
     <Modal
@@ -99,46 +219,46 @@ export default function CreateFacultyModal({
       withCloseButton={false}
       styles={{
         content: {
-          backgroundColor: "#1f1f1f",
-          color: "#f5f5f5",
+          backgroundColor: colors.background,
+          color: colors.text,
         },
 
         header: {
-          backgroundColor: "#1f1f1f",
-          color: "#f5f5f5",
+          backgroundColor: colors.background,
+          color: colors.text,
         },
 
         body: {
           padding: 0,
-          backgroundColor: "#1f1f1f",
+          backgroundColor: colors.background,
         },
       }}
       overlayProps={{
-        backgroundOpacity: 0.65,
+        backgroundOpacity: isDark ? 0.65 : 0.35,
         blur: 4,
       }}
     >
-      {/* =========================
+      {/* =================================================
           HEADER
-      ========================= */}
+      ================================================= */}
 
       <Box
         px="xl"
         py="lg"
         style={{
-          borderBottom: "1px solid #303030",
-          background: "#1f1f1f",
+          borderBottom: `1px solid ${colors.border}`,
+          background: colors.background,
         }}
       >
         <Group
           justify="space-between"
           align="flex-start"
         >
-          {/* <Box>
+          <Box>
             <Text
               fw={650}
               size="lg"
-              c="gray.0"
+              c={isDark ? "gray.0" : "dark.8"}
               style={{
                 letterSpacing: "-0.02em",
               }}
@@ -148,13 +268,13 @@ export default function CreateFacultyModal({
 
             <Text
               size="sm"
-              c="gray.5"
+              c="dimmed"
               mt={3}
             >
               Add a faculty member or import
               multiple accounts.
             </Text>
-          </Box> */}
+          </Box>
 
           <Button
             variant="subtle"
@@ -168,20 +288,44 @@ export default function CreateFacultyModal({
         </Group>
       </Box>
 
-      {/* =========================
+      {/* =================================================
           CONTENT
-      ========================= */}
+      ================================================= */}
 
       <Box
         px="xl"
         py="lg"
         style={{
-          background: "#1f1f1f",
+          background: colors.background,
         }}
       >
         <Stack gap="lg">
 
+          {/* Backend Error */}
+
+          {error && mode === "single" && (
+            <Box
+              p="sm"
+              style={{
+                background:
+                  colors.errorBackground,
+                border:
+                  `1px solid ${colors.errorBorder}`,
+                borderRadius: 8,
+              }}
+            >
+              <Text
+                size="sm"
+                c="red"
+                fw={500}
+              >
+                {error}
+              </Text>
+            </Box>
+          )}
+
           {/* Mode Selector */}
+
           <Group grow gap="xs">
             <Button
               variant={
@@ -228,14 +372,15 @@ export default function CreateFacultyModal({
             </Button>
           </Group>
 
-          {/* =========================
+          {/* =================================================
               SINGLE FACULTY
-          ========================= */}
+          ================================================= */}
 
           {mode === "single" && (
             <Stack gap="md">
 
               {/* Full Name */}
+
               <TextInput
                 label="Full Name"
                 placeholder="e.g. Dr. John Doe"
@@ -249,28 +394,11 @@ export default function CreateFacultyModal({
                   )
                 }
                 radius="sm"
-                styles={{
-                  label: {
-                    color: "#e5e5e5",
-                    fontWeight: 600,
-                    marginBottom: 6,
-                  },
-
-                  input: {
-                    backgroundColor:
-                      "#292929",
-                    borderColor:
-                      "#404040",
-                    color: "#f5f5f5",
-                  },
-
-                  section: {
-                    color: "#929292",
-                  },
-                }}
+                styles={inputStyles}
               />
 
               {/* Department */}
+
               <Select
                 label="Department"
                 placeholder="Select department"
@@ -281,31 +409,15 @@ export default function CreateFacultyModal({
                 value={department}
                 onChange={setDepartment}
                 radius="sm"
-                styles={{
-                  label: {
-                    color: "#e5e5e5",
-                    fontWeight: 600,
-                    marginBottom: 6,
-                  },
-
-                  input: {
-                    backgroundColor:
-                      "#292929",
-                    borderColor:
-                      "#404040",
-                    color: "#f5f5f5",
-                  },
-
-                  section: {
-                    color: "#929292",
-                  },
-                }}
+                styles={inputStyles}
               />
 
-              {/* Email */}
+              {/* Institutional Email */}
+
               <TextInput
                 label="Institutional Email"
                 placeholder="faculty@bmu.edu.in"
+                type="email"
                 leftSection={
                   <Mail size={16} />
                 }
@@ -315,35 +427,44 @@ export default function CreateFacultyModal({
                     e.currentTarget.value
                   )
                 }
+                error={
+                  email &&
+                  !isValidEmail(email)
+                    ? "Enter a valid email address"
+                    : null
+                }
                 radius="sm"
-                styles={{
-                  label: {
-                    color: "#e5e5e5",
-                    fontWeight: 600,
-                    marginBottom: 6,
-                  },
+                styles={inputStyles}
+              />
 
-                  input: {
-                    backgroundColor:
-                      "#292929",
-                    borderColor:
-                      "#404040",
-                    color: "#f5f5f5",
-                  },
+              {/* Phone Number */}
 
-                  section: {
-                    color: "#929292",
-                  },
-                }}
+              <TextInput
+                label="Phone Number"
+                placeholder="e.g. +91 98765 43210"
+                type="tel"
+                leftSection={
+                  <Phone size={16} />
+                }
+                value={phoneNumber}
+                onChange={(e) =>
+                  setPhoneNumber(
+                    e.currentTarget.value
+                  )
+                }
+                radius="sm"
+                styles={inputStyles}
               />
 
               {/* Security */}
+
               <Box
                 p="md"
                 style={{
-                  background: "#182b42",
+                  background:
+                    colors.securityBackground,
                   border:
-                    "1px solid #24466d",
+                    `1px solid ${colors.securityBorder}`,
                   borderRadius: 8,
                 }}
               >
@@ -357,23 +478,25 @@ export default function CreateFacultyModal({
                     size={34}
                     radius="sm"
                   >
-                    <LockKeyhole
-                      size={17}
-                    />
+                    <LockKeyhole size={17} />
                   </ThemeIcon>
 
                   <Box>
                     <Text
                       size="sm"
                       fw={600}
-                      c="gray.1"
+                      c={
+                        isDark
+                          ? "gray.1"
+                          : "dark.7"
+                      }
                     >
                       Account Security
                     </Text>
 
                     <Text
                       size="xs"
-                      c="gray.4"
+                      c="dimmed"
                       mt={3}
                       lh={1.5}
                     >
@@ -385,7 +508,7 @@ export default function CreateFacultyModal({
 
                     <Text
                       size="xs"
-                      c="gray.4"
+                      c="dimmed"
                       mt={4}
                       lh={1.5}
                     >
@@ -401,21 +524,23 @@ export default function CreateFacultyModal({
             </Stack>
           )}
 
-          {/* =========================
+          {/* =================================================
               EXCEL UPLOAD
-          ========================= */}
+          ================================================= */}
 
           {mode === "excel" && (
             <Stack gap="md">
 
               {/* Upload Area */}
+
               <Box
                 p="xl"
                 style={{
                   border:
-                    "1.5px dashed #454545",
+                    `1.5px dashed ${colors.border}`,
                   borderRadius: 10,
-                  background: "#242424",
+                  background:
+                    colors.uploadBackground,
                   textAlign: "center",
                 }}
               >
@@ -438,14 +563,18 @@ export default function CreateFacultyModal({
                     fw={600}
                     size="sm"
                     mt={4}
-                    c="gray.1"
+                    c={
+                      isDark
+                        ? "gray.1"
+                        : "dark.7"
+                    }
                   >
                     Import Faculty Accounts
                   </Text>
 
                   <Text
                     size="xs"
-                    c="gray.5"
+                    c="dimmed"
                     maw={390}
                     lh={1.5}
                   >
@@ -469,28 +598,28 @@ export default function CreateFacultyModal({
                     styles={{
                       input: {
                         backgroundColor:
-                          "#292929",
+                          colors.input,
                         borderColor:
-                          "#404040",
+                          colors.border,
                         color:
-                          "#f5f5f5",
+                          colors.text,
                       },
 
                       placeholder: {
                         color:
-                          "#888888",
+                          colors.muted,
                       },
 
                       section: {
                         color:
-                          "#929292",
+                          colors.muted,
                       },
                     }}
                   />
 
                   <Text
                     size="xs"
-                    c="gray.6"
+                    c="dimmed"
                   >
                     Supported formats:
                     {" "}
@@ -500,11 +629,12 @@ export default function CreateFacultyModal({
               </Box>
 
               {/* Required Columns */}
+
               <Box>
                 <Text
                   size="xs"
                   fw={600}
-                  c="gray.3"
+                  c="dimmed"
                   mb={6}
                 >
                   Required columns
@@ -523,15 +653,15 @@ export default function CreateFacultyModal({
                       py={4}
                       style={{
                         background:
-                          "#292929",
+                          colors.badgeBackground,
                         border:
-                          "1px solid #383838",
+                          `1px solid ${colors.badgeBorder}`,
                         borderRadius: 5,
                       }}
                     >
                       <Text
                         size="xs"
-                        c="gray.4"
+                        c="dimmed"
                       >
                         {column}
                       </Text>
@@ -541,12 +671,14 @@ export default function CreateFacultyModal({
               </Box>
 
               {/* Security Note */}
+
               <Box
                 p="md"
                 style={{
-                  background: "#182b42",
+                  background:
+                    colors.securityBackground,
                   border:
-                    "1px solid #24466d",
+                    `1px solid ${colors.securityBorder}`,
                   borderRadius: 8,
                 }}
               >
@@ -560,23 +692,25 @@ export default function CreateFacultyModal({
                     size={34}
                     radius="sm"
                   >
-                    <LockKeyhole
-                      size={17}
-                    />
+                    <LockKeyhole size={17} />
                   </ThemeIcon>
 
                   <Box>
                     <Text
                       size="sm"
                       fw={600}
-                      c="gray.1"
+                      c={
+                        isDark
+                          ? "gray.1"
+                          : "dark.7"
+                      }
                     >
                       Automatic Credentials
                     </Text>
 
                     <Text
                       size="xs"
-                      c="gray.4"
+                      c="dimmed"
                       mt={3}
                       lh={1.5}
                     >
@@ -595,17 +729,17 @@ export default function CreateFacultyModal({
         </Stack>
       </Box>
 
-      {/* =========================
+      {/* =================================================
           FOOTER
-      ========================= */}
+      ================================================= */}
 
       <Box
         px="xl"
         py="md"
         style={{
           borderTop:
-            "1px solid #303030",
-          background: "#1f1f1f",
+            `1px solid ${colors.border}`,
+          background: colors.background,
         }}
       >
         <Group justify="flex-end">
@@ -617,10 +751,10 @@ export default function CreateFacultyModal({
             styles={{
               root: {
                 backgroundColor:
-                  "#292929",
+                  colors.input,
                 borderColor:
-                  "#404040",
-                color: "#f5f5f5",
+                  colors.border,
+                color: colors.text,
               },
             }}
           >
@@ -641,6 +775,7 @@ export default function CreateFacultyModal({
                 ? !excelFile
                 : !isValid
             }
+            loading={loading}
             onClick={handleCreate}
           >
             {mode === "excel"

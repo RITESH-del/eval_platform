@@ -75,16 +75,23 @@ export const fetchFacultiesThunk = createAsyncThunk(
  */
 export const createFacultyThunk = createAsyncThunk(
   "admin/createFaculty",
-  async (facultyData) => {
-    const response = await apiClient.post(
-      "/admin/users/faculty",
-      facultyData
-    );
+  async (facultyData, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post(
+        "/admin/users/faculty",
+        facultyData
+      );
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
   }
 );
-
 
 /*
  * Import multiple faculty members from Excel
