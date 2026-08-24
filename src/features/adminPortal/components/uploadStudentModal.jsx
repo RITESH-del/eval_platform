@@ -949,6 +949,27 @@ const sections = [
           color: colors.text,
         },
 
+         content: {
+      backgroundColor: colors.background,
+      color: colors.text,
+
+      // Hide scrollbar
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
+    },
+
+    content: {
+      backgroundColor: colors.background,
+      color: colors.text,
+
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
+
+      "&::-webkit-scrollbar": {
+        display: "none",
+      },
+    },
+
         header: {
           backgroundColor: colors.background,
           color: colors.text,

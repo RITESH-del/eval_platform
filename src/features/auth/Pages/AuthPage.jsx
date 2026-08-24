@@ -1,4 +1,81 @@
 
+// import {
+//   Anchor,
+//   Button,
+//   Checkbox,
+//   Paper,
+//   PasswordInput,
+//   Text,
+//   TextInput,
+//   Title,
+// } from '@mantine/core';
+// import { useState, useEffect } from "react";
+// import classes from './Auth.module.css';
+// import { useDispatch, useSelector } from "react-redux";
+// import { loginUser} from "../models/authThunks";
+// import { useNavigate } from "react-router-dom";
+
+// export default function AuthPage() {
+//   const [email, setEmail] = useState('');
+//   const [passwd, setPasswd] = useState('');
+
+
+//   const dispatch = useDispatch();
+
+//   function handleSubmit() {
+//     dispatch(loginUser({
+//       email: email,
+//       password: passwd
+//     }));
+//   }
+
+//   const user = useSelector(
+//     state => state.auth.user
+//   );
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     if (!user) return;
+
+//     if (user.role === "faculty") {
+//         navigate("/Faculty");
+//     }
+
+//     if (user.role === "student") {
+//         navigate("/student");
+//     }
+
+//     if (user.role === "admin") {
+//         navigate("/admin");
+//     }
+//   }, [user]);
+
+  
+//   return (
+//     <div className={classes.wrapper}>
+//       <Paper className={classes.form}>
+//         <Title order={2} className={classes.title}>
+//           Welcome back!
+//         </Title>
+
+//         <TextInput label="Email address" placeholder="hello@gmail.com" size="md" radius="md" value={email} onChange={(e) => setEmail(e.target.value)}/>
+//         <PasswordInput label="Password" placeholder="Your password" mt="md" size="md" radius="md" value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
+//         <Checkbox label="Keep me logged in" mt="xl" size="md" />
+//         <Button fullWidth mt="xl" size="md" radius="md" onClick={handleSubmit}>
+//           Login
+//         </Button>
+
+//         <Text ta="center" mt="md">
+//           First Login?{" "}
+//           <Anchor href="#" fw={500} onClick={() => navigate("/change-password")}>
+//             change password
+//           </Anchor>
+//         </Text>
+//       </Paper>
+//     </div>
+//   )}
+
 import {
   Anchor,
   Button,
@@ -8,50 +85,57 @@ import {
   Text,
   TextInput,
   Title,
-} from '@mantine/core';
+} from "@mantine/core";
+
 import { useState, useEffect } from "react";
-import classes from './Auth.module.css';
+import classes from "./Auth.module.css";
+
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser} from "../models/authThunks";
+import { loginUser } from "../models/authThunks";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
-  const [email, setEmail] = useState('');
-  const [passwd, setPasswd] = useState('');
-
+  const [email, setEmail] = useState("");
+  const [passwd, setPasswd] = useState("");
 
   const dispatch = useDispatch();
-
-  function handleSubmit() {
-    dispatch(loginUser({
-      email: email,
-      password: passwd
-    }));
-  }
-
-  const user = useSelector(
-    state => state.auth.user
-  );
-
   const navigate = useNavigate();
+
+  const {
+    user,
+    loading,
+    error,
+  } = useSelector((state) => state.auth);
+
+  const handleSubmit = async () => {
+    if (!email.trim() || !passwd) {
+      return;
+    }
+
+    dispatch(
+      loginUser({
+        email: email.trim(),
+        password: passwd,
+      })
+    );
+  };
 
   useEffect(() => {
     if (!user) return;
 
     if (user.role === "faculty") {
-        navigate("/Faculty");
+      navigate("/Faculty");
     }
 
     if (user.role === "student") {
-        navigate("/student");
+      navigate("/student");
     }
 
     if (user.role === "admin") {
-        navigate("/admin");
+      navigate("/admin");
     }
-  }, [user]);
+  }, [user, navigate]);
 
-  
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.form}>
@@ -59,19 +143,78 @@ export default function AuthPage() {
           Welcome back!
         </Title>
 
-        <TextInput label="Email address" placeholder="hello@gmail.com" size="md" radius="md" value={email} onChange={(e) => setEmail(e.target.value)}/>
-        <PasswordInput label="Password" placeholder="Your password" mt="md" size="md" radius="md" value={passwd} onChange={(e) => setPasswd(e.target.value)}/>
-        <Checkbox label="Keep me logged in" mt="xl" size="md" />
-        <Button fullWidth mt="xl" size="md" radius="md" onClick={handleSubmit}>
+        <TextInput
+          label="Email address"
+          placeholder="hello@gmail.com"
+          size="md"
+          radius="md"
+          value={email}
+          onChange={(e) =>
+            setEmail(e.currentTarget.value)
+          }
+          error={
+            error
+              ? undefined
+              : null
+          }
+        />
+
+        <PasswordInput
+          label="Password"
+          placeholder="Your password"
+          mt="md"
+          size="md"
+          radius="md"
+          value={passwd}
+          onChange={(e) =>
+            setPasswd(e.currentTarget.value)
+          }
+        />
+
+        {error && (
+          <Text
+            c="red"
+            size="sm"
+            mt="sm"
+          >
+            Invalid username or password
+          </Text>
+        )}
+
+        <Checkbox
+          label="Keep me logged in"
+          mt="xl"
+          size="md"
+        />
+
+        <Button
+          fullWidth
+          mt="xl"
+          size="md"
+          radius="md"
+          loading={loading}
+          disabled={
+            !email.trim() || !passwd
+          }
+          onClick={handleSubmit}
+        >
           Login
         </Button>
 
         <Text ta="center" mt="md">
           First Login?{" "}
-          <Anchor href="#" fw={500} onClick={() => navigate("/change-password")}>
+          <Anchor
+            href="#"
+            fw={500}
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/change-password");
+            }}
+          >
             change password
           </Anchor>
         </Text>
       </Paper>
     </div>
-  )}
+  );
+}
