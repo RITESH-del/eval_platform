@@ -7,7 +7,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   EllipsisVertical,
@@ -16,7 +16,7 @@ import {
 import { modals } from "@mantine/modals";
 
 import TableFooter from "../../../shared/components/CustomTableFooter.jsx";
-import { deleteStudentThunk } from "../thunks/adminThunks.js";
+import { deleteStudentThunk, updateStudentThunk } from "../thunks/adminThunks.js";
 import UpdateStudentModal from "./updateStudentModal.jsx";
 
 const confirmDelete = (dispatch, studentId) => {
@@ -50,6 +50,7 @@ const confirmDelete = (dispatch, studentId) => {
 export default function StudentTable({ students = [] }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { updatingStudent } = useSelector((state) => state.admin);
 
   const [editModalOpened, setEditModalOpened] =
   useState(false);
@@ -232,16 +233,19 @@ const [selectedStudent, setSelectedStudent] =
     setSelectedStudent(null);
   }}
   student={selectedStudent}
-  loading={false}
-  onUpdate={(data) => {
+  loading={updatingStudent}
+  onUpdate={async (data) => {
     console.log("Updating student:", data);
-
-    // dispatch(
-    //   updateStudentThunk({
-    //     studentId: data.id,
-    //     data,
-    //   })
-    // );
+    const result = await dispatch(
+      updateStudentThunk({
+        id: data.id,
+        data,
+      })
+    );
+    if (updateStudentThunk.fulfilled.match(result)) {
+      setEditModalOpened(false);
+      setSelectedStudent(null);
+    }
   }}
 />
     </Paper>
