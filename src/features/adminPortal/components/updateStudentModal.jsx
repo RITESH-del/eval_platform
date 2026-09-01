@@ -741,8 +741,8 @@ export default function UpdateStudentModal({
 
           <Group grow align="flex-start">
             <Select
-              label="Graduation Year"
-              placeholder="Select year"
+              label="Batch"
+              placeholder="Select Batch"
               data={graduationYears}
               value={graduationYear}
               onChange={setGraduationYear}

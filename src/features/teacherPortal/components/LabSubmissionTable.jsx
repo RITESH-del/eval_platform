@@ -238,17 +238,15 @@ export default function SubmissionTable({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  function handleClick(student)  {
-                if (student.status !== "absent") {
-                  dispatch(
-                    setSelectedSubmission(student)
-                  );
+  function handleClick(student) {
+    if (student.status !== "absent" && student.session_id) {
+      dispatch(setSelectedSubmission(student));
 
-                  navigate(
-                    `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
-                  );
-                }
-              }
+      navigate(
+        `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
+      );
+    }
+  }
 
   const columns = [
      {
@@ -324,23 +322,31 @@ export default function SubmissionTable({
       accessor: "language",
       title: "Language",
       render: ({ language }) => (
-        <Code>{language}</Code>
+        language ? <Code>{language}</Code> : <Text size="sm" c="dimmed">-</Text>
       ),
     },
     {
       accessor: "total_autograding_score",
       title: "System Evaluated Marks",
       textAlign: "center",
-      render: ({ total_autograding_score }) => (
-        <Code>{total_autograding_score ?? 0}</Code>
+      render: ({ total_autograding_score, status }) => (
+        status === "absent" ? (
+          <Text size="sm" c="dimmed">-</Text>
+        ) : (
+          <Code>{total_autograding_score ?? 0}</Code>
+        )
       ),
     },
     {
       accessor: "total_manual_score",
       title: "Awarded Marks",
       textAlign: "center",
-      render: ({ total_manual_score }) =>
-        total_manual_score ?? "-",
+      render: ({ total_manual_score, status }) =>
+        status === "absent" ? (
+          <Text size="sm" c="dimmed">-</Text>
+        ) : (
+          total_manual_score ?? "-"
+        ),
     },
     {
       accessor: "status",
@@ -368,34 +374,6 @@ export default function SubmissionTable({
       accessor: "actions",
       title: "Actions",
       textAlign: "right",
-      // render: (student) => (
-      //   <Menu shadow="md">
-      //     <Menu.Target>
-      //       <ActionIcon variant="subtle">
-      //         <EllipsisVertical size={18} />
-      //       </ActionIcon>
-      //     </Menu.Target>
-
-      //     <Menu.Dropdown>
-      //       <Menu.Item
-      //         onClick={(student) => {
-      //           if (student.status !== "absent") {
-      //             dispatch(
-      //               setSelectedSubmission(student)
-      //             );
-
-      //             navigate(
-      //               `/Faculty/LabDetails/${examId}/StudentDetails/${student.session_id}`
-      //             );
-      //           }
-      //         }}
-      //       >
-      //         View Evaluation
-      //       </Menu.Item>
-      //     </Menu.Dropdown>
-      //   </Menu>
-      // ),
-
       render: (student) => (
   <Menu shadow="md">
     <Menu.Target>
@@ -409,10 +387,11 @@ export default function SubmissionTable({
 
     <Menu.Dropdown onClick={(e) => e.stopPropagation()}>
       <Menu.Item
+        disabled={student.status === "absent" || !student.session_id}
         onClick={(e) => {
           e.stopPropagation();
 
-          if (student.status !== "absent") {
+          if (student.status !== "absent" && student.session_id) {
             dispatch(setSelectedSubmission(student));
 
             navigate(
@@ -441,7 +420,7 @@ export default function SubmissionTable({
         totalRecords={records.length}
         columns={columns}
         onRowClick={({ record }) => handleClick(record)}
-  rowClassName={() => "clickable-row"}
+        rowClassName={(record) => (record.status === "absent" || !record.session_id ? "" : "clickable-row")}
       />
 
       <TableFooter

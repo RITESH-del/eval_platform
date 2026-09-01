@@ -58,18 +58,20 @@ const LabDetails = () => {
     return matchesSearch && matchesStatus;
   });
 
- const handleExport = () => {
-  const data = filteredSubmissions.map(
-    ({ session_id, start_time, remark, ...rest }) => rest
-  );
+  const examDetails = details || (submissions?.length > 0 ? { title: submissions[0]?.title, start_time: submissions[0]?.start_time } : null);
 
-  exportToExcel(data, details?.title);
-};
+  const handleExport = () => {
+    const data = filteredSubmissions.map(
+      ({ session_id, start_time, remark, ...rest }) => rest
+    );
+
+    exportToExcel(data, examDetails?.title || "Lab Submissions");
+  };
 
   return (
     <Box sx={{ minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc', padding: '2rem 1.5rem' }}>
       <Stack spacing="md">
-        <LabDetailsHeader details={details} />
+        <LabDetailsHeader details={examDetails} />
         <Group mb="xs" wrap="nowrap">
         <TextInput
           flex={1}

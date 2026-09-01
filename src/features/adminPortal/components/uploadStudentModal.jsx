@@ -816,16 +816,42 @@ export default function UploadStudentModal({
   ];
 
 const sections = [
-  { value: "I", label: "Section I" },
-  { value: "II", label: "Section II" },
-  { value: "III", label: "Section III" },
-  { value: "IV", label: "Section IV" },
-  { value: "V", label: "Section V" },
-  { value: "VI", label: "Section VI" },
-  { value: "VII", label: "Section VII" },
-  { value: "VIII", label: "Section VIII" },
-  { value: "IX", label: "Section IX" },
-  { value: "X", label: "Section X" },
+  { group: "Computer Science (CSE)", items: [
+    { value: "CSE-I", label: "CSE - Section I" },
+    { value: "CSE-II", label: "CSE - Section II" },
+    { value: "CSE-III", label: "CSE - Section III" },
+    { value: "CSE-IV", label: "CSE - Section IV" },
+    { value: "CSE-V", label: "CSE - Section V" },
+    { value: "CSE-VI", label: "CSE - Section VI" },
+    { value: "CSE-VII", label: "CSE - Section VII" },
+    { value: "CSE-VIII", label: "CSE - Section VIII" },
+  ]},
+  { group: "Electronics (ECOM E)", items: [
+    { value: "ECOM E-I", label: "ECOM E - Section I" },
+    { value: "ECOM E-II", label: "ECOM E - Section II" },
+    { value: "ECOM E-III", label: "ECOM E - Section III" },
+    { value: "ECOM E-IV", label: "ECOM E - Section IV" },
+    { value: "ECOM E-V", label: "ECOM E - Section V" },
+    { value: "ECOM E-VI", label: "ECOM E - Section VI" },
+    { value: "ECOM E-VII", label: "ECOM E - Section VII" },
+    { value: "ECOM E-VIII", label: "ECOM E - Section VIII" },
+  ]},
+  { group: "General Sections", items: [
+    { value: "I", label: "Section I" },
+    { value: "II", label: "Section II" },
+    { value: "III", label: "Section III" },
+    { value: "IV", label: "Section IV" },
+    { value: "V", label: "Section V" },
+    { value: "VI", label: "Section VI" },
+    { value: "VII", label: "Section VII" },
+    { value: "VIII", label: "Section VIII" },
+    { value: "IX", label: "Section IX" },
+    { value: "X", label: "Section X" },
+    { value: "A", label: "Section A" },
+    { value: "B", label: "Section B" },
+    { value: "C", label: "Section C" },
+    { value: "D", label: "Section D" },
+  ]},
 ];
 
   /*

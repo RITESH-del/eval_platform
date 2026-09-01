@@ -117,7 +117,7 @@ const [selectedStudent, setSelectedStudent] =
 
     {
       accessor: "graduation_year",
-      title: "Graduation",
+      title: "batch",
 
       render: (student) => (
         <Text size="sm">
