@@ -312,3 +312,112 @@ export const importStudentsThunk = createAsyncThunk(
     return response.data;
   }
 );
+
+/*
+|--------------------------------------------------------------------------
+| COURSES
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Fetch all courses
+ */
+export const fetchCoursesThunk = createAsyncThunk(
+  "admin/fetchCourses",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get("/admin/courses");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
+  }
+);
+
+/*
+ * Create single course
+ */
+export const createCourseThunk = createAsyncThunk(
+  "admin/createCourse",
+  async (courseData, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post("/admin/courses", courseData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
+  }
+);
+
+/*
+ * Update course
+ */
+export const updateCourseThunk = createAsyncThunk(
+  "admin/updateCourse",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.put(`/admin/courses/${id}`, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
+  }
+);
+
+/*
+ * Delete course
+ */
+export const deleteCourseThunk = createAsyncThunk(
+  "admin/deleteCourse",
+  async (courseId, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/admin/courses/${courseId}`);
+      return { id: courseId, data: response.data };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
+  }
+);
+
+/*
+ * Import courses from Excel/CSV
+ */
+export const importCoursesThunk = createAsyncThunk(
+  "admin/importCourses",
+  async (file, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await apiClient.post(
+        "/admin/courses/import",
+        formData
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+      );
+    }
+  }
+);
+

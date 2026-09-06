@@ -1,5 +1,6 @@
 import ManageFaculty from './pages/ManageFaculty.jsx';
 import ManageStudents from './pages/ManageStudents.jsx';
+import ManageCourses from './pages/ManageCourses.jsx';
 import CommonLayout from './CommonLayout.jsx';
 import ErrorPage from '../../shared/components/ErrorPage.jsx';
 import ProtectedRoute from '../../shared/components/ProtectedRoute.jsx';
@@ -23,5 +24,11 @@ export const adminRoutes = [
             <ManageStudents />
             </ProtectedRoute>)
     },
+    {
+        path: 'manage-courses',
+        element: (<ProtectedRoute role="admin">
+            <ManageCourses />
+            </ProtectedRoute>)
+    },
     ]
-    }];
+    }];

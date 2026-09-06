@@ -17,6 +17,13 @@ import {
   updateStudentThunk,
   deleteStudentThunk,
   importStudentsThunk,
+
+  // Course
+  fetchCoursesThunk,
+  createCourseThunk,
+  updateCourseThunk,
+  deleteCourseThunk,
+  importCoursesThunk,
 } from "../thunks/adminThunks.js";
 
 const initialState = {
@@ -27,10 +34,11 @@ const initialState = {
   stats: [],
 
   // --------------------------------
-  // Users
+  // Users & Entities
   // --------------------------------
   faculties: [],
   students: [],
+  courses: [],
 
   // --------------------------------
   // Loading states
@@ -39,6 +47,7 @@ const initialState = {
 
   loadingFaculties: false,
   loadingStudents: false,
+  loadingCourses: false,
 
   creatingFaculty: false,
   updatingFaculty: false,
@@ -50,11 +59,17 @@ const initialState = {
   deletingStudent: false,
   importingStudents: false,
 
+  creatingCourse: false,
+  updatingCourse: false,
+  deletingCourse: false,
+  importingCourses: false,
+
   // --------------------------------
   // Error
   // --------------------------------
   error: null,
 };
+
 
 const adminSlice = createSlice({
   name: "admin",
@@ -480,7 +495,109 @@ const adminSlice = createSlice({
             action.payload || action.error.message;
         }
       );
+
+    // =====================================================
+    // FETCH COURSES
+    // =====================================================
+
+    builder
+      .addCase(fetchCoursesThunk.pending, (state) => {
+        state.loadingCourses = true;
+        state.error = null;
+      })
+      .addCase(fetchCoursesThunk.fulfilled, (state, action) => {
+        state.loadingCourses = false;
+        state.courses = action.payload || [];
+      })
+      .addCase(fetchCoursesThunk.rejected, (state, action) => {
+        state.loadingCourses = false;
+        state.error = action.payload || action.error.message;
+      });
+
+    // =====================================================
+    // CREATE COURSE
+    // =====================================================
+
+    builder
+      .addCase(createCourseThunk.pending, (state) => {
+        state.creatingCourse = true;
+        state.error = null;
+      })
+      .addCase(createCourseThunk.fulfilled, (state, action) => {
+        state.creatingCourse = false;
+        if (action.payload) {
+          state.courses.unshift(action.payload);
+        }
+      })
+      .addCase(createCourseThunk.rejected, (state, action) => {
+        state.creatingCourse = false;
+        state.error = action.payload || action.error.message;
+      });
+
+    // =====================================================
+    // UPDATE COURSE
+    // =====================================================
+
+    builder
+      .addCase(updateCourseThunk.pending, (state) => {
+        state.updatingCourse = true;
+        state.error = null;
+      })
+      .addCase(updateCourseThunk.fulfilled, (state, action) => {
+        state.updatingCourse = false;
+        const updatedCourse = action.payload;
+        if (!updatedCourse) return;
+
+        const index = state.courses.findIndex(
+          (c) => c.id === updatedCourse.id
+        );
+        if (index !== -1) {
+          state.courses[index] = updatedCourse;
+        }
+      })
+      .addCase(updateCourseThunk.rejected, (state, action) => {
+        state.updatingCourse = false;
+        state.error = action.payload || action.error.message;
+      });
+
+    // =====================================================
+    // DELETE COURSE
+    // =====================================================
+
+    builder
+      .addCase(deleteCourseThunk.pending, (state) => {
+        state.deletingCourse = true;
+        state.error = null;
+      })
+      .addCase(deleteCourseThunk.fulfilled, (state, action) => {
+        state.deletingCourse = false;
+        const deletedId = action.payload?.id || action.meta.arg;
+        state.courses = state.courses.filter(
+          (c) => c.id !== deletedId
+        );
+      })
+      .addCase(deleteCourseThunk.rejected, (state, action) => {
+        state.deletingCourse = false;
+        state.error = action.payload || action.error.message;
+      });
+
+    // =====================================================
+    // IMPORT COURSES
+    // =====================================================
+
+    builder
+      .addCase(importCoursesThunk.pending, (state) => {
+        state.importingCourses = true;
+        state.error = null;
+      })
+      .addCase(importCoursesThunk.fulfilled, (state) => {
+        state.importingCourses = false;
+      })
+      .addCase(importCoursesThunk.rejected, (state, action) => {
+        state.importingCourses = false;
+        state.error = action.payload || action.error.message;
+      });
   },
 });
 
-export default adminSlice.reducer;
+export default adminSlice.reducer;
