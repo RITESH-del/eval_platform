@@ -125,45 +125,75 @@ export default function ReviewSubmissionPage() {
     );
   }, [currentResponse]);
 
-  const autoGradingMarks =
-    useMemo(() => {
-      return responses.reduce(
-        (total, response) =>
-          total +
-          (response.autograding_score ??
-            0),
-        0
+  // const autoGradingMarks =
+  //   useMemo(() => {
+  //     return responses.reduce(
+  //       (total, response) =>
+  //         total +
+  //         (response.autograding_score ??
+  //           0),
+  //       0
+  //     );
+  //   }, [responses]);
+
+  // const manualScore = useMemo(() => {
+  //   return responses.reduce(
+  //     (total, response) => {
+  //       const submission =
+  //         response.submission_history.find(
+  //           (s) =>
+  //             s.manual_score != null
+  //         ) ??
+  //         response.submission_history.reduce(
+  //           (
+  //             best,
+  //             current
+  //           ) =>
+  //             current.autograding_score >
+  //             best.autograding_score
+  //               ? current
+  //               : best
+  //         );
+
+  //       return (
+  //         total +
+  //         (submission.manual_score ??
+  //           submission.autograding_score)
+  //       );
+  //     },
+  //     0
+  //   );
+  // }, [responses]);
+
+
+const maxMarks = data?.exam_details?.total_marks ?? 0;
+
+const autoGradingMarks = useMemo(() => {
+  return responses.reduce((total, response) => {
+    const bestSubmission =
+      response.submission_history?.reduce(
+        (best, current) =>
+          current.autograding_score > best.autograding_score
+            ? current
+            : best,
+        { autograding_score: 0 }
       );
-    }, [responses]);
 
-  const manualScore = useMemo(() => {
-    return responses.reduce(
-      (total, response) => {
-        const submission =
-          response.submission_history.find(
-            (s) =>
-              s.manual_score != null
-          ) ??
-          response.submission_history.reduce(
-            (
-              best,
-              current
-            ) =>
-              current.autograding_score >
-              best.autograding_score
-                ? current
-                : best
-          );
+    return total + (bestSubmission?.autograding_score ?? 0);
+  }, 0);
+}, [responses]);
 
-        return (
-          total +
-          (submission.manual_score ??
-            submission.autograding_score)
-        );
-      },
-      0
-    );
-  }, [responses]);
+const manualScore = useMemo(() => {
+  return responses.reduce((total, response) => {
+    const manuallyGradedSubmission =
+      response.submission_history?.find(
+        (submission) => submission.manual_score != null
+      );
+
+    return total + (manuallyGradedSubmission?.manual_score ?? 0);
+  }, 0);
+}, [responses]);
+
 
   if (loading) {
     return <Spinner />;
@@ -259,7 +289,7 @@ export default function ReviewSubmissionPage() {
               <Divider my="xs" />
 
               <Stack gap={4}>
-                <Group justify="space-between">
+                {/* <Group justify="space-between">
                   <Text fw={600}>
                     Auto Grade
                   </Text>
@@ -277,11 +307,26 @@ export default function ReviewSubmissionPage() {
                         100
                       : 0
                   }
-                />
+                /> */}
+
+                             <Group justify="space-between">
+          <Text fw={600}>
+              Auto Score
+            </Text>
+            <Text fw={400}>
+  {autoGradingMarks} / {maxMarks}
+</Text>
+            </Group>
+
+
+           <Progress
+  size="sm"
+  value={maxMarks > 0 ? (autoGradingMarks / maxMarks) * 100 : 0}
+/>
               </Stack>
 
               <Stack gap={4}>
-                <Group justify="space-between">
+                {/* <Group justify="space-between">
                   <Text fw={600}>
                     Manual Score
                   </Text>
@@ -300,8 +345,24 @@ export default function ReviewSubmissionPage() {
                       : 0
                   }
                 />
-              </Stack>
-            </Stack>
+              </Stack> */}
+
+
+                           <Group justify="space-between">
+          <Text fw={600}>
+              Manual Score
+            </Text>
+            <Text fw={400}>
+  {manualScore} / {maxMarks}
+</Text>
+            </Group>
+
+
+            <Progress
+  size="sm"
+  value={maxMarks > 0 ? (manualScore / maxMarks) * 100 : 0}
+/>
+            </Stack>  </Stack>
           </Paper>
 
           <Paper
@@ -418,31 +479,35 @@ export default function ReviewSubmissionPage() {
 
         <Divider />
 
-        <Group justify="space-between">
-          <Text fw={600}>Auto Grade</Text>
-          <Text>{autoGradingMarks}</Text>
-        </Group>
+                    <Group justify="space-between">
+          <Text fw={600}>
+              Auto Score
+            </Text>
+            <Text fw={400}>
+  {autoGradingMarks} / {maxMarks}
+</Text>
+            </Group>
 
-        <Progress
-          value={
-            total_q
-              ? (autoGradingMarks / total_q) * 100
-              : 0
-          }
-        />
 
-        <Group justify="space-between">
-          <Text fw={600}>Manual Score</Text>
-          <Text>{manualScore}</Text>
-        </Group>
+           <Progress
+  size="sm"
+  value={maxMarks > 0 ? (autoGradingMarks / maxMarks) * 100 : 0}
+/>
 
-        <Progress
-          value={
-            total_q
-              ? (manualScore / total_q) * 100
-              : 0
-          }
-        />
+                    <Group justify="space-between">
+          <Text fw={600}>
+              Manual Score
+            </Text>
+            <Text fw={400}>
+  {manualScore} / {maxMarks}
+</Text>
+            </Group>
+
+
+            <Progress
+  size="sm"
+  value={maxMarks > 0 ? (manualScore / maxMarks) * 100 : 0}
+/>
 
       </Stack>
     </Accordion.Panel>

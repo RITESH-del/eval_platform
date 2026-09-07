@@ -2,6 +2,7 @@ import { Paper, Stack, Title, Group } from "@mantine/core";
 import { CircleHelp } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 export default function QuestionCard({ title, question }) {
   return (
@@ -22,7 +23,7 @@ export default function QuestionCard({ title, question }) {
         msOverflowStyle: "none",
       }}
     >
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
         {question}
       </ReactMarkdown>
     </div>

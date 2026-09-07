@@ -122,27 +122,55 @@ const handleSave = async () => {
   const university_id = data?.student_details?.university_id || '------';
   const exam_title = data?.exam_details?.title || 'Loading Exam Title...';
 
-  const autoGradingMarks = useMemo(() => {
-  return responses.reduce(
-    (total, response) => total + (response.autograding_score ?? 0),
-    0
-  );
+//   const autoGradingMarks = useMemo(() => {
+//   return responses.reduce(
+//     (total, response) => total + (response.autograding_score ?? 0),
+//     0
+//   );
+// }, [responses]);
+
+// const manualScore = useMemo(() => {
+//   return responses.reduce((total, response) => {
+//     const submission =
+//       response.submission_history.find(
+//         (s) => s.manual_score != null
+//       ) ??
+//       response.submission_history.reduce(
+//         (best, current) =>
+//           current.autograding_score > best.autograding_score
+//             ? current
+//             : best
+//       );
+
+//     return total + (submission.manual_score ?? submission.autograding_score);
+//   }, 0);
+// }, [responses]);
+
+const maxMarks = data?.exam_details?.total_marks ?? 0;
+
+const autoGradingMarks = useMemo(() => {
+  return responses.reduce((total, response) => {
+    const bestSubmission =
+      response.submission_history?.reduce(
+        (best, current) =>
+          current.autograding_score > best.autograding_score
+            ? current
+            : best,
+        { autograding_score: 0 }
+      );
+
+    return total + (bestSubmission?.autograding_score ?? 0);
+  }, 0);
 }, [responses]);
 
 const manualScore = useMemo(() => {
   return responses.reduce((total, response) => {
-    const submission =
-      response.submission_history.find(
-        (s) => s.manual_score != null
-      ) ??
-      response.submission_history.reduce(
-        (best, current) =>
-          current.autograding_score > best.autograding_score
-            ? current
-            : best
+    const manuallyGradedSubmission =
+      response.submission_history?.find(
+        (submission) => submission.manual_score != null
       );
 
-    return total + (submission.manual_score ?? submission.autograding_score);
+    return total + (manuallyGradedSubmission?.manual_score ?? 0);
   }, 0);
 }, [responses]);
 
@@ -302,15 +330,18 @@ const handleRemark = async (remark) => {
            <Stack>
              <Group justify="space-between">
           <Text fw={600}>
-              Auto Graded Marks
+              Auto Score
             </Text>
             <Text fw={400}>
-              {autoGradingMarks}
-            </Text>
+  {autoGradingMarks} / {maxMarks}
+</Text>
             </Group>
 
 
-            <Progress size="sm" value={autoGradingMarks/total_q} />
+           <Progress
+  size="sm"
+  value={maxMarks > 0 ? (autoGradingMarks / maxMarks) * 100 : 0}
+/>
            </Stack>
 
            <Stack>
@@ -319,12 +350,15 @@ const handleRemark = async (remark) => {
               Manual Score
             </Text>
             <Text fw={400}>
-              {manualScore}
-            </Text>
+  {manualScore} / {maxMarks}
+</Text>
             </Group>
 
 
-            <Progress size="sm" value={manualScore/total_q} />
+            <Progress
+  size="sm"
+  value={maxMarks > 0 ? (manualScore / maxMarks) * 100 : 0}
+/>
            </Stack>
 
 
